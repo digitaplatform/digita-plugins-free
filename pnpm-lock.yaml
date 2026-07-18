@@ -7,3 +7,33 @@ settings:
 importers:
 
   .: {}
+
+  build-tools/signature: {}
+
+  digita:
+    devDependencies:
+      '@digitaplatform/signature-build':
+        specifier: workspace:*
+        version: link:../build-tools/signature
+      '@digitaplatform/theme':
+        specifier: ^0.1.0
+        version: 0.1.0
+      typescript:
+        specifier: ^6.0.3
+        version: 6.0.3
+
+packages:
+
+  '@digitaplatform/theme@0.1.0':
+    resolution: {integrity: sha512-W7U1JKJPCSvnW0YJcLoxDdCmaU5q14/8b7zKfyM56IZSRc4JfFeUNaZJUrEM0bAjlaqORVid/+ZrvxIZfJbpsg==, tarball: https://npm.pkg.github.com/download/@digitaplatform/theme/0.1.0/cf507888d95ac02ab24f4b9a0f19867cfae21e90}
+
+  typescript@6.0.3:
+    resolution: {integrity: sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
+snapshots:
+
+  '@digitaplatform/theme@0.1.0': {}
+
+  typescript@6.0.3: {}
