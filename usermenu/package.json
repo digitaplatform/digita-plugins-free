@@ -1,0 +1,58 @@
+{
+  "name": "@digitaplatform/usermenu",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "usermenu — the platform's FREE navigation component plugin: a role-scoped nav rail the host places into a layout region. Composes into the host's single React graph (compiled built-in), so react/router/components/plugins are peers the host provides.",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "restricted"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/digitaplatform/digita-plugins-free.git",
+    "directory": "usermenu"
+  },
+  "digita": {
+    "id": "usermenu",
+    "type": "component",
+    "tier": "free",
+    "sdk": "^0.1.0",
+    "displayName": "Navigation"
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist"
+  },
+  "peerDependencies": {
+    "@digitaplatform/components": "^0.1.0",
+    "@digitaplatform/plugins": "^0.1.0",
+    "lucide-react": "^0.562.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router": "^7.0.0",
+    "react-router-dom": "^7.0.0"
+  },
+  "devDependencies": {
+    "@digitaplatform/components": "^0.1.0",
+    "@digitaplatform/plugins": "^0.1.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "lucide-react": "^0.562.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-router": "^7.17.0",
+    "react-router-dom": "^7.17.0",
+    "typescript": "^6.0.3"
+  }
+}
