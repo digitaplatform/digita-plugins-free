@@ -1,6 +1,6 @@
 {
   "name": "@digitaplatform/digita",
-  "version": "0.1.1",
+  "version": "0.1.0",
   "type": "module",
   "description": "Digita — the platform's own FREE signature (the default identity): cool navy/cyan brand world, 40px grid + top glow, cloud mark + wordmark. Reproduces digitacloud.app. Composes on top of any design; ships as pure config (no runtime CSS).",
   "main": "./dist/index.js",

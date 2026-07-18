@@ -87,7 +87,7 @@ packages:
       react: ^19.0.0
 
   '@digitaplatform/theme@0.1.0':
-    resolution: {integrity: sha512-W7U1JKJPCSvnW0YJcLoxDdCmaU5q14/8b7zKfyM56IZSRc4JfFeUNaZJUrEM0bAjlaqORVid/+ZrvxIZfJbpsg==, tarball: https://npm.pkg.github.com/download/@digitaplatform/theme/0.1.0/cf507888d95ac02ab24f4b9a0f19867cfae21e90}
+    resolution: {integrity: sha512-dWO/T29thtF+7pWljKlBfDUK+wRorwpcug8RMlbu1Lcr5/OZankxCNL6xL5lPwno3QEU9oUmpT7AHgEmKujfPw==, tarball: https://npm.pkg.github.com/download/@digitaplatform/theme/0.1.0/b67cee6d35c49d9ec83cf2896ce7c01983e0cd47}
 
   '@tanstack/react-virtual@3.14.6':
     resolution: {integrity: sha512-4+Uq8m0/gzO4kMCHUEpTtGX1RnONK0C+g88b2ltwPMWUBiaVarBuWKoPJaz7gj1cKCVRAdyu+U8GcKhwCc2beA==}
