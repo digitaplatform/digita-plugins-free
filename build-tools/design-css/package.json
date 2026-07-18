@@ -1,0 +1,17 @@
+{
+  "name": "@digitaplatform/design-css",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Internal, never-published build tool for DESIGN-type plugin packages: composes dist/<id>.css (scoped token blocks + component-variant layer) and dist/digita-plugin.json from a design package's compiled Design object and its package.json digita block. Design-specific on purpose — component-type plugin packages bring their own vite build.",
+  "bin": {
+    "gen-design-css": "./gen-design-css.mjs"
+  },
+  "dependencies": {
+    "@digitaplatform/theme": "^0.1.0"
+  },
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=11.0.0"
+  }
+}

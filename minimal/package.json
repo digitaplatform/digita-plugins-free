@@ -1,0 +1,40 @@
+{
+  "name": "@digitaplatform/minimal",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Digita free design plugin — Minimal: Geist/shadcn (Vercel) neutral system, pure zinc surfaces, hairline borders, tight radii, flat shadows. Ships dist/minimal.css + dist/digita-plugin.json, built against the published @digitaplatform/theme design machinery.",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "restricted"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/digitaplatform/digita-plugins-free.git",
+    "directory": "minimal"
+  },
+  "digita": {
+    "id": "minimal",
+    "type": "design",
+    "tier": "free",
+    "sdk": "^0.1.0",
+    "entry": "minimal.css",
+    "displayName": "Minimal",
+    "variant": "minimal"
+  },
+  "scripts": {
+    "build": "tsc && gen-design-css",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "@digitaplatform/design-css": "workspace:*",
+    "typescript": "^6.0.3",
+    "@digitaplatform/theme": "^0.1.0"
+  },
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=11.0.0"
+  }
+}

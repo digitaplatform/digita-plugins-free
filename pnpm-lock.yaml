@@ -8,6 +8,12 @@ importers:
 
   .: {}
 
+  build-tools/design-css:
+    dependencies:
+      '@digitaplatform/theme':
+        specifier: ^0.1.0
+        version: 0.1.0
+
   build-tools/signature: {}
 
   digita:
@@ -15,6 +21,18 @@ importers:
       '@digitaplatform/signature-build':
         specifier: workspace:*
         version: link:../build-tools/signature
+      '@digitaplatform/theme':
+        specifier: ^0.1.0
+        version: 0.1.0
+      typescript:
+        specifier: ^6.0.3
+        version: 6.0.3
+
+  minimal:
+    devDependencies:
+      '@digitaplatform/design-css':
+        specifier: workspace:*
+        version: link:../build-tools/design-css
       '@digitaplatform/theme':
         specifier: ^0.1.0
         version: 0.1.0
