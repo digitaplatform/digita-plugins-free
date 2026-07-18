@@ -1,0 +1,15 @@
+{
+  "name": "digita-plugins-free",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Digita FREE plugins — a pnpm workspace of flat per-plugin @digitaplatform/<id> packages (component | design | signature, tier: free). Bundled with the platform and published to GitHub Packages alongside the paid digita-plugins-store. Goes public/OSS later. Holds: usermenu (component), minimal (design), digita + simetrix (signatures).",
+  "packageManager": "pnpm@11.7.0",
+  "scripts": {
+    "build": "pnpm -r build",
+    "clean": "pnpm -r clean"
+  },
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=11.0.0"
+  }
+}

@@ -1,0 +1,9 @@
+# FLAT per-plugin packages live at the repo root (one dir per plugin);
+# build-tools/ holds shared build tooling. Supply-chain settings match
+# digita-plugins-store / digita-platform: no release-age delay, and an empty
+# build-script allowlist (dependencies here ship prebuilt dist only).
+packages:
+  - "*"
+  - "build-tools/*"
+minimumReleaseAge: 0
+allowBuilds: {}
