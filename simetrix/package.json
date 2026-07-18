@@ -1,0 +1,34 @@
+{
+  "name": "@digitaplatform/simetrix",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Simetrix — a thin FREE signature (accent + fonts + the X monogram only; no colour world or graphics). Rides the branding layer on top of any design; ships as pure config.",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "restricted"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/digitaplatform/digita-plugins-free.git",
+    "directory": "simetrix"
+  },
+  "digita": {
+    "id": "simetrix",
+    "type": "signature",
+    "tier": "free",
+    "sdk": "^0.1.0",
+    "displayName": "Simetrix"
+  },
+  "scripts": {
+    "build": "tsc && gen-signature",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "@digitaplatform/signature-build": "workspace:*",
+    "@digitaplatform/theme": "^0.1.0",
+    "typescript": "^6.0.3"
+  }
+}
