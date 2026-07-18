@@ -2,10 +2,10 @@
 # build-tools/ holds shared build tooling. Supply-chain settings match
 # digita-plugins-store / digita-platform: no release-age delay, and an empty
 # build-script allowlist (dependencies here ship prebuilt dist only).
-# minimumReleaseAge intentionally unset — its packument re-fetch does a tarball
-# URL check that false-positives on GitHub Packages for our first-party
-# @digitaplatform/* deps (ERR_PNPM_TARBALL_URL_MISMATCH in CI).
+# minimumReleaseAge: 0 = no release-age delay (0 is permissive; unsetting it
+# enables pnpm's ~1-day default).
 packages:
   - "*"
   - "build-tools/*"
+minimumReleaseAge: 0
 allowBuilds: {}
