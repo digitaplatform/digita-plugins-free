@@ -1,0 +1,8 @@
+/* The digita brand fonts — the EXACT Google-Fonts request from
+ * digitacloud.app.dc.html:13 (identical in the light template):
+ * Space Grotesk (display) 400–700, Manrope (body/sans) 400–800,
+ * JetBrains Mono (mono) 400–600.
+ * Apps either import this file (bundled CSS) or put the equivalent
+ * <link> tags in index.html (exported as GOOGLE_FONTS_LINKS from
+ * `@digitaplatform/digita/assets`, which preserves the preconnects). */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');

@@ -1,83 +1,80 @@
 import type { Signature } from '@digitaplatform/theme';
+import { GRAPHICS, MONOGRAM_SVG, WORDMARK_SVG } from './assets.js';
 
-// The digita "cloud" monogram — the rounded cloud glyph from digitacloud.app's
-// nav tile; single-tint, inherits the accent via currentColor.
-const MONOGRAM =
-  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 19a4.5 4.5 0 0 1-.62-8.96 6 6 0 0 1 11.55-1.1A4.75 4.75 0 0 1 17.25 19H7Z"/></svg>';
-
-// The digita wordmark lockup — "digita" + a cyan accent dot. viewBox tightened to
-// the actual content width (dot ends ~x82) so it doesn't render undersized when
-// width-constrained. NOTE: the letters are a live <text> element, so a machine
-// without Space Grotesk shifts the width and the dot at cx=78 can gap/collide —
-// outline the glyphs to paths in a later pass. Dot uses #2E9BE8 (legible on the
-// white rail by day; a per-mode --sig-dot is a future refinement).
-const WORDMARK =
-  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 28" fill="none" aria-hidden="true"><text x="0" y="21" font-family="\'Space Grotesk\',sans-serif" font-weight="600" font-size="22" letter-spacing="-.6" fill="currentColor">digita</text><circle cx="78" cy="20" r="3.4" fill="#2E9BE8"><animate attributeName="opacity" values="1;.6;1" dur="2.4s" repeatCount="indefinite"/></circle></svg>';
+export {
+  APPICON_SVG,
+  MONOGRAM_SVG,
+  WORDMARK_SVG,
+  GRAPHICS,
+  GOOGLE_FONTS_URL,
+  GOOGLE_FONTS_LINKS,
+} from './assets.js';
 
 /**
- * digita — the platform's own FREE signature (the default identity), reproduced
- * from digitacloud.app: cool navy canvas, cyan hero accent, 40px grid + top
- * radial glow, cloud mark + wordmark. FULL brand world (colours + graphics), so
- * an app rendered with it belongs to the digitacloud.app / digitaplatform.com
- * world. Values incorporate the accessibility + light-mode fixes from review.
+ * digita — the platform's own FREE signature (the default identity), taken
+ * 1:1 from the digitacloud.app design templates (the digita brand source of
+ * truth). Every value below traces to
+ * digita-websites/claude-design-templates/digitacloud.app.dc.html (dark) and
+ * "digitacloud.app light.dc.html" (light); the card layer to the sibling
+ * digitaplatform.com templates (digitacloud.app has no card tile of its own).
+ * Media (app icon, wordmark, background layers, fonts) live as FILES in
+ * assets/ and are inlined at build via src/assets.ts (gen-assets).
  */
 export const signature: Signature = {
   id: 'digita',
   name: 'Digita',
-  // #2077C8 anchors the primary ramp: white-on-accent hits WCAG AA (~4.6:1),
-  // where the old #3896E6 failed (3.15:1). The hero cyan (#8FDBFF) lives in the
-  // glow/graphics layer, not the control accent.
-  accent: '#2077C8',
+  // The template's accent prop is oklch(0.72 0.16 235) (dark template default,
+  // digitacloud.app.dc.html:234). synthesizeRamp needs a 6-digit hex and puts
+  // it verbatim at step 600, scaling the whole ramp's chroma by the anchor's —
+  // so the anchor itself must carry the accent, not the hero cyan #8FDBFF
+  // (L .855, C .09: it would wash the ramp out and land an illegible 600).
+  // #00B2F6 IS oklch(0.72 0.16 235) in sRGB (CSS gamut mapping: chroma reduced
+  // .16→.1528 at constant L/H — what a browser renders for the template value).
+  // The hero cyan #8FDBFF stays where the template puts it: the graphics/glow
+  // layer, the monogram/wordmark art, the dot glow.
+  accent: '#00B2F6',
+  // The exact template stacks (digitacloud.app.dc.html:23 body 'Manrope';
+  // display 'Space Grotesk' e.g. :33/:51; mono 'JetBrains Mono' e.g. :52).
   fonts: {
-    display: "'Space Grotesk', 'Inter', system-ui, sans-serif",
-    sans: "'Manrope', 'Inter', system-ui, sans-serif",
-    mono: "'JetBrains Mono', ui-monospace, SFMono-Regular, monospace",
+    display: "'Space Grotesk', sans-serif",
+    sans: "'Manrope', sans-serif",
+    mono: "'JetBrains Mono', monospace",
   },
-  monogram: MONOGRAM,
-  wordmark: WORDMARK,
+  // The REAL app icon (assets/digita-cloud-appicon.svg — the ring+dot mark on
+  // the navy tile), inlined self-contained with its own brand colours.
+  monogram: MONOGRAM_SVG,
+  // The "digita●cloud" lockup (assets/digita-cloud-wordmark.svg): Space
+  // Grotesk 600, letter-spacing -.03em, the accent dot with the 0 0 8px glow —
+  // per-mode exact via light-dark() (template :33 dark / light :33).
+  wordmark: WORDMARK_SVG,
   colors: {
+    // Canvas: html/body background (light :15 / dark :15).
     bg: { light: '#F5F8FB', dark: '#050B14' },
-    surface: { light: '#FFFFFF', dark: '#0B1524' },
-    surfaceGlass: { light: 'rgba(255,255,255,.72)', dark: 'rgba(11,21,36,.60)' },
-    subtle: { light: '#F0F5FA', dark: '#0A1420' },
-    bgHover: { light: 'rgba(20,60,110,.06)', dark: 'rgba(120,180,240,.06)' },
-    textMain: { light: '#0D1B2A', dark: '#EAF1F8' },
+    // Raised surface: the hero/FQDN card (light :64 #FFFFFF / dark :64 #070E19).
+    surface: { light: '#FFFFFF', dark: '#070E19' },
+    // Glass = the surface at the established alphas (no glass in the template;
+    // dark base re-derived from the REAL surface #070E19).
+    surfaceGlass: { light: 'rgba(255,255,255,.72)', dark: 'rgba(7,14,25,.60)' },
+    // Soft/recessed fill: the portal table header #F0F5FA (:136, both modes'
+    // mock); dark = the brand tile gradient's deep navy end #0B1F33 (:32).
+    subtle: { light: '#F0F5FA', dark: '#0B1F33' },
+    // Hover/active fill: the mock sidebar's active row rgba(14,111,184,.10)
+    // (:100); dark = the hero badge fill rgba(62,123,240,.12) (dark :50).
+    bgHover: { light: 'rgba(14,111,184,.10)', dark: 'rgba(62,123,240,.12)' },
+    // Body text (light :23 #13283C / dark :23 #EAF1F8).
+    textMain: { light: '#13283C', dark: '#EAF1F8' },
+    // Muted text (light :52 #4A6076 / dark :52 #8FA3B6).
     textMuted: { light: '#4A6076', dark: '#8FA3B6' },
-    border: { light: 'rgba(15,50,90,.10)', dark: 'rgba(255,255,255,.08)' },
-    borderStrong: { light: 'rgba(15,50,90,.18)', dark: 'rgba(120,180,240,.20)' },
+    // Hairline: the nav/footer border (light :30 / dark :30).
+    border: { light: 'rgba(15,50,90,.10)', dark: 'rgba(255,255,255,.06)' },
+    // Strong border: the hero card border (light :64 / dark :64).
+    borderStrong: { light: 'rgba(20,60,110,.20)', dark: 'rgba(120,180,240,.25)' },
   },
-  graphics: {
-    // 40px line grid. Bumped to .075 (light) / .07 (dark) so the 1px lines stay
-    // present on standard-DPI displays (.055/.05 vanished there).
-    grid: {
-      light:
-        'linear-gradient(rgba(20,70,130,.075) 1px, transparent 1px), linear-gradient(90deg, rgba(20,70,130,.075) 1px, transparent 1px)',
-      dark: 'linear-gradient(rgba(120,180,240,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(120,180,240,.07) 1px, transparent 1px)',
-    },
-    // Top-left radial glow. Light gains a cyan (#8FDBFF) mid-stop so the hero
-    // colour is present by day; dark bumped to .24 for the "lit from above" moment.
-    glow: {
-      light:
-        'radial-gradient(90% 120% at 20% -5%, rgba(56,150,230,.16) 0%, rgba(143,219,255,.09) 35%, transparent 60%)',
-      dark: 'radial-gradient(90% 120% at 20% -5%, rgba(56,150,230,.24) 0%, transparent 55%)',
-    },
-    // Full-bleed section band. Light deepened to #EAF1F8 so the step registers
-    // against the #F5F8FB canvas.
-    band: { light: '#EAF1F8', dark: '#03070d' },
-    // Raised card / KPI tile gradient. Light end-stop deepened (#E7F0F9) so light
-    // cards read as lit, not flat.
-    card: {
-      light: 'linear-gradient(155deg, #FFFFFF 25%, #E7F0F9)',
-      dark: 'linear-gradient(155deg, rgba(22,58,95,.55), rgba(11,31,51,.35))',
-    },
-    // CTA / login panel: radial glow over a gradient. Light strengthened so the
-    // login page reads as branded, not a plain white sheet.
-    panel: {
-      light:
-        'radial-gradient(80% 140% at 50% 0%, rgba(56,150,230,.20), transparent 60%), linear-gradient(160deg,#FFFFFF,#DEEAF6)',
-      dark: 'radial-gradient(80% 140% at 50% 0%, rgba(56,150,230,.28), transparent 60%), linear-gradient(160deg,#0d2743,#060d16)',
-    },
-  },
+  // The decorative background layers — exact template values, sourced from
+  // assets/graphics.json (grid :25, glow :23, band :171, panel :205 in both
+  // digitacloud.app templates; card from digitaplatform.com.dc.html:97 dark /
+  // light :97 — the flat white standard card).
+  graphics: GRAPHICS,
 };
 
 export default signature;
