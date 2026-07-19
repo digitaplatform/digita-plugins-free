@@ -1,6 +1,6 @@
 {
   "name": "@digitaplatform/digita",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "description": "Digita — the platform's own FREE signature (the default identity): cool navy/cyan brand world, the REAL background vectors (grid-overlay, glow, band, card, panel), the digita-platform app icon + digita●platform wordmark (cloud variants included). 1:1 from the digitaplatform.com/digitacloud.app design templates. Composes on top of any design; ships as pure config (no runtime CSS).",
   "main": "./dist/index.js",
