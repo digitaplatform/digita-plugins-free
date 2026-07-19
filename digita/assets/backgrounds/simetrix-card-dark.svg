@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <defs>
+    <linearGradient id="card" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0" stop-color="#163A5F" stop-opacity="0.5"></stop><stop offset="1" stop-color="#0B1F33" stop-opacity="0.3"></stop></linearGradient>
+    <clipPath id="r"><rect width="400" height="300" rx="16"></rect></clipPath>
+  </defs>
+  <g clip-path="url(#r)"><rect width="400" height="300" fill="#050B14"></rect><rect width="400" height="300" fill="url(#card)"></rect></g>
+  <rect x="0.5" y="0.5" width="399" height="299" rx="15.5" fill="none" stroke="#78B4F0" stroke-opacity="0.16"></rect>
+</svg>

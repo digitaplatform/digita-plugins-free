@@ -4,7 +4,10 @@ import { GRAPHICS, MONOGRAM_SVG, WORDMARK_SVG } from './assets.js';
 export {
   APPICON_SVG,
   MONOGRAM_SVG,
+  CLOUD_APPICON_SVG,
+  CLOUD_MONOGRAM_SVG,
   WORDMARK_SVG,
+  CLOUD_WORDMARK_SVG,
   GRAPHICS,
   GOOGLE_FONTS_URL,
   GOOGLE_FONTS_LINKS,
@@ -12,13 +15,17 @@ export {
 
 /**
  * digita — the platform's own FREE signature (the default identity), taken
- * 1:1 from the digitacloud.app design templates (the digita brand source of
- * truth). Every value below traces to
- * digita-websites/claude-design-templates/digitacloud.app.dc.html (dark) and
- * "digitacloud.app light.dc.html" (light); the card layer to the sibling
- * digitaplatform.com templates (digitacloud.app has no card tile of its own).
- * Media (app icon, wordmark, background layers, fonts) live as FILES in
- * assets/ and are inlined at build via src/assets.ts (gen-assets).
+ * 1:1 from the digita design templates + asset library
+ * (digita-websites/claude-design-templates). The brand system per the sites:
+ * simetrix.ch.dc.html:116 "simetrix → digitaplatform.com → digitacloud.app" —
+ * simetrix GmbH is the company, digitaplatform is the platform SOFTWARE (what
+ * our apps are), digitacloud is the runtime it is hosted on. digitaplatform.com
+ * and digitacloud.app share ONE visual brand (identical bg stack, fonts and
+ * accent in both templates). Colour values below trace to
+ * digitacloud.app.dc.html (dark) / "digitacloud.app light.dc.html" (light);
+ * media (app icons, wordmarks, the REAL background vectors, fonts) live as
+ * FILES in assets/ — verbatim copies from the asset library — and are inlined
+ * at build via src/assets.ts (gen-assets).
  */
 export const signature: Signature = {
   id: 'digita',
@@ -40,12 +47,17 @@ export const signature: Signature = {
     sans: "'Manrope', sans-serif",
     mono: "'JetBrains Mono', monospace",
   },
-  // The REAL app icon (assets/digita-cloud-appicon.svg — the ring+dot mark on
-  // the navy tile), inlined self-contained with its own brand colours.
+  // The REAL app icon (assets/digita-platform-appicon.svg — the dot+bars mark
+  // on the navy tile), inlined self-contained with its own brand colours. The
+  // platform apps ARE digitaplatform: the generated admin app in
+  // digitaplatform.com.dc.html:237 wears exactly this mark while running on
+  // digitacloud.app (:251). The digitacloud mark stays available as
+  // CLOUD_APPICON_SVG / CLOUD_MONOGRAM_SVG for hosting-side surfaces.
   monogram: MONOGRAM_SVG,
-  // The "digita●cloud" lockup (assets/digita-cloud-wordmark.svg): Space
+  // The "digita●platform" lockup (assets/digita-platform-wordmark.svg): Space
   // Grotesk 600, letter-spacing -.03em, the accent dot with the 0 0 8px glow —
-  // per-mode exact via light-dark() (template :33 dark / light :33).
+  // per the navbar digitaplatform.com.dc.html:35, per-mode via light-dark().
+  // The "digita●cloud" lockup stays available as CLOUD_WORDMARK_SVG.
   wordmark: WORDMARK_SVG,
   colors: {
     // Canvas: html/body background (light :15 / dark :15).
@@ -70,10 +82,11 @@ export const signature: Signature = {
     // Strong border: the hero card border (light :64 / dark :64).
     borderStrong: { light: 'rgba(20,60,110,.20)', dark: 'rgba(120,180,240,.25)' },
   },
-  // The decorative background layers — exact template values, sourced from
-  // assets/graphics.json (grid :25, glow :23, band :171, panel :205 in both
-  // digitacloud.app templates; card from digitaplatform.com.dc.html:97 dark /
-  // light :97 — the flat white standard card).
+  // The decorative background layers — the REAL background vectors
+  // (assets/backgrounds/*.svg, verbatim from the asset library's
+  // "Website-Flächen (einzelne Ebenen)": grid-overlay, glow, band, card,
+  // panel-contact, each in dark+light) inlined as data-URI url() values, so
+  // the --sig-* vars paint the actual files instead of CSS reproductions.
   graphics: GRAPHICS,
 };
 

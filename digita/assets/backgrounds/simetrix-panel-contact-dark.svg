@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 440" width="1200" height="440">
+  <defs>
+    <linearGradient id="base" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0" stop-color="#0D2743"></stop><stop offset="1" stop-color="#060D16"></stop></linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0" r="1"><stop offset="0" stop-color="#3896E6" stop-opacity="0.28"></stop><stop offset="0.6" stop-color="#3896E6" stop-opacity="0"></stop></radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#78B4F0" stroke-opacity="0.06" stroke-width="1"></path></pattern>
+    <clipPath id="r"><rect width="1200" height="440" rx="22"></rect></clipPath>
+  </defs>
+  <g clip-path="url(#r)"><rect width="1200" height="440" fill="url(#base)"></rect><rect width="1200" height="440" fill="url(#grid)"></rect><rect width="1200" height="440" fill="url(#glow)"></rect></g>
+  <rect x="0.5" y="0.5" width="1199" height="439" rx="21.5" fill="none" stroke="#78B4F0" stroke-opacity="0.2"></rect>
+</svg>
