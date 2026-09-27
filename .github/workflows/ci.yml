@@ -5,6 +5,12 @@ on:
     branches: [master]
   pull_request:
     branches: [master]
+  # The Release workflow commits a release with GITHUB_TOKEN, and GitHub starts no workflow from such
+  # a push. This runs the build and the publish job after every release as well; for this event the
+  # checkout is the head of master, which is the release commit.
+  workflow_run:
+    workflows: [Release]
+    types: [completed]
 
 # Reads @digitaplatform/* deps (e.g. theme) from GitHub Packages during install.
 permissions:
@@ -13,6 +19,7 @@ permissions:
 
 jobs:
   build:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -34,7 +41,7 @@ jobs:
   # master: a version that is already there is skipped, so a push without a bump publishes
   # nothing, and a bumped package.json is the whole release. No tag, no script, no hand.
   publish:
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
     needs: build
     runs-on: ubuntu-latest
     permissions:
