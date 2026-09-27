@@ -11,8 +11,8 @@ importers:
   build-tools/design-css:
     dependencies:
       '@digitaplatform/theme':
-        specifier: ^0.1.0
-        version: 0.1.0
+        specifier: ^0.3.0
+        version: 0.3.0
 
   build-tools/signature: {}
 
@@ -22,8 +22,8 @@ importers:
         specifier: workspace:*
         version: link:../build-tools/signature
       '@digitaplatform/theme':
-        specifier: ^0.1.0
-        version: 0.1.0
+        specifier: ^0.3.0
+        version: 0.3.0
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
@@ -34,8 +34,8 @@ importers:
         specifier: workspace:*
         version: link:../build-tools/design-css
       '@digitaplatform/theme':
-        specifier: ^0.1.0
-        version: 0.1.0
+        specifier: ^0.3.0
+        version: 0.3.0
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
@@ -43,11 +43,11 @@ importers:
   usermenu:
     devDependencies:
       '@digitaplatform/components':
-        specifier: ^0.1.0
-        version: 0.1.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+        specifier: ^0.3.0
+        version: 0.3.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@digitaplatform/plugins':
-        specifier: ^0.1.0
-        version: 0.1.0(react@19.2.7)
+        specifier: ^0.3.0
+        version: 0.3.0(react@19.2.7)
       '@types/react':
         specifier: ^19.0.0
         version: 19.2.17
@@ -75,19 +75,19 @@ importers:
 
 packages:
 
-  '@digitaplatform/components@0.1.0':
-    resolution: {integrity: sha512-dSU/18HQ7fYGWMwJaguvgL8J28eiG7l00bFGI5hjIbfnaabuCPKYoY29nNJs2Tq16UOyBCUeD70MWxt7B3sP4g==, tarball: https://npm.pkg.github.com/download/@digitaplatform/components/0.1.0/9a0caee62caba5571c222f7de4610948b7498de4}
+  '@digitaplatform/components@0.3.0':
+    resolution: {integrity: sha512-an3JSGCwuNPWQyjxNFUrUCZD0fgb0zfAfCE0v/lhWD4z06cYkX+FzViYbgrH+uRoWTHp7zxXk57vQrhHHo+NIA==, tarball: https://npm.pkg.github.com/download/@digitaplatform/components/0.3.0/904c348f12db657ac17031138258a06e6e43868a}
     peerDependencies:
       react: ^19.0.0
       react-dom: ^19.0.0
 
-  '@digitaplatform/plugins@0.1.0':
-    resolution: {integrity: sha512-HkcwjxNHGme3k0TFbh+8p4lP8uA+1GZJxpP3QTvdoMwR84njuvu9BdEO+h2SeTdeK9D3SnNXgs4Bbi9TMGECog==, tarball: https://npm.pkg.github.com/download/@digitaplatform/plugins/0.1.0/405ed427a0513d1792e833f2d5962ea3f23b1ec8}
+  '@digitaplatform/plugins@0.3.0':
+    resolution: {integrity: sha512-AZFimZoQ6UsCK00ScaFKnNj5oioCzDQQOflKciscFVVMi2DThNEEhZvS1mIlEIaYOdYJiOZiRVWvWOfG0IVj8w==, tarball: https://npm.pkg.github.com/download/@digitaplatform/plugins/0.3.0/49d1ffe78ee74683688a8b3450b050828c04c851}
     peerDependencies:
       react: ^19.0.0
 
-  '@digitaplatform/theme@0.1.0':
-    resolution: {integrity: sha512-dWO/T29thtF+7pWljKlBfDUK+wRorwpcug8RMlbu1Lcr5/OZankxCNL6xL5lPwno3QEU9oUmpT7AHgEmKujfPw==, tarball: https://npm.pkg.github.com/download/@digitaplatform/theme/0.1.0/b67cee6d35c49d9ec83cf2896ce7c01983e0cd47}
+  '@digitaplatform/theme@0.3.0':
+    resolution: {integrity: sha512-mEcL7TgD95Cavd4UKxqG6zuE7KDXDAxn2AbyHTOo/pp0UiCu6WHg7ZKcB80H1tr47ad+zwbPh40o66fnZ7Ek9A==, tarball: https://npm.pkg.github.com/download/@digitaplatform/theme/0.3.0/17f2c0d29e55cfc93eda63bd73b4c404b65ec3a4}
 
   '@tanstack/react-virtual@3.14.6':
     resolution: {integrity: sha512-4+Uq8m0/gzO4kMCHUEpTtGX1RnONK0C+g88b2ltwPMWUBiaVarBuWKoPJaz7gj1cKCVRAdyu+U8GcKhwCc2beA==}
@@ -164,7 +164,7 @@ packages:
 
 snapshots:
 
-  '@digitaplatform/components@0.1.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
+  '@digitaplatform/components@0.3.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
     dependencies:
       '@tanstack/react-virtual': 3.14.6(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       clsx: 2.1.1
@@ -172,11 +172,11 @@ snapshots:
       react-dom: 19.2.7(react@19.2.7)
       tailwind-merge: 3.6.0
 
-  '@digitaplatform/plugins@0.1.0(react@19.2.7)':
+  '@digitaplatform/plugins@0.3.0(react@19.2.7)':
     dependencies:
       react: 19.2.7
 
-  '@digitaplatform/theme@0.1.0': {}
+  '@digitaplatform/theme@0.3.0': {}
 
   '@tanstack/react-virtual@3.14.6(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
     dependencies:

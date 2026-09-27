@@ -8,7 +8,7 @@
     "gen-design-css": "./gen-design-css.mjs"
   },
   "dependencies": {
-    "@digitaplatform/theme": "^0.1.0"
+    "@digitaplatform/theme": "^0.3.0"
   },
   "engines": {
     "node": ">=22.0.0",
