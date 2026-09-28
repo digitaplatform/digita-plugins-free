@@ -1,0 +1,139 @@
+#!/usr/bin/env node
+// gen-assets — inlines the simetrix brand ASSET FILES (assets/*) into a generated
+// TS module (src/assets.ts) so the compiled Signature config carries them
+// verbatim (the plugin-delivery model inlines everything into
+// dist/digita-plugin.json). The FILES in assets/ are the single editable source
+// of truth — copied 1:1 from digita-websites/claude-design-templates (icons/,
+// logo/, backgrounds/) — and this script only derives, never invents:
+//   - simetrix-appicon.svg → APPICON_SVG (verbatim): the X on the family's
+//     navy tile, for app-icon surfaces.
+//   - simetrix-x-cyan.svg → MONOGRAM_SVG: the approved X vector with its
+//     gradient replaced by `currentColor`, so the chrome paints it with the
+//     accent (the Signature contract's monogram rule); root width/height
+//     stripped so CSS sizes it, aria-hidden.
+//   - the same path + the wordmark text → WORDMARK_SVG: the X beside
+//     "simetrix" in Space Grotesk 600, letter-spacing -0.04em, the accent on the
+//     final x only and no dot (the brand handoff rejected the dot for simetrix);
+//     colours per mode via light-dark().
+//   - backgrounds/*.svg → GRAPHICS, exactly as the digita signature inlines
+//     them (grid/glow verbatim, band/card/panel stretch-adapted), because the
+//     two brands share one background world.
+//   - fonts.css → GOOGLE_FONTS_URL + GOOGLE_FONTS_LINKS.
+// Run before tsc: `node ./scripts/gen-assets.mjs && tsc && gen-signature`.
+import { readFileSync, writeFileSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const pkgDir = join(dirname(fileURLToPath(import.meta.url)), '..');
+const read = (rel) => readFileSync(join(pkgDir, rel), 'utf8').trim();
+
+const oneLine = (svg) => svg.replace(/\r?\n\s*/g, ' ');
+
+/** The X path, as the approved vector file carries it (one <path d="…">). */
+function xPath(svg) {
+  const m = /<path[^>]*\sd="([^"]+)"/.exec(svg);
+  if (!m) throw new Error('[gen-assets] assets/simetrix-x-cyan.svg: no <path d="…"> found.');
+  return m[1];
+}
+
+const xCyan = read('assets/simetrix-x-cyan.svg');
+const X_PATH = xPath(xCyan);
+// The mark's viewBox from the file, so the monogram keeps its proportions.
+const vb = /viewBox="([^"]+)"/.exec(xCyan);
+if (!vb) throw new Error('[gen-assets] assets/simetrix-x-cyan.svg: no viewBox.');
+const X_VIEWBOX = vb[1];
+
+const monogram =
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${X_VIEWBOX}" aria-hidden="true">` +
+  `<path fill="currentColor" fill-rule="evenodd" d="${X_PATH}"/></svg>`;
+
+// The lockup: the X at 28px high (viewBox 407×556 → 20.5×28) and the wordmark
+// beside it. Text and mark take the ink navy in light and the hero cyan in dark;
+// the final x takes the accent at the step the wordmark of the digita family
+// uses for its dot (oklch(0.52 0.16 235) light, oklch(0.72 0.16 235) dark).
+const wordmark =
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122 28" fill="none" overflow="visible" aria-hidden="true">' +
+  `<g transform="scale(0.05036)"><path fill-rule="evenodd" style="fill:light-dark(#0B1F33,#8FDBFF)" d="${X_PATH}"/></g>` +
+  '<text x="26" y="21" font-family="\'Space Grotesk\',sans-serif" font-weight="600" font-size="21" letter-spacing="-0.84" style="fill:light-dark(#0B1F33,#F2F8FE)">simetri' +
+  '<tspan style="fill:light-dark(oklch(0.52 0.16 235),oklch(0.72 0.16 235))">x</tspan></text></svg>';
+
+function toCssUrl(rel, { stretch = false } = {}) {
+  let svg = read(rel);
+  if (stretch) {
+    svg = svg.replace(
+      /<svg([^>]*?)\s+width="[^"]*"\s+height="[^"]*"/,
+      '<svg$1 preserveAspectRatio="none"',
+    );
+  }
+  return `url("data:image/svg+xml,${encodeURIComponent(oneLine(svg))}")`;
+}
+
+const GRAPHICS = {
+  grid: {
+    light: toCssUrl('assets/backgrounds/simetrix-grid-overlay-light.svg'),
+    dark: toCssUrl('assets/backgrounds/simetrix-grid-overlay-dark.svg'),
+  },
+  glow: {
+    light: toCssUrl('assets/backgrounds/simetrix-glow-light.svg'),
+    dark: toCssUrl('assets/backgrounds/simetrix-glow-dark.svg'),
+  },
+  band: {
+    light: toCssUrl('assets/backgrounds/simetrix-band-light.svg', { stretch: true }),
+    dark: toCssUrl('assets/backgrounds/simetrix-band-dark.svg', { stretch: true }),
+  },
+  card: {
+    light: toCssUrl('assets/backgrounds/simetrix-card-light.svg', { stretch: true }),
+    dark: toCssUrl('assets/backgrounds/simetrix-card-dark.svg', { stretch: true }),
+  },
+  panel: {
+    light: toCssUrl('assets/backgrounds/simetrix-panel-contact-light.svg', { stretch: true }),
+    dark: toCssUrl('assets/backgrounds/simetrix-panel-contact-dark.svg', { stretch: true }),
+  },
+};
+
+const appIcon = read('assets/simetrix-appicon.svg');
+
+const fontsCss = read('assets/fonts.css');
+const urlMatch = /@import url\('([^']+)'\)/.exec(fontsCss);
+if (!urlMatch) throw new Error('[gen-assets] assets/fonts.css: no @import url(...) found.');
+const fontsUrl = urlMatch[1];
+const fontsLinks = [
+  '<link rel="preconnect" href="https://fonts.googleapis.com">',
+  '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
+  `<link href="${fontsUrl}" rel="stylesheet">`,
+].join('\n');
+
+const banner = `// GENERATED by scripts/gen-assets.mjs from the files in assets/ — DO NOT EDIT.
+// Edit the asset files (the single source of truth) and rebuild.`;
+const lit = (s) => JSON.stringify(s);
+
+writeFileSync(
+  join(pkgDir, 'src', 'assets.ts'),
+  `${banner}
+
+/** The simetrix app icon (assets/simetrix-appicon.svg), verbatim: the X on the
+ *  family's navy tile. */
+export const APPICON_SVG = ${lit(appIcon)};
+
+/** The approved X vector as an inline monogram: \`fill="currentColor"\`, no fixed
+ *  size (CSS sizes it, viewBox intact), aria-hidden. */
+export const MONOGRAM_SVG = ${lit(monogram)};
+
+/** The "simetrix" lockup: the X beside the wordmark, accent on the final x,
+ *  no dot; colours per mode via light-dark(). */
+export const WORDMARK_SVG = ${lit(wordmark)};
+
+/** The decorative background layers, the same real vectors the digita
+ *  signature paints (assets/backgrounds/*.svg), as CSS url("data:…") values. */
+export const GRAPHICS: Record<'grid' | 'glow' | 'band' | 'card' | 'panel', { light: string; dark: string }> =
+  ${JSON.stringify(GRAPHICS, null, 2).replace(/\n/g, '\n  ')};
+
+/** The exact Google-Fonts CSS URL (assets/fonts.css). */
+export const GOOGLE_FONTS_URL = ${lit(fontsUrl)};
+
+/** The <link> tags (preconnects + stylesheet) for apps that load the fonts
+ *  from index.html instead of bundled CSS. */
+export const GOOGLE_FONTS_LINKS = ${lit(fontsLinks)};
+`,
+);
+console.log('[gen-assets] assets/* → src/assets.ts (app icon, X monogram, wordmark, 10 background vectors)');

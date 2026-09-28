@@ -1,0 +1,49 @@
+{
+  "name": "@digitaplatform/simetrix",
+  "version": "0.3.1",
+  "type": "module",
+  "description": "simetrix — the parent brand's FREE signature: the same navy/cyan colour world, fonts and background vectors as digita, with the simetrix X as the mark and the simetrix wordmark (accent on the final x, no dot). For the company's own surfaces, simetrix.ch first. Composes on top of any design; ships as pure config (no runtime CSS).",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./assets": {
+      "types": "./dist/assets.d.ts",
+      "import": "./dist/assets.js"
+    },
+    "./assets/*": "./assets/*",
+    "./digita-plugin.json": "./dist/digita-plugin.json"
+  },
+  "files": [
+    "dist",
+    "assets"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "restricted"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/digitaplatform/digita-plugins-free.git",
+    "directory": "simetrix"
+  },
+  "digita": {
+    "id": "simetrix",
+    "type": "signature",
+    "tier": "free",
+    "sdk": "^0.1.0",
+    "displayName": "simetrix"
+  },
+  "scripts": {
+    "build": "node ./scripts/gen-assets.mjs && tsc && gen-signature",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "@digitaplatform/signature-build": "workspace:*",
+    "@digitaplatform/theme": "^0.3.0",
+    "typescript": "^6.0.3"
+  }
+}
