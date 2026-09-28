@@ -4,11 +4,11 @@
    quiet neutral controls. The primary action, the switch, the checkbox and
    the focus ring are neutral (the strong foreground on the page background),
    so the tint is a text moment only. Every rule keys on a stable [data-ui]
-   hook, except the grid cell and the grid's entry row, which the kit marks
-   with a role and a class; values come from the emitted vars, never a
-   hardcoded hue. The state rules (focus, locked, invalid) and the grid
-   editor resets sit at the end of the file, after every rest, hover, open,
-   active and dark rule, so position and specificity both let the state win.
+   hook, except the grid cell, which the kit marks with a role; values come
+   from the emitted vars, never a hardcoded hue. The state rules (focus,
+   locked, invalid) and the grid editor resets sit at the end of the file,
+   after every rest, hover, open, active and dark rule, so position and
+   specificity both let the state win.
    ══════════════════════════════════════════════════════════════════════════ */
 
 /* ══ Wave 1 — surfaces go flat (no glass, no gradients, hairlines carry) ══ */
@@ -424,7 +424,8 @@
 }
 :root[data-design-variant="minimal"] [data-ui="input"]:focus-visible,
 :root[data-design-variant="minimal"] [data-ui="input-frame"]:focus-within,
-:root[data-design-variant="minimal"] [data-ui="select-trigger"]:focus-visible {
+:root[data-design-variant="minimal"] [data-ui="select-trigger"]:focus-visible,
+:root[data-design-variant="minimal"] [data-ui="textfield"]:focus-within {
   border-color: var(--color-text-main);
 }
 /* The frame owns the ring — the inner input never doubles it. */
@@ -508,11 +509,10 @@
    Grid editors — an editor inside a grid cell stays chromeless and compact
    in every state: the kit melts it into the cell and paints the cell's own
    active ring, so a box, a ring or a red edge of this layer would float
-   inside the cell. The ghost entry row keeps the kit's treatment, a top
-   hairline only, and its focus fill. This block comes last and every
-   selector carries the table hook or the entry class, so it outranks the
-   state rules above by position and by specificity in both modes. Hover
-   needs no selector of its own: this layer sets no hover on these hooks.
+   inside the cell. This block comes last and every selector carries the
+   table hook, so it outranks the state rules above by position and by
+   specificity in both modes. Hover needs no selector of its own: this
+   layer sets no hover on these hooks.
    ══════════════════════════════════════════════════════════════════════════ */
 :root[data-design-variant="minimal"] [data-ui="table"] [role="gridcell"] [data-ui="input"],
 :root[data-design-variant="minimal"] [data-ui="table"] [role="gridcell"] [data-ui="input-frame"],
@@ -525,12 +525,6 @@
 :root[data-design-variant="minimal"] [data-ui="table"] [role="gridcell"] [data-ui="select-trigger"][aria-invalid="true"] {
   min-height: 0; background: transparent; border-color: transparent; box-shadow: none;
 }
-:root[data-design-variant="minimal"] .grid-entry [data-ui="input-frame"] {
-  background: transparent; border-radius: 0; box-shadow: none;
-}
-:root[data-design-variant="minimal"] .grid-entry [data-ui="input-frame"]:focus-within {
-  border-color: var(--color-border); box-shadow: none; background: var(--color-bg-hover);
-}
 :root[data-design-variant="minimal"].dark [data-ui="table"] [role="gridcell"] [data-ui="input"],
 :root[data-design-variant="minimal"].dark [data-ui="table"] [role="gridcell"] [data-ui="input-frame"],
 :root[data-design-variant="minimal"].dark [data-ui="table"] [role="gridcell"] [data-ui="select-trigger"],
@@ -542,4 +536,3 @@
 :root[data-design-variant="minimal"].dark [data-ui="table"] [role="gridcell"] [data-ui="select-trigger"][aria-invalid="true"] {
   border-color: transparent; box-shadow: none;
 }
-:root[data-design-variant="minimal"].dark .grid-entry [data-ui="input-frame"]:focus-within { box-shadow: none; }
