@@ -1,7 +1,7 @@
 import type { Signature } from '@digitaplatform/theme';
 import { GRAPHICS, MONOGRAM_SVG, WORDMARK_SVG } from './assets.js';
 
-export { APPICON_SVG, MONOGRAM_SVG, WORDMARK_SVG, GRAPHICS, GOOGLE_FONTS_URL, GOOGLE_FONTS_LINKS } from './assets.js';
+export { APPICON_SVG, MONOGRAM_SVG, WORDMARK_SVG, GRAPHICS } from './assets.js';
 
 /**
  * simetrix — the parent brand's FREE signature. simetrix GmbH is the company

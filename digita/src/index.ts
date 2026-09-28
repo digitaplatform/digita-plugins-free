@@ -9,8 +9,6 @@ export {
   WORDMARK_SVG,
   CLOUD_WORDMARK_SVG,
   GRAPHICS,
-  GOOGLE_FONTS_URL,
-  GOOGLE_FONTS_LINKS,
 } from './assets.js';
 
 /**
@@ -23,7 +21,7 @@ export {
  * and digitacloud.app share ONE visual brand (identical bg stack, fonts and
  * accent in both templates). Colour values below trace to
  * digitacloud.app.dc.html (dark) / "digitacloud.app light.dc.html" (light);
- * media (app icons, wordmarks, the REAL background vectors, fonts) live as
+ * media (app icons, wordmarks, the REAL background vectors) live as
  * FILES in assets/ — verbatim copies from the asset library — and are inlined
  * at build via src/assets.ts (gen-assets).
  */
