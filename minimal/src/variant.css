@@ -4,8 +4,11 @@
    quiet neutral controls. The primary action, the switch, the checkbox and
    the focus ring are neutral (the strong foreground on the page background),
    so the tint is a text moment only. Every rule keys on a stable [data-ui]
-   hook, except the grid's entry row, which the kit marks with a class; values
-   come from the emitted vars, never a hardcoded hue.
+   hook, except the grid cell and the grid's entry row, which the kit marks
+   with a role and a class; values come from the emitted vars, never a
+   hardcoded hue. The state rules (focus, locked, invalid) and the grid
+   editor resets sit at the end of the file, after every rest, hover, open,
+   active and dark rule, so position and specificity both let the state win.
    ══════════════════════════════════════════════════════════════════════════ */
 
 /* ══ Wave 1 — surfaces go flat (no glass, no gradients, hairlines carry) ══ */
@@ -94,20 +97,22 @@
    works in both modes. The hover rules set no box-shadow: they outrank the
    focus ring, and a hovered button must keep its ring while focused. The
    solid fill hides the kit's lighter disabled tint, so the disabled cue is
-   shadcn's half opacity. */
+   shadcn's half opacity, on every variant (state precedence, below). */
 :root[data-design-variant="minimal"] [data-ui="button"][data-variant="primary"] {
   background: var(--color-text-main); color: var(--color-bg); border-color: transparent; box-shadow: none;
 }
 :root[data-design-variant="minimal"] [data-ui="button"][data-variant="primary"]:hover:not(:disabled) {
   background: color-mix(in srgb, var(--color-text-main) 90%, var(--color-bg));
 }
-:root[data-design-variant="minimal"] [data-ui="button"][data-variant="primary"]:disabled { opacity: 0.5; }
 
-/* Secondary — quiet subtle fill, neutral text. */
+/* Secondary — quiet subtle fill, neutral text. The hover steps up a container
+   level, because the kit's hover fill (bg-hover) is lighter than the subtle
+   rest fill in this design; the secondary icon button shares the move. */
 :root[data-design-variant="minimal"] [data-ui="button"][data-variant="secondary"] {
   background: var(--color-subtle); color: var(--color-text-main); border-color: transparent;
 }
-:root[data-design-variant="minimal"] [data-ui="button"][data-variant="secondary"]:hover:not(:disabled) {
+:root[data-design-variant="minimal"] [data-ui="button"][data-variant="secondary"]:hover:not(:disabled),
+:root[data-design-variant="minimal"] [data-ui="icon-button"][data-variant="secondary"]:hover:not(:disabled) {
   background: var(--color-surface-container-high);
 }
 
@@ -150,11 +155,7 @@
 :root[data-design-variant="minimal"] [data-ui="fab"]:active { transform: none; }
 
 /* Inputs / Select — clean 1px bordered fields on the surface, tight radius.
-   The frame is a <div>: its locked and invalid states are read off the input
-   it wraps, because the kit stamps aria-invalid and readonly on the input
-   only. The state rules share one specificity, so their order is the
-   precedence: open, then focus, then locked, then invalid, each later rule
-   winning the border. */
+   Focus, locked and invalid live in the state block at the end of the file. */
 :root[data-design-variant="minimal"] [data-ui="input"],
 :root[data-design-variant="minimal"] [data-ui="input-frame"],
 :root[data-design-variant="minimal"] [data-ui="select-trigger"] {
@@ -168,36 +169,9 @@
 :root[data-design-variant="minimal"] [data-ui="select-trigger"][aria-expanded="true"] {
   border-color: var(--color-border-strong);
 }
-/* Focus — the border takes the strong foreground under the ring (below). */
-:root[data-design-variant="minimal"] [data-ui="input"]:focus-visible,
-:root[data-design-variant="minimal"] [data-ui="input-frame"]:focus-within,
-:root[data-design-variant="minimal"] [data-ui="select-trigger"]:focus-visible {
-  border-color: var(--color-text-main);
-}
-/* Locked (read-only or disabled) — a filled document field: subtle fill,
-   muted text, the resting hairline even while focused. */
-:root[data-design-variant="minimal"] [data-ui="input"][readonly],
-:root[data-design-variant="minimal"] [data-ui="input"]:disabled,
-:root[data-design-variant="minimal"] [data-ui="input-frame"]:has([data-ui="input"][readonly]),
-:root[data-design-variant="minimal"] [data-ui="input-frame"]:has([data-ui="input"]:disabled),
-:root[data-design-variant="minimal"] [data-ui="select-trigger"]:disabled {
-  background: var(--color-subtle); color: var(--color-text-muted); border-color: var(--color-border);
-}
-/* The locked select's value span carries its own text color, and the kit's
-   60% opacity would make it lighter than a locked input: both read alike. */
-:root[data-design-variant="minimal"] [data-ui="select-trigger"]:disabled { opacity: 1; }
-:root[data-design-variant="minimal"] [data-ui="select-trigger"]:disabled > span { color: var(--color-text-muted); }
-/* Invalid — the hairline turns status red; the focus ring stays neutral. */
-:root[data-design-variant="minimal"] [data-ui="input"][aria-invalid="true"],
-:root[data-design-variant="minimal"] [data-ui="input-frame"]:has([data-ui="input"][aria-invalid="true"]),
-:root[data-design-variant="minimal"] [data-ui="select-trigger"][aria-invalid="true"] { border-color: var(--color-error); }
-/* Field label — a strong static caption; it takes the field's tone when the
-   field is invalid or locked. The control sits inside the label's next
-   sibling (the input frame or the select wrapper), never beside the label. */
+/* Field label — a strong static caption; its invalid and locked tones live
+   in the state block. */
 :root[data-design-variant="minimal"] [data-ui="field-label"] { color: var(--color-text-main); font-weight: 500; }
-:root[data-design-variant="minimal"] [data-ui="field-label"]:has(+ * [aria-invalid="true"]) { color: var(--color-error); }
-:root[data-design-variant="minimal"] [data-ui="field-label"]:has(+ * [readonly]),
-:root[data-design-variant="minimal"] [data-ui="field-label"]:has(+ * :disabled) { color: var(--color-text-muted); }
 
 /* TextField — same flat chrome; shadcn has NO floating labels: pin the label
    as a static caption above the field. */
@@ -217,7 +191,6 @@
 :root[data-design-variant="minimal"] [data-ui="textfield-input"]:focus ~ [data-ui="textfield-label"] {
   color: var(--color-text-muted);
 }
-:root[data-design-variant="minimal"] [data-ui="textfield"][data-invalid] { border-color: var(--color-error); }
 
 /* Checkbox — 16px, crisp 4px corner, hairline off / strong foreground on
    (checked and indeterminate alike). The mark takes the page background,
@@ -327,9 +300,6 @@
 }
 :root[data-design-variant="minimal"] [data-ui="list-row"]:hover { background: var(--color-bg-hover); }
 :root[data-design-variant="minimal"] [data-ui="list-row"]:active { transform: none; background: var(--color-subtle); }
-/* The focus ring is a shadow, and the next row's opaque surface would cover
-   its bottom edge: the focused row rises above its siblings. */
-:root[data-design-variant="minimal"] [data-ui="list-row"]:focus-visible { position: relative; z-index: 1; }
 
 /* Side navigation — the current leaf is a subtle pill with strong text, no
    tint; hover is the same fill. */
@@ -400,8 +370,41 @@
   background: var(--color-subtle); color: var(--color-text-main);
 }
 
-/* ══ Focus — a neutral 3px ring, the strong foreground at 12%, on keyboard
-   focus; no tint. ══ */
+/* ══════════════════════════════════════════════════════════════════════════
+   Minimal DARK-MODE corrections — the tint ramp is mode-static, so the
+   variant layer swaps low-contrast steps itself (both `.dark` and
+   `data-design-variant` sit on <html>).
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Switch off-track — neutral-200 is a glaring light pill in dark. */
+:root[data-design-variant="minimal"].dark [data-ui="switch"]:not([aria-checked="true"]) {
+  background: var(--color-neutral-700);
+}
+
+/* Tinted text moments rise a step in dark (same move as the ring). */
+:root[data-design-variant="minimal"].dark [data-ui="toast-action"] { color: var(--color-primary-400); }
+:root[data-design-variant="minimal"].dark [data-ui="menu-item"][aria-checked="true"] svg { color: var(--color-primary-400); }
+
+/* The scrim goes near-opaque so the flat, shadow-light panels still separate. */
+:root[data-design-variant="minimal"].dark [data-ui="dialog-overlay"],
+:root[data-design-variant="minimal"].dark [data-ui="command-overlay"] {
+  background: color-mix(in srgb, var(--color-neutral-950) 85%, transparent);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   State precedence — every focus, locked (read-only, disabled) and invalid
+   rule of this layer lives here, after every rest, hover, open, active and
+   dark rule, in the order focus, read-only, disabled, invalid: a later rule
+   wins a tie, so an invalid field keeps its red edge while focused or
+   locked. Each rule's specificity is at least that of the rest, hover,
+   open, active or dark rule that sets the same property on its hook, and
+   the dark restatements at the end carry `.dark` like the dark rest rules
+   above.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Focus — a neutral 3px ring, the strong foreground at 12%, on keyboard
+   focus; no tint. The bordered fields also take the strong foreground as
+   their edge under the ring. */
 :root[data-design-variant="minimal"] [data-ui="button"]:focus-visible,
 :root[data-design-variant="minimal"] [data-ui="icon-button"]:focus-visible,
 :root[data-design-variant="minimal"] [data-ui="fab"]:focus-visible,
@@ -419,41 +422,54 @@
   outline: none;
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-text-main) 12%, transparent);
 }
+:root[data-design-variant="minimal"] [data-ui="input"]:focus-visible,
+:root[data-design-variant="minimal"] [data-ui="input-frame"]:focus-within,
+:root[data-design-variant="minimal"] [data-ui="select-trigger"]:focus-visible {
+  border-color: var(--color-text-main);
+}
 /* The frame owns the ring — the inner input never doubles it. */
 :root[data-design-variant="minimal"] [data-ui="input-frame"] [data-ui="input"]:focus,
 :root[data-design-variant="minimal"] [data-ui="input-frame"] [data-ui="input"]:focus-visible {
   box-shadow: none; border-color: transparent;
 }
+/* The focus ring is a shadow, and the next row's opaque surface would cover
+   its bottom edge: the focused row rises above its siblings. */
+:root[data-design-variant="minimal"] [data-ui="list-row"]:focus-visible { position: relative; z-index: 1; }
 
-/* ══ Grid guard — editors inside a data grid stay chromeless and compact
-   (the kit melts them into the cell; this layer must not re-inflate or
-   re-ring them). ══ */
-:root[data-design-variant="minimal"] [data-ui="table"] [data-ui="input"],
-:root[data-design-variant="minimal"] [data-ui="table"] [data-ui="input-frame"],
-:root[data-design-variant="minimal"] [data-ui="table"] [data-ui="select-trigger"] {
-  min-height: 0; background: transparent; border-color: transparent; box-shadow: none;
+/* Locked (read-only or disabled) — a filled document field: subtle fill,
+   muted text, the resting hairline even while focused. The frame is a
+   <div>: its state is read off the input it wraps, because the kit stamps
+   readonly and disabled on the input only. */
+:root[data-design-variant="minimal"] [data-ui="input"][readonly],
+:root[data-design-variant="minimal"] [data-ui="input-frame"]:has([data-ui="input"][readonly]),
+:root[data-design-variant="minimal"] [data-ui="input"]:disabled,
+:root[data-design-variant="minimal"] [data-ui="input-frame"]:has([data-ui="input"]:disabled),
+:root[data-design-variant="minimal"] [data-ui="select-trigger"]:disabled {
+  background: var(--color-subtle); color: var(--color-text-muted); border-color: var(--color-border);
 }
-:root[data-design-variant="minimal"] [data-ui="table"] [data-ui="input"]:focus-visible,
-:root[data-design-variant="minimal"] [data-ui="table"] [data-ui="input-frame"]:focus-within,
-:root[data-design-variant="minimal"] [data-ui="table"] [data-ui="select-trigger"]:focus-visible {
-  box-shadow: none; border-color: transparent;
-}
-/* The ghost entry row keeps the kit's treatment (top hairline only). */
-:root[data-design-variant="minimal"] .grid-entry [data-ui="input-frame"] {
-  background: transparent; border-color: transparent; border-radius: 0; box-shadow: none;
-}
-:root[data-design-variant="minimal"] .grid-entry [data-ui="input-frame"]:focus-within {
-  box-shadow: none; background: var(--color-bg-hover);
-}
+/* The locked select's value span carries its own text color, and the kit's
+   60% opacity would make it lighter than a locked input: both read alike. */
+:root[data-design-variant="minimal"] [data-ui="select-trigger"]:disabled { opacity: 1; }
+:root[data-design-variant="minimal"] [data-ui="select-trigger"]:disabled > span { color: var(--color-text-muted); }
+/* The field label takes the locked field's tone. The control sits inside the
+   label's next sibling (the input frame or the select wrapper), never beside
+   the label. */
+:root[data-design-variant="minimal"] [data-ui="field-label"]:has(+ * [readonly]),
+:root[data-design-variant="minimal"] [data-ui="field-label"]:has(+ * :disabled) { color: var(--color-text-muted); }
+/* Disabled buttons — the solid fills hide the kit's disabled tint, so every
+   variant takes shadcn's half opacity. */
+:root[data-design-variant="minimal"] [data-ui="button"]:disabled { opacity: 0.5; }
 
-/* ══════════════════════════════════════════════════════════════════════════
-   Minimal DARK-MODE corrections — the tint ramp is mode-static, so the
-   variant layer swaps low-contrast steps itself (both `.dark` and
-   `data-design-variant` sit on <html>).
-   ══════════════════════════════════════════════════════════════════════════ */
+/* Invalid — the hairline turns status red; the focus ring stays neutral. */
+:root[data-design-variant="minimal"] [data-ui="input"][aria-invalid="true"],
+:root[data-design-variant="minimal"] [data-ui="input-frame"]:has([data-ui="input"][aria-invalid="true"]),
+:root[data-design-variant="minimal"] [data-ui="select-trigger"][aria-invalid="true"],
+:root[data-design-variant="minimal"] [data-ui="textfield"][data-invalid] { border-color: var(--color-error); }
+:root[data-design-variant="minimal"] [data-ui="field-label"]:has(+ * [aria-invalid="true"]) { color: var(--color-error); }
 
-/* Focus ring — the light foreground needs a few more percent to read on a
-   dark surface. */
+/* Dark — the light foreground needs a few more percent to read on a dark
+   surface. The ring rule carries `.dark` and so outranks the light reset of
+   the inner input, which is restated after it. */
 :root[data-design-variant="minimal"].dark [data-ui="button"]:focus-visible,
 :root[data-design-variant="minimal"].dark [data-ui="icon-button"]:focus-visible,
 :root[data-design-variant="minimal"].dark [data-ui="fab"]:focus-visible,
@@ -470,42 +486,60 @@
 :root[data-design-variant="minimal"].dark [data-ui="textfield"]:focus-within {
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-text-main) 18%, transparent);
 }
-
-/* Switch off-track — neutral-200 is a glaring light pill in dark. */
-:root[data-design-variant="minimal"].dark [data-ui="switch"]:not([aria-checked="true"]) {
-  background: var(--color-neutral-700);
-}
-
+:root[data-design-variant="minimal"].dark [data-ui="input-frame"] [data-ui="input"]:focus-visible { box-shadow: none; }
 /* Locked fields — in dark the subtle fill and the hairline are the same zinc
    step, so the edge takes the strong hairline to stay visible. */
 :root[data-design-variant="minimal"].dark [data-ui="input"][readonly],
-:root[data-design-variant="minimal"].dark [data-ui="input"]:disabled,
 :root[data-design-variant="minimal"].dark [data-ui="input-frame"]:has([data-ui="input"][readonly]),
+:root[data-design-variant="minimal"].dark [data-ui="input"]:disabled,
 :root[data-design-variant="minimal"].dark [data-ui="input-frame"]:has([data-ui="input"]:disabled),
 :root[data-design-variant="minimal"].dark [data-ui="select-trigger"]:disabled {
   border-color: var(--color-border-strong);
 }
-/* The locked rule above carries `.dark` and so outranks the invalid rule;
-   invalid is restated here so a locked field keeps its red edge in dark. */
+/* The dark locked rule outranks the light invalid rule, so invalid is
+   restated here and a locked invalid field keeps its red edge in dark. */
 :root[data-design-variant="minimal"].dark [data-ui="input"][aria-invalid="true"],
 :root[data-design-variant="minimal"].dark [data-ui="input-frame"]:has([data-ui="input"][aria-invalid="true"]),
 :root[data-design-variant="minimal"].dark [data-ui="select-trigger"][aria-invalid="true"] {
   border-color: var(--color-error);
 }
-/* The locked rule above carries `.dark` and so outranks the grid guard; the
-   guard is restated here to keep grid editors chromeless in dark. */
-:root[data-design-variant="minimal"].dark [data-ui="table"] [data-ui="input"],
-:root[data-design-variant="minimal"].dark [data-ui="table"] [data-ui="input-frame"],
-:root[data-design-variant="minimal"].dark [data-ui="table"] [data-ui="select-trigger"] {
-  border-color: transparent;
-}
 
-/* Tinted text moments rise a step in dark (same move as the ring). */
-:root[data-design-variant="minimal"].dark [data-ui="toast-action"] { color: var(--color-primary-400); }
-:root[data-design-variant="minimal"].dark [data-ui="menu-item"][aria-checked="true"] svg { color: var(--color-primary-400); }
-
-/* The scrim goes near-opaque so the flat, shadow-light panels still separate. */
-:root[data-design-variant="minimal"].dark [data-ui="dialog-overlay"],
-:root[data-design-variant="minimal"].dark [data-ui="command-overlay"] {
-  background: color-mix(in srgb, var(--color-neutral-950) 85%, transparent);
+/* ══════════════════════════════════════════════════════════════════════════
+   Grid editors — an editor inside a grid cell stays chromeless and compact
+   in every state: the kit melts it into the cell and paints the cell's own
+   active ring, so a box, a ring or a red edge of this layer would float
+   inside the cell. The ghost entry row keeps the kit's treatment, a top
+   hairline only, and its focus fill. This block comes last and every
+   selector carries the table hook or the entry class, so it outranks the
+   state rules above by position and by specificity in both modes. Hover
+   needs no selector of its own: this layer sets no hover on these hooks.
+   ══════════════════════════════════════════════════════════════════════════ */
+:root[data-design-variant="minimal"] [data-ui="table"] [role="gridcell"] [data-ui="input"],
+:root[data-design-variant="minimal"] [data-ui="table"] [role="gridcell"] [data-ui="input-frame"],
+:root[data-design-variant="minimal"] [data-ui="table"] [role="gridcell"] [data-ui="select-trigger"],
+:root[data-design-variant="minimal"] [data-ui="table"] [role="gridcell"] [data-ui="input"]:focus-visible,
+:root[data-design-variant="minimal"] [data-ui="table"] [role="gridcell"] [data-ui="input-frame"]:focus-within,
+:root[data-design-variant="minimal"] [data-ui="table"] [role="gridcell"] [data-ui="select-trigger"]:focus-visible,
+:root[data-design-variant="minimal"] [data-ui="table"] [role="gridcell"] [data-ui="input"][aria-invalid="true"],
+:root[data-design-variant="minimal"] [data-ui="table"] [role="gridcell"] [data-ui="input-frame"]:has([data-ui="input"][aria-invalid="true"]),
+:root[data-design-variant="minimal"] [data-ui="table"] [role="gridcell"] [data-ui="select-trigger"][aria-invalid="true"] {
+  min-height: 0; background: transparent; border-color: transparent; box-shadow: none;
 }
+:root[data-design-variant="minimal"] .grid-entry [data-ui="input-frame"] {
+  background: transparent; border-radius: 0; box-shadow: none;
+}
+:root[data-design-variant="minimal"] .grid-entry [data-ui="input-frame"]:focus-within {
+  border-color: var(--color-border); box-shadow: none; background: var(--color-bg-hover);
+}
+:root[data-design-variant="minimal"].dark [data-ui="table"] [role="gridcell"] [data-ui="input"],
+:root[data-design-variant="minimal"].dark [data-ui="table"] [role="gridcell"] [data-ui="input-frame"],
+:root[data-design-variant="minimal"].dark [data-ui="table"] [role="gridcell"] [data-ui="select-trigger"],
+:root[data-design-variant="minimal"].dark [data-ui="table"] [role="gridcell"] [data-ui="input"]:focus-visible,
+:root[data-design-variant="minimal"].dark [data-ui="table"] [role="gridcell"] [data-ui="input-frame"]:focus-within,
+:root[data-design-variant="minimal"].dark [data-ui="table"] [role="gridcell"] [data-ui="select-trigger"]:focus-visible,
+:root[data-design-variant="minimal"].dark [data-ui="table"] [role="gridcell"] [data-ui="input"][aria-invalid="true"],
+:root[data-design-variant="minimal"].dark [data-ui="table"] [role="gridcell"] [data-ui="input-frame"]:has([data-ui="input"][aria-invalid="true"]),
+:root[data-design-variant="minimal"].dark [data-ui="table"] [role="gridcell"] [data-ui="select-trigger"][aria-invalid="true"] {
+  border-color: transparent; box-shadow: none;
+}
+:root[data-design-variant="minimal"].dark .grid-entry [data-ui="input-frame"]:focus-within { box-shadow: none; }
