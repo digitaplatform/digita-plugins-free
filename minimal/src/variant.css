@@ -1,22 +1,17 @@
 /* ══════════════════════════════════════════════════════════════════════════
    Minimal variant layer — scoped to :root[data-design-variant="minimal"].
    Geist / shadcn language: flat surfaces, hairline borders, tight radii,
-   quiet neutral controls, one accent moment (the tint) for primary actions
-   and the focus ring. All rules key on a stable [data-ui] hook + emitted
-   vars only — color always arrives via the live tint (--color-primary-*),
-   never a hardcoded hue.
+   quiet neutral controls. The primary action, the switch, the checkbox and
+   the focus ring are neutral (the strong foreground on the page background),
+   so the tint is a text moment only. All rules key on a stable [data-ui] hook
+   + emitted vars only, never a hardcoded hue.
    ══════════════════════════════════════════════════════════════════════════ */
 
 /* ══ Wave 1 — surfaces go flat (no glass, no gradients, hairlines carry) ══ */
 
-/* Framed cards — border + NO shadow is the resting state; only `elevated` may
-   cast a subtle shadow. Interactive cards answer with a stronger hairline, not
-   elevation. Plain cards (no variant) keep their opt-in elevation and `flat`
-   cards keep their subtle fill: both are already flat language. */
-:root[data-design-variant="minimal"] [data-ui="card"][data-variant="default"],
-:root[data-design-variant="minimal"] [data-ui="card"][data-variant="interactive"] {
-  background: var(--color-surface); border-color: var(--color-border); box-shadow: none;
-}
+/* Framed cards — the kit's bordered, shadow-free rest state is already flat;
+   only `elevated` may cast a subtle shadow, and interactive cards answer with
+   a stronger hairline, not elevation. */
 :root[data-design-variant="minimal"] [data-ui="card"][data-variant="elevated"] { box-shadow: var(--shadow-sm); }
 :root[data-design-variant="minimal"] [data-ui="card"][data-variant="interactive"]:hover {
   border-color: var(--color-border-strong); box-shadow: none;
@@ -34,22 +29,16 @@
 :root[data-design-variant="minimal"] [data-ui="listbox"],
 :root[data-design-variant="minimal"] [data-ui="menu"] { padding: 0.25rem; }
 
-/* Command palette — the signature panel: solid surface, one hairline, dialog
-   radius, no blur, over a plain scrim. Below 640px (Tailwind's `sm`, where the
-   kit drops its own border and radius) the panel fills the screen, so the
-   frame applies from 640px up only. */
+/* Command palette — the signature panel: solid surface, no blur. The kit
+   already draws the hairline, the dialog radius and the shadow from 640px up
+   and fills the screen below. */
 :root[data-design-variant="minimal"] [data-ui="command-palette"] {
-  -webkit-backdrop-filter: none; backdrop-filter: none;
-  background: var(--color-surface); box-shadow: var(--shadow-lg);
-}
-@media (min-width: 640px) {
-  :root[data-design-variant="minimal"] [data-ui="command-palette"] {
-    border: 1px solid var(--color-border); border-radius: var(--radius-dialog);
-  }
+  -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--color-surface);
 }
 
-/* Scrims — a plain zinc-950 veil, no blur (the design has no scrim token; the
-   neutral ramp's darkest step at half strength stands in). */
+/* Scrims — a plain zinc-950 veil, no blur. The kit reads --color-scrim, but
+   this layer sets nothing on the root (every rule keys on a hook), so the two
+   hooked overlays take the veil directly; the Drawer keeps the kit's scrim. */
 :root[data-design-variant="minimal"] [data-ui="command-overlay"],
 :root[data-design-variant="minimal"] [data-ui="dialog-overlay"] {
   background: color-mix(in srgb, var(--color-neutral-950) 50%, transparent);
@@ -85,7 +74,7 @@
 /* ══ Wave 2 — controls speak shadcn ══ */
 
 /* Buttons — flat, weight 500, tight radius, NO gradient/shadow, no press
-   transform. Hierarchy: solid tint / subtle fill / hairline outline / ghost.
+   transform. Hierarchy: solid foreground / subtle fill / hairline outline / ghost.
    Icon buttons keep the kit's two sizes (28px / 36px): a floor would inflate
    the small one in dense toolbars. */
 :root[data-design-variant="minimal"] [data-ui="button"],
@@ -99,13 +88,14 @@
 :root[data-design-variant="minimal"] [data-ui="button"]:active,
 :root[data-design-variant="minimal"] [data-ui="icon-button"]:active { transform: none; }
 
-/* Primary — the ONE accent moment: solid live tint. Hover dims toward bg
-   (shadcn's primary/90) — token math, works under any tint. */
+/* Primary — the strong foreground as a solid, the page background as its
+   text; no tint. Hover dims toward bg (shadcn's primary/90) — token math,
+   works in both modes. */
 :root[data-design-variant="minimal"] [data-ui="button"][data-variant="primary"] {
-  background: var(--color-primary-600); color: var(--color-on-primary); border-color: transparent; box-shadow: none;
+  background: var(--color-text-main); color: var(--color-bg); border-color: transparent; box-shadow: none;
 }
 :root[data-design-variant="minimal"] [data-ui="button"][data-variant="primary"]:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--color-primary-600) 90%, var(--color-bg)); box-shadow: none;
+  background: color-mix(in srgb, var(--color-text-main) 90%, var(--color-bg)); box-shadow: none;
 }
 
 /* Secondary — quiet subtle fill, neutral text. */
@@ -142,13 +132,15 @@
   background: color-mix(in srgb, var(--color-error) 90%, var(--color-bg)); box-shadow: none;
 }
 
-/* FAB — the same flat button language as primary: tight radius, a dialog-level
-   shadow because it floats over content, no press transform. */
+/* FAB — the same flat button language as primary: strong foreground fill,
+   tight radius, a dialog-level shadow because it floats over content, no
+   press transform. */
 :root[data-design-variant="minimal"] [data-ui="fab"] {
+  background: var(--color-text-main); color: var(--color-bg);
   border-radius: var(--radius-btn); box-shadow: var(--shadow-md);
 }
 :root[data-design-variant="minimal"] [data-ui="fab"]:hover {
-  background: color-mix(in srgb, var(--color-primary-600) 90%, var(--color-bg)); box-shadow: var(--shadow-md);
+  background: color-mix(in srgb, var(--color-text-main) 90%, var(--color-bg)); box-shadow: var(--shadow-md);
 }
 :root[data-design-variant="minimal"] [data-ui="fab"]:active { transform: none; }
 
@@ -165,7 +157,7 @@
 :root[data-design-variant="minimal"] [data-ui="input-frame"] [data-ui="input"] {
   background: transparent; border-color: transparent; box-shadow: none; min-height: 0;
 }
-/* Invalid — the hairline turns status red; the focus ring stays the tint. */
+/* Invalid — the hairline turns status red; the focus ring stays neutral. */
 :root[data-design-variant="minimal"] [data-ui="input"][aria-invalid="true"],
 :root[data-design-variant="minimal"] [data-ui="input-frame"]:has([data-ui="input"][aria-invalid="true"]),
 :root[data-design-variant="minimal"] [data-ui="select-trigger"][aria-invalid="true"] { border-color: var(--color-error); }
@@ -178,29 +170,26 @@
 :root[data-design-variant="minimal"] [data-ui="select-trigger"]:disabled {
   background: var(--color-subtle); color: var(--color-text-muted);
 }
+/* The locked select's value span carries its own text color, and the kit's
+   60% opacity would make it lighter than a locked input: both read alike. */
+:root[data-design-variant="minimal"] [data-ui="select-trigger"]:disabled { opacity: 1; }
+:root[data-design-variant="minimal"] [data-ui="select-trigger"]:disabled > span { color: var(--color-text-muted); }
 /* Open select — the hairline strengthens while the listbox is up. */
 :root[data-design-variant="minimal"] [data-ui="select-trigger"][aria-expanded="true"] {
   border-color: var(--color-border-strong);
 }
 /* Field label — a strong static caption; it takes the field's tone when the
-   field is invalid or locked. */
+   field is invalid or locked. The control sits inside the label's next
+   sibling (the input frame or the select wrapper), never beside the label. */
 :root[data-design-variant="minimal"] [data-ui="field-label"] { color: var(--color-text-main); font-weight: 500; }
-:root[data-design-variant="minimal"] [data-ui="field-label"]:has(+ [aria-invalid="true"]),
-:root[data-design-variant="minimal"] [data-ui="field-label"]:has(+ [data-ui="input-frame"] [aria-invalid="true"]) {
-  color: var(--color-error);
-}
-:root[data-design-variant="minimal"] [data-ui="field-label"]:has(+ [readonly]),
-:root[data-design-variant="minimal"] [data-ui="field-label"]:has(+ :disabled),
-:root[data-design-variant="minimal"] [data-ui="field-label"]:has(+ [data-ui="input-frame"] [readonly]),
-:root[data-design-variant="minimal"] [data-ui="field-label"]:has(+ [data-ui="input-frame"] :disabled) {
-  color: var(--color-text-muted);
-}
+:root[data-design-variant="minimal"] [data-ui="field-label"]:has(+ * [aria-invalid="true"]) { color: var(--color-error); }
+:root[data-design-variant="minimal"] [data-ui="field-label"]:has(+ * [readonly]),
+:root[data-design-variant="minimal"] [data-ui="field-label"]:has(+ * :disabled) { color: var(--color-text-muted); }
 
 /* Pointer focus stays quiet — only keyboard focus draws the ring (text
-   inputs match :focus-visible on any focus, so the caret field still rings). */
-:root[data-design-variant="minimal"] [data-ui="select-trigger"]:focus:not(:focus-visible) {
-  box-shadow: none; border-color: var(--color-border);
-}
+   inputs match :focus-visible on any focus, so the caret field still rings).
+   The border is left alone so an invalid or open trigger keeps its color. */
+:root[data-design-variant="minimal"] [data-ui="select-trigger"]:focus:not(:focus-visible),
 :root[data-design-variant="minimal"] [data-ui="button"]:focus:not(:focus-visible),
 :root[data-design-variant="minimal"] [data-ui="icon-button"]:focus:not(:focus-visible) {
   box-shadow: none;
@@ -226,22 +215,27 @@
 }
 :root[data-design-variant="minimal"] [data-ui="textfield"][data-invalid] { border-color: var(--color-error); }
 
-/* Checkbox — 16px, crisp 4px corner, hairline off / solid tint on. */
+/* Checkbox — 16px, crisp 4px corner, hairline off / strong foreground on
+   (checked and indeterminate alike). The mark takes the page background,
+   because the kit's white mark would vanish on the light fill of dark mode. */
 :root[data-design-variant="minimal"] [data-ui="checkbox"] {
   height: 16px; width: 16px; border-radius: 4px; border: 1px solid var(--color-border-strong); box-shadow: none;
 }
 :root[data-design-variant="minimal"] [data-ui="checkbox-box"] { height: 16px; width: 16px; }
-:root[data-design-variant="minimal"] [data-ui="checkbox"]:checked {
-  background: var(--color-primary-600); border-color: var(--color-primary-600);
+:root[data-design-variant="minimal"] [data-ui="checkbox"]:checked,
+:root[data-design-variant="minimal"] [data-ui="checkbox"]:indeterminate {
+  background: var(--color-text-main); border-color: var(--color-text-main);
 }
+:root[data-design-variant="minimal"] [data-ui="checkbox"]:checked ~ svg { color: var(--color-bg); }
 
-/* Switch — small 36×20 track, 16px flat white thumb, tint when on. */
+/* Switch — small 36×20 track, 16px flat thumb in the page background, strong
+   foreground when on. */
 :root[data-design-variant="minimal"] [data-ui="switch"] {
   height: 20px; width: 36px; border-radius: 999px; background: var(--color-neutral-200); border: none;
 }
-:root[data-design-variant="minimal"] [data-ui="switch"][aria-checked="true"] { background: var(--color-primary-600); }
+:root[data-design-variant="minimal"] [data-ui="switch"][aria-checked="true"] { background: var(--color-text-main); }
 :root[data-design-variant="minimal"] [data-ui="switch-thumb"] {
-  height: 16px; width: 16px; transform: translateX(2px); background: #fff; box-shadow: none;
+  height: 16px; width: 16px; transform: translateX(2px); background: var(--color-bg); box-shadow: none;
 }
 :root[data-design-variant="minimal"] [data-ui="switch"][aria-checked="true"] [data-ui="switch-thumb"] { transform: translateX(18px); }
 
@@ -276,10 +270,12 @@
 
 /* Rows in floating panels — the signature row: inset, 4px-rounded, a subtle
    fill for the active row and NO separators. One recipe for the command
-   palette (active = aria-selected), the listbox (active = hover; the kit
-   marks selection with weight and a check, so it gets no fill of its own) and
-   the menu (active = hover or keyboard focus). Height follows the density;
-   the shadcn 32px row is the floor. */
+   palette (active = aria-selected) and the menu (active = hover or keyboard
+   focus). The listbox option gets the shape only: the kit paints its active
+   option through a class with no attribute to key on, and a hover fill of
+   this layer's own would light a second row next to the keyboard-active one.
+   The text color stays the kit's, so a danger menu item keeps its red.
+   Height follows the density; the shadcn 32px row is the floor. */
 :root[data-design-variant="minimal"] [data-ui="command-item"],
 :root[data-design-variant="minimal"] [data-ui="option"],
 :root[data-design-variant="minimal"] [data-ui="menu-item"] {
@@ -287,15 +283,17 @@
   min-height: max(2rem, calc(var(--density-row) * 1px - 4px));
   padding-top: 0; padding-bottom: 0;
 }
+/* A two-line command row (label and sublabel) needs vertical padding of its
+   own inside the fill; 8px margin plus 8px padding lines its text up with the
+   kit's 16px group headers. */
 :root[data-design-variant="minimal"] [data-ui="command-item"] {
-  margin: 0 0.375rem; padding-left: 0.5rem; padding-right: 0.5rem;
+  margin: 0 0.5rem; padding: 0.4375rem 0.5rem;
   min-height: calc(var(--density-row) * 1px);
 }
 :root[data-design-variant="minimal"] [data-ui="command-item"][aria-selected="true"],
-:root[data-design-variant="minimal"] [data-ui="option"]:not([aria-disabled="true"]):hover,
 :root[data-design-variant="minimal"] [data-ui="menu-item"]:not([aria-disabled="true"]):hover,
 :root[data-design-variant="minimal"] [data-ui="menu-item"]:focus-visible {
-  background: var(--color-subtle); color: var(--color-text-main);
+  background: var(--color-subtle);
 }
 :root[data-design-variant="minimal"] [data-ui="menu-item"][aria-checked="true"] { font-weight: 500; }
 
@@ -326,9 +324,12 @@
 }
 :root[data-design-variant="minimal"] [data-ui="list-row"]:hover { background: var(--color-bg-hover); }
 :root[data-design-variant="minimal"] [data-ui="list-row"]:active { transform: none; background: var(--color-subtle); }
+/* The focus ring is a shadow, and the next row's opaque surface would cover
+   its bottom edge: the focused row rises above its siblings. */
+:root[data-design-variant="minimal"] [data-ui="list-row"]:focus-visible { position: relative; z-index: 1; }
 
 /* Side navigation — the current leaf is a subtle pill with strong text, no
-   tint (the canvas nav); hover is the same fill. */
+   tint; hover is the same fill. */
 :root[data-design-variant="minimal"] [data-ui="nav-leaf"]:hover { background: var(--color-subtle); }
 :root[data-design-variant="minimal"] [data-ui="nav-leaf"][aria-current="page"] {
   background: var(--color-subtle); color: var(--color-text-main); font-weight: 500;
@@ -396,9 +397,8 @@
   background: var(--color-subtle); color: var(--color-text-main);
 }
 
-/* ══ Focus — the shadcn offset ring: 2px bg gap + 2px live tint, on
-   keyboard focus. The ONE place (besides primary buttons) color always
-   appears. ══ */
+/* ══ Focus — a neutral 3px ring, the strong foreground at 12%, on keyboard
+   focus; no tint. ══ */
 :root[data-design-variant="minimal"] [data-ui="button"]:focus-visible,
 :root[data-design-variant="minimal"] [data-ui="icon-button"]:focus-visible,
 :root[data-design-variant="minimal"] [data-ui="fab"]:focus-visible,
@@ -414,7 +414,7 @@
 :root[data-design-variant="minimal"] [data-ui="input-frame"]:focus-within,
 :root[data-design-variant="minimal"] [data-ui="textfield"]:focus-within {
   outline: none;
-  box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-primary-600);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-text-main) 12%, transparent);
 }
 /* The frame owns the ring — the inner input never doubles it. */
 :root[data-design-variant="minimal"] [data-ui="input-frame"] [data-ui="input"]:focus,
@@ -450,8 +450,8 @@
    variant layers (shipped from digita-plugins).
    ══════════════════════════════════════════════════════════════════════════ */
 
-/* Focus ring — primary-600 can sink into a dark bg under several tints;
-   primary-400 keeps the ring legible. The inner gap follows --color-bg. */
+/* Focus ring — the light foreground needs a few more percent to read on a
+   dark surface. */
 :root[data-design-variant="minimal"].dark [data-ui="button"]:focus-visible,
 :root[data-design-variant="minimal"].dark [data-ui="icon-button"]:focus-visible,
 :root[data-design-variant="minimal"].dark [data-ui="fab"]:focus-visible,
@@ -466,18 +466,7 @@
 :root[data-design-variant="minimal"].dark [data-ui="list-row"]:focus-visible,
 :root[data-design-variant="minimal"].dark [data-ui="input-frame"]:focus-within,
 :root[data-design-variant="minimal"].dark [data-ui="textfield"]:focus-within {
-  box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-primary-400);
-}
-
-/* Small solid tint fills rise a step too — under darker tints the 600 fill
-   of a 16px control sinks into the dark surface (ios/material make the same
-   move for their small controls). */
-:root[data-design-variant="minimal"].dark [data-ui="checkbox"]:checked,
-:root[data-design-variant="minimal"].dark [data-ui="checkbox"]:indeterminate {
-  background: var(--color-primary-400); border-color: var(--color-primary-400);
-}
-:root[data-design-variant="minimal"].dark [data-ui="switch"][aria-checked="true"] {
-  background: var(--color-primary-400);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-text-main) 18%, transparent);
 }
 
 /* Switch off-track — neutral-200 is a glaring light pill in dark. */
@@ -499,6 +488,13 @@
 :root[data-design-variant="minimal"].dark [data-ui="input-frame"]:has([data-ui="input"]:disabled),
 :root[data-design-variant="minimal"].dark [data-ui="select-trigger"]:disabled {
   border-color: var(--color-border-strong);
+}
+/* The locked rule above carries `.dark` and so outranks the grid guard; the
+   guard is restated here to keep grid editors chromeless in dark. */
+:root[data-design-variant="minimal"].dark [data-ui="table"] [data-ui="input"],
+:root[data-design-variant="minimal"].dark [data-ui="table"] [data-ui="input-frame"],
+:root[data-design-variant="minimal"].dark [data-ui="table"] [data-ui="select-trigger"] {
+  border-color: transparent;
 }
 
 /* Tinted text moments rise a step in dark (same move as the ring). */
