@@ -40,12 +40,13 @@
   -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--color-surface);
 }
 
-/* Scrims — a plain zinc-950 veil, no blur. The kit reads --color-scrim, but
-   this layer sets nothing on the root (every rule keys on a hook), so the two
-   hooked overlays take the veil directly; the Drawer keeps the kit's scrim. */
+/* Scrims — a faint veil of the foreground color, no blur. The kit reads
+   --color-scrim, but this layer sets nothing on the root (every rule keys on a
+   hook), so the two hooked overlays take the veil directly; the Drawer keeps
+   the kit's scrim. */
 :root[data-design-variant="minimal"] [data-ui="command-overlay"],
 :root[data-design-variant="minimal"] [data-ui="dialog-overlay"] {
-  background: color-mix(in srgb, var(--color-neutral-950) 6%, transparent);
+  background: color-mix(in srgb, var(--color-text-main) 6%, transparent);
   -webkit-backdrop-filter: none; backdrop-filter: none;
 }
 
@@ -205,14 +206,13 @@
 }
 :root[data-design-variant="minimal"] [data-ui="checkbox"]:checked ~ svg { color: var(--color-bg); }
 
-/* Switch — small 36×20 track, 16px flat thumb in the page background, strong
-   foreground when on. */
+/* Switch — small 36×20 track, 16px flat thumb, the tint when on. */
 :root[data-design-variant="minimal"] [data-ui="switch"] {
-  height: 20px; width: 36px; border-radius: 999px; background: var(--color-neutral-200); border: none;
+  height: 20px; width: 36px; border-radius: 999px; background: var(--color-border-strong); border: none;
 }
-:root[data-design-variant="minimal"] [data-ui="switch"][aria-checked="true"] { background: var(--color-text-main); }
+:root[data-design-variant="minimal"] [data-ui="switch"][aria-checked="true"] { background: var(--color-primary-600); }
 :root[data-design-variant="minimal"] [data-ui="switch-thumb"] {
-  height: 16px; width: 16px; transform: translateX(2px); background: var(--color-bg); box-shadow: none;
+  height: 16px; width: 16px; transform: translateX(2px); background: var(--color-on-primary); box-shadow: none;
 }
 :root[data-design-variant="minimal"] [data-ui="switch"][aria-checked="true"] [data-ui="switch-thumb"] { transform: translateX(18px); }
 
@@ -376,9 +376,9 @@
    `data-design-variant` sit on <html>).
    ══════════════════════════════════════════════════════════════════════════ */
 
-/* Switch off-track — neutral-200 is a glaring light pill in dark. */
-:root[data-design-variant="minimal"].dark [data-ui="switch"]:not([aria-checked="true"]) {
-  background: var(--color-neutral-700);
+/* Switch on-track rises a step in dark (same move as the ring). */
+:root[data-design-variant="minimal"].dark [data-ui="switch"][aria-checked="true"] {
+  background: var(--color-primary-500);
 }
 
 /* Tinted text moments rise a step in dark (same move as the ring). */
@@ -388,7 +388,7 @@
 /* The scrim goes near-opaque so the flat, shadow-light panels still separate. */
 :root[data-design-variant="minimal"].dark [data-ui="dialog-overlay"],
 :root[data-design-variant="minimal"].dark [data-ui="command-overlay"] {
-  background: color-mix(in srgb, var(--color-neutral-950) 85%, transparent);
+  background: color-mix(in srgb, var(--color-bg) 85%, transparent);
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
