@@ -1,14 +1,14 @@
 /* ══════════════════════════════════════════════════════════════════════════
    Minimal variant layer — scoped to :root[data-design-variant="minimal"].
    Geist / shadcn language: flat surfaces, hairline borders, tight radii,
-   quiet neutral controls. The primary action, the switch, the checkbox and
-   the focus ring are neutral (the strong foreground on the page background),
-   so the tint is a text moment only. Every rule keys on a stable [data-ui]
-   hook, except the grid cell, which the kit marks with a role; values come
-   from the emitted vars, never a hardcoded hue. The state rules (focus,
-   locked, invalid) and the grid editor resets sit at the end of the file,
-   after every rest, hover, open, active and dark rule, so position and
-   specificity both let the state win.
+   quiet neutral controls. The primary action, the checkbox and the focus
+   ring are neutral (the strong foreground on the page background); the tint
+   shows only in text moments and on the switched-on switch track. Every rule
+   keys on a stable [data-ui] hook, except the grid cell, which the kit marks
+   with a role; values come from the emitted vars, never a hardcoded hue. The
+   state rules (focus, locked, invalid) and the grid editor resets sit at the
+   end of the file, after every rest, hover, open, active and dark rule, so
+   position and specificity both let the state win.
    ══════════════════════════════════════════════════════════════════════════ */
 
 /* ══ Wave 1 — surfaces go flat (no glass, no gradients, hairlines carry) ══ */
@@ -376,7 +376,9 @@
    `data-design-variant` sit on <html>).
    ══════════════════════════════════════════════════════════════════════════ */
 
-/* Switch on-track rises a step in dark (same move as the ring). */
+/* Switch on-track takes the 500 step in dark. On a tint pinned at 600 that
+   step is darker, not lighter: it trades track contrast against the page for
+   thumb contrast on the track, and both stay above 3:1. */
 :root[data-design-variant="minimal"].dark [data-ui="switch"][aria-checked="true"] {
   background: var(--color-primary-500);
 }
@@ -488,8 +490,8 @@
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-text-main) 18%, transparent);
 }
 :root[data-design-variant="minimal"].dark [data-ui="input-frame"] [data-ui="input"]:focus-visible { box-shadow: none; }
-/* Locked fields — in dark the subtle fill and the hairline are the same zinc
-   step, so the edge takes the strong hairline to stay visible. */
+/* Locked fields — in dark the subtle fill and the hairline can share one
+   value, so the edge takes the strong hairline to stay visible. */
 :root[data-design-variant="minimal"].dark [data-ui="input"][readonly],
 :root[data-design-variant="minimal"].dark [data-ui="input-frame"]:has([data-ui="input"][readonly]),
 :root[data-design-variant="minimal"].dark [data-ui="input"]:disabled,
