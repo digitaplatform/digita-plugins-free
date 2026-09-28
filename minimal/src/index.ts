@@ -29,7 +29,7 @@ const minimal: Design = {
   semantic: {
     light: {
       bg: '#FFFFFF', surface: '#FFFFFF', subtle: '#F4F4F5', border: '#E4E4E7', borderStrong: '#D4D4D8',
-      bgHover: '#F4F4F5', surfaceGlass: 'rgba(255,255,255,0.72)',
+      bgHover: '#FAFAFA', surfaceGlass: 'rgba(255,255,255,0.72)',
       // Surface-container steps (P2.4) — deliberately compressed white → zinc-100:
       // minimal keeps elevation nearly flat; borders do the separating.
       surfaceContainerLowest: '#FFFFFF', surfaceContainerLow: '#FAFAFA', surfaceContainer: '#F6F6F7',
