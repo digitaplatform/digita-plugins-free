@@ -173,6 +173,13 @@
 /* Field label — a strong static caption; its invalid and locked tones live
    in the state block. */
 :root[data-design-variant="minimal"] [data-ui="field-label"] { color: var(--color-text-main); font-weight: 500; }
+/* Record form — a section title is a small strong caption; the error text under
+   a field is the 12px status line of the artboard. The rows and the section keep
+   the kit's flat block: the artboard stacks the fields with no frame around them. */
+:root[data-design-variant="minimal"] [data-ui="form-section-title"] {
+  font-size: 0.8125rem; font-weight: 600; color: var(--color-text-main);
+}
+:root[data-design-variant="minimal"] [data-ui="field-error"] { font-size: 0.75rem; color: var(--color-error); }
 
 /* TextField — same flat chrome; shadcn has NO floating labels: pin the label
    as a static caption above the field. */
@@ -487,6 +494,12 @@
    the label. */
 :root[data-design-variant="minimal"] [data-ui="field-label"]:has(+ * [readonly]),
 :root[data-design-variant="minimal"] [data-ui="field-label"]:has(+ * :disabled) { color: var(--color-text-muted); }
+/* In a form row the label sits in its own line above the control, so the row,
+   not the label's sibling, is where the control's state is read. */
+:root[data-design-variant="minimal"] [data-ui="form-row"]:has([readonly]) [data-ui="field-label"],
+:root[data-design-variant="minimal"] [data-ui="form-row"]:has(:disabled) [data-ui="field-label"] {
+  color: var(--color-text-muted);
+}
 /* Disabled buttons — the solid fills hide the kit's disabled tint, so every
    variant takes shadcn's half opacity. */
 :root[data-design-variant="minimal"] [data-ui="button"]:disabled { opacity: 0.5; }
@@ -497,6 +510,9 @@
 :root[data-design-variant="minimal"] [data-ui="select-trigger"][aria-invalid="true"],
 :root[data-design-variant="minimal"] [data-ui="textfield"][data-invalid] { border-color: var(--color-error); }
 :root[data-design-variant="minimal"] [data-ui="field-label"]:has(+ * [aria-invalid="true"]) { color: var(--color-error); }
+:root[data-design-variant="minimal"] [data-ui="form-row"]:has([aria-invalid="true"]) [data-ui="field-label"] {
+  color: var(--color-error);
+}
 
 /* Dark — the light foreground needs a few more percent to read on a dark
    surface. The ring rule carries `.dark` and so outranks the light reset of
