@@ -41,7 +41,8 @@
 }
 
 /* Scrims — the veil is the design's scrim token (index.ts), which the kit
-   paints on every overlay; this layer only takes the kit's blur away. */
+   paints on every overlay; this layer only takes the kit's blur away. The
+   Drawer, which has no hook, keeps the kit's blur. */
 :root[data-design-variant="minimal"] [data-ui="command-overlay"],
 :root[data-design-variant="minimal"] [data-ui="dialog-overlay"] {
   -webkit-backdrop-filter: none; backdrop-filter: none;
@@ -266,8 +267,9 @@
   background: var(--color-surface); border-color: var(--color-border);
 }
 :root[data-design-variant="minimal"] [data-ui="chip"]:has(> [data-ui="chip-remove"]) [data-ui="chip-check"] { display: none; }
-:root[data-design-variant="minimal"] [data-ui="chip-remove"] { border-radius: calc(var(--radius-input) - 2px); }
-:root[data-design-variant="minimal"] [data-ui="chip-remove"]:hover:not(:disabled) { background: var(--color-subtle); opacity: 1; }
+/* 20px, so the kit's 24px button stays inside the 22px content box of the chip. */
+:root[data-design-variant="minimal"] [data-ui="chip-remove"] { height: 1.25rem; width: 1.25rem; border-radius: calc(var(--radius-input) - 2px); }
+:root[data-design-variant="minimal"] [data-ui="chip-remove"]:hover:not(:disabled) { background: var(--color-subtle); }
 /* The chip that adds a filter is an outline waiting to be filled: dashed hairline,
    muted text; while its editor is open it takes the open select's strong
    hairline and the strong text. */
@@ -420,9 +422,7 @@
 :root[data-design-variant="minimal"] [data-ui="toast"] { box-shadow: var(--shadow-md); font-size: 0.8125rem; }
 :root[data-design-variant="minimal"] [data-ui="toast-action"] { color: var(--color-primary-600); font-size: 0.8125rem; font-weight: 500; }
 :root[data-design-variant="minimal"] [data-ui="toast-dismiss"] { border-radius: calc(var(--radius-input) - 2px); }
-:root[data-design-variant="minimal"] [data-ui="toast-dismiss"]:hover {
-  background: color-mix(in srgb, currentColor 10%, transparent); opacity: 1;
-}
+:root[data-design-variant="minimal"] [data-ui="toast-dismiss"]:hover { background: color-mix(in srgb, currentColor 10%, transparent); }
 
 /* PageHeader — flat bar that blends with the page; the hairline materializes
    only once content scrolls underneath. The artboard's title: 18px, 600, a
