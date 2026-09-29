@@ -37,3 +37,4 @@ jobs:
       - run: pnpm -r build
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: pnpm -r test
