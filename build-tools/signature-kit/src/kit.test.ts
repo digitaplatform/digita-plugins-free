@@ -117,7 +117,7 @@ test('the lockup family reaches the delivered manifest gen-signature writes', ()
   const dir = mkdtempSync(join(kitDir, 'tmp-'));
   try {
     const { signature } = makeSignature(inputOf('digita'));
-    writeFileSync(join(dir, 'package.json'), JSON.stringify({ digita: { id: 'digita', type: 'signature', tier: 'free', sdk: '^0.1.0' } }));
+    writeFileSync(join(dir, 'package.json'), JSON.stringify({ type: 'module', digita: { id: 'digita', type: 'signature', tier: 'free', sdk: '^0.1.0' } }));
     mkdirSync(join(dir, 'dist'));
     writeFileSync(join(dir, 'dist', 'index.js'), `export const signature = ${JSON.stringify(signature)};\n`);
     execFileSync(process.execPath, [genSignature], { cwd: dir });
