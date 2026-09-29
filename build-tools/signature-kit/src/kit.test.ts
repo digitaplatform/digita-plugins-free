@@ -88,7 +88,7 @@ test('make-signature writes a package that compiles against the installed theme'
     ]);
     const tsc = spawnSync(
       process.execPath,
-      [join(kitDir, 'node_modules', 'typescript', 'bin', 'tsc'), '--noEmit', '--strict', '--module', 'nodenext',
+      [join(kitDir, 'node_modules', 'typescript', 'bin', 'tsc'), '--ignoreConfig', '--noEmit', '--strict', '--module', 'nodenext',
         '--moduleResolution', 'nodenext', '--skipLibCheck', join(dir, 'src', 'index.ts')],
       { encoding: 'utf8' },
     );
