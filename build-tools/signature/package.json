@@ -1,6 +1,6 @@
 {
   "name": "@digitaplatform/signature-build",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "private": true,
   "type": "module",
   "description": "Shared build tool for SIGNATURE-type free plugins. Reads a package's digita manifest block + compiled Signature and emits dist/digita-plugin.json (manifest + full brand world) for the staging tool to inline into the inventory.",
