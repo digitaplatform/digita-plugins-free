@@ -14,13 +14,13 @@ importers:
         specifier: ^0.3.13
         version: 0.3.13
 
-  build-tools/signature: {}
+  build-tools/signature-build: {}
 
   digita:
     devDependencies:
       '@digitaplatform/signature-build':
         specifier: workspace:*
-        version: link:../build-tools/signature
+        version: link:../build-tools/signature-build
       '@digitaplatform/theme':
         specifier: ^0.3.0
         version: 0.3.0
@@ -44,7 +44,7 @@ importers:
     devDependencies:
       '@digitaplatform/signature-build':
         specifier: workspace:*
-        version: link:../build-tools/signature
+        version: link:../build-tools/signature-build
       '@digitaplatform/theme':
         specifier: ^0.3.0
         version: 0.3.0
