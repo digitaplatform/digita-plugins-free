@@ -40,13 +40,10 @@
   -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--color-surface);
 }
 
-/* Scrims — a faint veil of the foreground color, no blur. The kit reads
-   --color-scrim, but this layer sets nothing on the root (every rule keys on a
-   hook), so the two hooked overlays take the veil directly; the Drawer keeps
-   the kit's scrim. */
+/* Scrims — the veil is the design's scrim token (index.ts), which the kit
+   paints on every overlay; this layer only takes the kit's blur away. */
 :root[data-design-variant="minimal"] [data-ui="command-overlay"],
 :root[data-design-variant="minimal"] [data-ui="dialog-overlay"] {
-  background: color-mix(in srgb, var(--color-text-main) 6%, transparent);
   -webkit-backdrop-filter: none; backdrop-filter: none;
 }
 
@@ -66,6 +63,11 @@
 }
 :root[data-design-variant="minimal"] [data-ui="dialog-header"] { border-bottom-color: transparent; }
 :root[data-design-variant="minimal"] [data-ui="dialog-header"] h2 { font-size: 0.9375rem; font-weight: 600; letter-spacing: -0.01em; }
+/* The body copy is the artboard's 13px muted paragraph; the kit's controls and
+   the field labels inside a body carry their own color. */
+:root[data-design-variant="minimal"] [data-ui="dialog-body"] {
+  font-size: 0.8125rem; line-height: 1.5; color: var(--color-text-muted);
+}
 :root[data-design-variant="minimal"] [data-ui="dialog-footer"] {
   border-top-color: transparent; display: flex; justify-content: flex-end; gap: 0.5rem;
 }
@@ -170,9 +172,9 @@
 :root[data-design-variant="minimal"] [data-ui="select-trigger"][aria-expanded="true"] {
   border-color: var(--color-border-strong);
 }
-/* Field label — a strong static caption; its invalid and locked tones live
-   in the state block. */
-:root[data-design-variant="minimal"] [data-ui="field-label"] { color: var(--color-text-main); font-weight: 500; }
+/* Field label — the artboard's strong static 12px caption; its invalid and
+   locked tones live in the state block. */
+:root[data-design-variant="minimal"] [data-ui="field-label"] { color: var(--color-text-main); font-size: 0.75rem; font-weight: 500; }
 /* Record form — a section title is a small strong caption; the error text under
    a field is the 12px status line of the artboard. The rows and the section keep
    the kit's flat block: the artboard stacks the fields with no frame around them. */
@@ -238,9 +240,14 @@
   border-radius: calc(var(--radius-input) - 2px); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
-/* Chip — quiet bordered pill; hover fills subtle (the transparent rest would
-   otherwise outrank the kit's hover); selected fills subtle + shows the check
-   (state reads from shape, not color). */
+/* Chip — the artboard's 24px hairline tag with the input radius, not a pill;
+   8px side padding. A toggle chip rests transparent, hover fills subtle (the
+   transparent rest would otherwise outrank the kit's hover), selected fills
+   subtle and shows the check: state reads from shape, not color. A categorical
+   chip keeps the kit's soft fill in this shape. */
+:root[data-design-variant="minimal"] [data-ui="chip"] {
+  height: 1.5rem; padding-left: 0.5rem; padding-right: 0.5rem; border-radius: var(--radius-input);
+}
 :root[data-design-variant="minimal"] [data-ui="chip"]:not([data-color]) {
   background: transparent; border-color: var(--color-border);
 }
@@ -251,20 +258,41 @@
   background: var(--color-subtle); border-color: var(--color-border-strong); color: var(--color-text-main);
 }
 :root[data-design-variant="minimal"] [data-ui="chip"][data-selected] [data-ui="chip-check"] { display: inline-flex; }
+/* An applied filter is a selected chip whose only control is its remove button.
+   The artboard draws it on the surface with the resting hairline and the ×, so
+   the fill and the check that mark a toggle stay off it; the × is a small
+   ghost with the subtle hover fill. */
+:root[data-design-variant="minimal"] [data-ui="chip"]:not([data-color])[data-selected]:has(> [data-ui="chip-remove"]) {
+  background: var(--color-surface); border-color: var(--color-border);
+}
+:root[data-design-variant="minimal"] [data-ui="chip"]:has(> [data-ui="chip-remove"]) [data-ui="chip-check"] { display: none; }
+:root[data-design-variant="minimal"] [data-ui="chip-remove"] { border-radius: calc(var(--radius-input) - 2px); }
+:root[data-design-variant="minimal"] [data-ui="chip-remove"]:hover:not(:disabled) { background: var(--color-subtle); opacity: 1; }
 /* The chip that adds a filter is an outline waiting to be filled: dashed hairline,
-   muted text; an applied filter is the selected chip above. */
-:root[data-design-variant="minimal"] [data-ui="filter-action"] [data-ui="chip"] {
+   muted text; while its editor is open it takes the open select's strong
+   hairline and the strong text. */
+:root[data-design-variant="minimal"] [data-ui="filter-action"] > [data-ui="chip"] {
   border-style: dashed; color: var(--color-text-muted);
 }
+:root[data-design-variant="minimal"] [data-ui="filter-action"] > [data-ui="chip"][aria-expanded="true"] {
+  border-color: var(--color-border-strong); color: var(--color-text-main);
+}
+
+/* Badge — the artboard's status marker is an outline: hairline, the input
+   radius, the tone in the text only (the tint is a text moment), strong text
+   when neutral. The kit's soft fills and the pill's full radius go. */
+:root[data-design-variant="minimal"] [data-ui="badge"][data-color] {
+  background: transparent; border: 1px solid var(--color-border); border-radius: var(--radius-input);
+}
+:root[data-design-variant="minimal"] [data-ui="badge"][data-color="neutral"] { color: var(--color-text-main); }
 
 /* Rows in floating panels — the signature row: inset, 4px-rounded, a subtle
    fill for the active row and NO separators. One recipe for the command
-   palette (active = aria-selected) and the menu (active = hover or keyboard
-   focus). The listbox option gets the shape only: the kit paints its active
-   option through a class with no attribute to key on, and a hover fill of
-   this layer's own would light a second row next to the keyboard-active one.
-   The text color stays the kit's, so a danger menu item keeps its red.
-   Height follows the density; the shadcn 32px row is the floor. */
+   palette and the listbox (active = data-active, the row the keyboard or the
+   pointer is on; aria-selected is the chosen option and gets no fill) and the
+   menu (active = hover or keyboard focus). The text color stays the kit's, so
+   a danger menu item keeps its red. Height follows the density; the shadcn
+   32px row is the floor. */
 :root[data-design-variant="minimal"] [data-ui="command-item"],
 :root[data-design-variant="minimal"] [data-ui="option"],
 :root[data-design-variant="minimal"] [data-ui="menu-item"] {
@@ -279,7 +307,8 @@
   margin: 0 0.5rem; padding: 0.4375rem 0.5rem;
   min-height: calc(var(--density-row) * 1px);
 }
-:root[data-design-variant="minimal"] [data-ui="command-item"][aria-selected="true"],
+:root[data-design-variant="minimal"] [data-ui="command-item"][data-active],
+:root[data-design-variant="minimal"] [data-ui="option"][data-active],
 :root[data-design-variant="minimal"] [data-ui="menu-item"]:not([aria-disabled="true"]):hover,
 :root[data-design-variant="minimal"] [data-ui="menu-item"]:focus-visible {
   background: var(--color-subtle);
@@ -288,7 +317,8 @@
 
 /* The rest of the palette follows its rows: a 12px medium group label with no
    caps, lined up with the inset row text; 13px in the input and the status
-   row; a key hint as a bare hairline chip with no fill, 10px, 4px radius. */
+   row; a key hint as a bare hairline chip with no fill, 10px, 4px radius. The
+   artboard draws no footer, so the key legend takes only the caption size. */
 :root[data-design-variant="minimal"] [data-ui="command-group"] {
   font-size: 0.75rem; font-weight: 500; text-transform: none; letter-spacing: normal;
   padding: 0.375rem 1rem 0.25rem;
@@ -300,6 +330,7 @@
   background: transparent; font-size: 0.625rem; padding: 0.0625rem 0.3125rem;
   border-radius: calc(var(--radius-input) - 2px);
 }
+:root[data-design-variant="minimal"] [data-ui="command-footer"] { font-size: 0.75rem; }
 
 /* ══ Wave 3 — lists, tables, tabs speak minimal ══ */
 
@@ -310,14 +341,9 @@
 :root[data-design-variant="minimal"] [data-ui="table-header"] [role="columnheader"] {
   text-transform: none; letter-spacing: normal; font-size: 0.75rem; font-weight: 500; color: var(--color-text-muted);
 }
-
-/* The selected row (the record last opened from the list) takes the subtle fill
-   and strong text, no accent: the fill and the weight do the telling, as they do
-   for the active row of the command palette. */
-:root[data-design-variant="minimal"] [data-ui="table-row"][aria-selected="true"],
-:root[data-design-variant="minimal"] [data-ui="list-row"][aria-current="true"] {
-  background: var(--color-subtle); color: var(--color-text-main); font-weight: 500;
-}
+/* The sorted column's label steps up to the strong text; the kit's chevron
+   says the direction. The artboard draws no sorted column. */
+:root[data-design-variant="minimal"] [data-ui="table-header"] [role="columnheader"][aria-sort] { color: var(--color-text-main); }
 
 /* List groups — one flat bordered block: rows collapse into it, hairlines
    divide, only the group's ends keep the radius. A press never scales. */
@@ -336,6 +362,18 @@
 :root[data-design-variant="minimal"] [data-ui="list-row"]:hover { background: var(--color-bg-hover); }
 :root[data-design-variant="minimal"] [data-ui="list-row"]:active { transform: none; background: var(--color-subtle); }
 
+/* The row of the focused grid cell takes the subtle fill, the artboard's
+   "inset zinc-100, no accent"; the kit's ring marks the cell. The selected row
+   (the record last opened from the list, on the grid and on the phone's
+   listbox card alike) adds the strong text and weight, so the two rows tell
+   apart when they coincide, as the palette's active row does. These sit after
+   the list-row hover rule so a selected card keeps its fill under the pointer. */
+:root[data-design-variant="minimal"] [data-ui="table-row"][data-active] { background: var(--color-subtle); }
+:root[data-design-variant="minimal"] [data-ui="table-row"][aria-selected="true"],
+:root[data-design-variant="minimal"] [data-ui="list-row"][aria-selected="true"] {
+  background: var(--color-subtle); color: var(--color-text-main); font-weight: 500;
+}
+
 /* Side navigation — the current leaf is a subtle pill with strong text, no
    tint; hover is the same fill. */
 :root[data-design-variant="minimal"] [data-ui="nav-leaf"]:hover { background: var(--color-subtle); }
@@ -343,15 +381,22 @@
   background: var(--color-subtle); color: var(--color-text-main); font-weight: 500;
 }
 
-/* Tabs — the muted underline: neutral foreground carries the active state
-   (no tint), so the strip reads identically under every tint. */
-:root[data-design-variant="minimal"] [data-ui="tabs"] { border-bottom: 1px solid var(--color-border); }
+/* Tabs — the artboard's segmented strip: 12px tabs with a 4px radius, the
+   selected one a subtle fill with strong text, no underline and no tint. The
+   strip keeps the kit's full-width surface and hairline, because the form pins
+   it under the page header and content scrolls beneath it; so the track is
+   the surface and the selected tab the fill, the inverse of the artboard's
+   subtle track with a surface thumb. A tab whose badge reports an error keeps
+   the kit's error tone, so the rest and hover colors skip it. */
+:root[data-design-variant="minimal"] [data-ui="tabs"] { padding: 0.375rem 0; gap: 0.25rem; }
 :root[data-design-variant="minimal"] [data-ui="tab"] {
-  color: var(--color-text-muted); font-weight: 500; border-bottom: 2px solid transparent;
+  padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 500;
+  border-bottom: 0; border-radius: calc(var(--radius-input) - 2px);
 }
-:root[data-design-variant="minimal"] [data-ui="tab"]:hover { color: var(--color-text-main); }
+:root[data-design-variant="minimal"] [data-ui="tab"]:not(:has([data-color="error"])) { color: var(--color-text-muted); }
+:root[data-design-variant="minimal"] [data-ui="tab"]:not(:has([data-color="error"])):hover { color: var(--color-text-main); }
 :root[data-design-variant="minimal"] [data-ui="tab"][aria-selected="true"] {
-  color: var(--color-text-main); border-bottom-color: var(--color-text-main);
+  background: var(--color-subtle); color: var(--color-text-main);
 }
 
 /* Swipe actions — flat slabs: neutral subtle for default, status red for
@@ -366,13 +411,26 @@
 
 /* ══ Wave 4 — chrome & presentation speak minimal ══ */
 
-/* Toast — the kit's flat bordered card with its tone per type (error, warning,
-   success on their light fills) is already this language, so only the action
-   gets the accent moment. */
-:root[data-design-variant="minimal"] [data-ui="toast-action"] { color: var(--color-primary-600); font-weight: 500; }
+/* Toast — the artboard draws none; the kit's bordered card with its tone per
+   type (error, warning, success on their light fills) is this language, so it
+   takes the idiom's plain treatment: the FAB's floating shadow instead of the
+   kit's large one, 13px text, the action as the tint's text moment, the
+   dismiss a small ghost whose hover fill is 10% of its own tone, so it reads
+   on a toned card too. */
+:root[data-design-variant="minimal"] [data-ui="toast"] { box-shadow: var(--shadow-md); font-size: 0.8125rem; }
+:root[data-design-variant="minimal"] [data-ui="toast-action"] { color: var(--color-primary-600); font-size: 0.8125rem; font-weight: 500; }
+:root[data-design-variant="minimal"] [data-ui="toast-dismiss"] { border-radius: calc(var(--radius-input) - 2px); }
+:root[data-design-variant="minimal"] [data-ui="toast-dismiss"]:hover {
+  background: color-mix(in srgb, currentColor 10%, transparent); opacity: 1;
+}
 
 /* PageHeader — flat bar that blends with the page; the hairline materializes
-   only once content scrolls underneath. Tight, confident type. */
+   only once content scrolls underneath. The artboard's title: 18px, 600, a
+   touch tight, on the left; the bar mirror sits left too (the kit centers it,
+   the iOS idiom), so the collapsed title stands where the heading stood. The
+   eyebrow drops the kit's caps, like every caption of this layer. The back
+   action is a ghost button: 13px muted, the subtle fill on hover, a 16px
+   chevron; the kit hides the arrow. */
 :root[data-design-variant="minimal"] [data-ui="page-header-bar"] {
   -webkit-backdrop-filter: none; backdrop-filter: none;
   background: var(--color-bg); border-bottom: 1px solid transparent;
@@ -382,11 +440,15 @@
   border-bottom-color: var(--color-border);
 }
 :root[data-design-variant="minimal"] [data-ui="page-header-heading"] {
-  font-size: 1.5rem; line-height: 2rem; font-weight: 600; letter-spacing: -0.02em;
+  font-size: 1.125rem; line-height: 1.75rem; font-weight: 600; letter-spacing: -0.01em;
 }
-:root[data-design-variant="minimal"] [data-ui="page-header-bar-title"] { font-size: 0.9375rem; font-weight: 600; }
-:root[data-design-variant="minimal"] [data-ui="page-header-back"] { color: var(--color-text-muted); }
-:root[data-design-variant="minimal"] [data-ui="page-header-back"]:hover { color: var(--color-text-main); }
+:root[data-design-variant="minimal"] [data-ui="page-header-bar-title"] { font-size: 0.9375rem; font-weight: 600; text-align: left; }
+:root[data-design-variant="minimal"] [data-ui="page-header-eyebrow"] {
+  text-transform: none; letter-spacing: normal; font-size: 0.75rem; font-weight: 500;
+}
+:root[data-design-variant="minimal"] [data-ui="page-header-back"] { color: var(--color-text-muted); font-size: 0.8125rem; font-weight: 500; }
+:root[data-design-variant="minimal"] [data-ui="page-header-back"]:hover { color: var(--color-text-main); background: var(--color-subtle); }
+:root[data-design-variant="minimal"] [data-ui="page-header-back-chevron"] { height: 1rem; width: 1rem; }
 
 /* TabBar / NavigationBar (mobile) — flat surface bar + hairline; active is
    the high-contrast foreground, the nav pill fills subtle (quiet, tint-free). */
@@ -421,12 +483,6 @@
 /* Tinted text moments rise a step in dark (same move as the ring). */
 :root[data-design-variant="minimal"].dark [data-ui="toast-action"] { color: var(--color-primary-400); }
 :root[data-design-variant="minimal"].dark [data-ui="menu-item"][aria-checked="true"] svg { color: var(--color-primary-400); }
-
-/* The scrim goes near-opaque so the flat, shadow-light panels still separate. */
-:root[data-design-variant="minimal"].dark [data-ui="dialog-overlay"],
-:root[data-design-variant="minimal"].dark [data-ui="command-overlay"] {
-  background: color-mix(in srgb, var(--color-bg) 85%, transparent);
-}
 
 /* ══════════════════════════════════════════════════════════════════════════
    State precedence — every focus, locked (read-only, disabled) and invalid
@@ -475,13 +531,13 @@
 :root[data-design-variant="minimal"] [data-ui="list-row"]:focus-visible { position: relative; z-index: 1; }
 
 /* Locked (read-only or disabled) — a filled document field: subtle fill,
-   muted text, the resting hairline even while focused. The frame is a
-   <div>: its state is read off the input it wraps, because the kit stamps
-   readonly and disabled on the input only. */
+   muted text, the resting hairline even while focused; the artboard's
+   read-only field. The frame is a <div> and mirrors its input's state as
+   data-readonly, data-disabled and aria-invalid. */
 :root[data-design-variant="minimal"] [data-ui="input"][readonly],
-:root[data-design-variant="minimal"] [data-ui="input-frame"]:has([data-ui="input"][readonly]),
+:root[data-design-variant="minimal"] [data-ui="input-frame"][data-readonly],
 :root[data-design-variant="minimal"] [data-ui="input"]:disabled,
-:root[data-design-variant="minimal"] [data-ui="input-frame"]:has([data-ui="input"]:disabled),
+:root[data-design-variant="minimal"] [data-ui="input-frame"][data-disabled],
 :root[data-design-variant="minimal"] [data-ui="select-trigger"]:disabled {
   background: var(--color-subtle); color: var(--color-text-muted); border-color: var(--color-border);
 }
@@ -504,9 +560,11 @@
    variant takes shadcn's half opacity. */
 :root[data-design-variant="minimal"] [data-ui="button"]:disabled { opacity: 0.5; }
 
-/* Invalid — the hairline turns status red; the focus ring stays neutral. */
+/* Invalid — the hairline turns status red; the focus ring stays neutral. The
+   kit's base rule paints this edge at the specificity of the locked rule
+   above, which loads later, so the red is restated here. */
 :root[data-design-variant="minimal"] [data-ui="input"][aria-invalid="true"],
-:root[data-design-variant="minimal"] [data-ui="input-frame"]:has([data-ui="input"][aria-invalid="true"]),
+:root[data-design-variant="minimal"] [data-ui="input-frame"][aria-invalid="true"],
 :root[data-design-variant="minimal"] [data-ui="select-trigger"][aria-invalid="true"],
 :root[data-design-variant="minimal"] [data-ui="textfield"][data-invalid] { border-color: var(--color-error); }
 :root[data-design-variant="minimal"] [data-ui="field-label"]:has(+ * [aria-invalid="true"]) { color: var(--color-error); }
@@ -537,16 +595,16 @@
 /* Locked fields — in dark the subtle fill and the hairline can share one
    value, so the edge takes the strong hairline to stay visible. */
 :root[data-design-variant="minimal"].dark [data-ui="input"][readonly],
-:root[data-design-variant="minimal"].dark [data-ui="input-frame"]:has([data-ui="input"][readonly]),
+:root[data-design-variant="minimal"].dark [data-ui="input-frame"][data-readonly],
 :root[data-design-variant="minimal"].dark [data-ui="input"]:disabled,
-:root[data-design-variant="minimal"].dark [data-ui="input-frame"]:has([data-ui="input"]:disabled),
+:root[data-design-variant="minimal"].dark [data-ui="input-frame"][data-disabled],
 :root[data-design-variant="minimal"].dark [data-ui="select-trigger"]:disabled {
   border-color: var(--color-border-strong);
 }
 /* The dark locked rule outranks the light invalid rule, so invalid is
    restated here and a locked invalid field keeps its red edge in dark. */
 :root[data-design-variant="minimal"].dark [data-ui="input"][aria-invalid="true"],
-:root[data-design-variant="minimal"].dark [data-ui="input-frame"]:has([data-ui="input"][aria-invalid="true"]),
+:root[data-design-variant="minimal"].dark [data-ui="input-frame"][aria-invalid="true"],
 :root[data-design-variant="minimal"].dark [data-ui="select-trigger"][aria-invalid="true"] {
   border-color: var(--color-error);
 }
@@ -567,7 +625,7 @@
 :root[data-design-variant="minimal"] [data-ui="table"] [role="gridcell"] [data-ui="input-frame"]:focus-within,
 :root[data-design-variant="minimal"] [data-ui="table"] [role="gridcell"] [data-ui="select-trigger"]:focus-visible,
 :root[data-design-variant="minimal"] [data-ui="table"] [role="gridcell"] [data-ui="input"][aria-invalid="true"],
-:root[data-design-variant="minimal"] [data-ui="table"] [role="gridcell"] [data-ui="input-frame"]:has([data-ui="input"][aria-invalid="true"]),
+:root[data-design-variant="minimal"] [data-ui="table"] [role="gridcell"] [data-ui="input-frame"][aria-invalid="true"],
 :root[data-design-variant="minimal"] [data-ui="table"] [role="gridcell"] [data-ui="select-trigger"][aria-invalid="true"] {
   min-height: 0; background: transparent; border-color: transparent; box-shadow: none;
 }
@@ -578,7 +636,7 @@
 :root[data-design-variant="minimal"].dark [data-ui="table"] [role="gridcell"] [data-ui="input-frame"]:focus-within,
 :root[data-design-variant="minimal"].dark [data-ui="table"] [role="gridcell"] [data-ui="select-trigger"]:focus-visible,
 :root[data-design-variant="minimal"].dark [data-ui="table"] [role="gridcell"] [data-ui="input"][aria-invalid="true"],
-:root[data-design-variant="minimal"].dark [data-ui="table"] [role="gridcell"] [data-ui="input-frame"]:has([data-ui="input"][aria-invalid="true"]),
+:root[data-design-variant="minimal"].dark [data-ui="table"] [role="gridcell"] [data-ui="input-frame"][aria-invalid="true"],
 :root[data-design-variant="minimal"].dark [data-ui="table"] [role="gridcell"] [data-ui="select-trigger"][aria-invalid="true"] {
   border-color: transparent; box-shadow: none;
 }

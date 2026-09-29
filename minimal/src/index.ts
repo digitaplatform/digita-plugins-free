@@ -38,6 +38,9 @@ const minimal: Design = {
       error: '#DC2626', errorLight: '#FEF2F2', warning: '#D97706', warningLight: '#FFFBEB',
       success: '#16A34A', successLight: '#F0FDF4', info: '#2563EB', infoLight: '#EFF6FF',
       onPrimary: '#FFFFFF', onError: '#FFFFFF',
+      // The overlays' veil: a faint 6% of the foreground, no blur; the panels
+      // separate by their hairline and shadow, not by a dark page.
+      scrim: 'rgba(9,9,11,0.06)',
       // ADR-V2: primaryContainer/onPrimaryContainer/selection/selectionSoft
       // come from the tint layer (design is primary-less).
     },
@@ -52,6 +55,9 @@ const minimal: Design = {
       error: '#F87171', errorLight: 'rgba(220,38,38,0.15)', warning: '#FBBF24', warningLight: 'rgba(217,119,6,0.15)',
       success: '#4ADE80', successLight: 'rgba(22,163,74,0.15)', info: '#60A5FA', infoLight: 'rgba(37,99,235,0.15)',
       onPrimary: '#FFFFFF', onError: '#FFFFFF',
+      // Near-opaque page color: the flat, shadow-light panels need the page
+      // gone to separate from it.
+      scrim: 'rgba(9,9,11,0.85)',
       // ADR-V2: primary-derived roles come from the tint layer.
     },
   },
