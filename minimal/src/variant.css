@@ -64,11 +64,11 @@
 }
 :root[data-design-variant="minimal"] [data-ui="dialog-header"] { border-bottom-color: transparent; }
 :root[data-design-variant="minimal"] [data-ui="dialog-header"] h2 { font-size: 0.9375rem; font-weight: 600; letter-spacing: -0.01em; }
-/* The body copy is the artboard's 13px muted paragraph; the kit's controls and
-   the field labels inside a body carry their own color. */
-:root[data-design-variant="minimal"] [data-ui="dialog-body"] {
-  font-size: 0.8125rem; line-height: 1.5; color: var(--color-text-muted);
-}
+/* The body copy takes the artboard's 13px and its 1.5 line height. The
+   artboard's muted tone is not set here: the confirm message is a bare text
+   node with no hook of its own, and a muted body would also mute every table
+   cell and footer inside a dialog that carries no color of its own. */
+:root[data-design-variant="minimal"] [data-ui="dialog-body"] { font-size: 0.8125rem; line-height: 1.5; }
 :root[data-design-variant="minimal"] [data-ui="dialog-footer"] {
   border-top-color: transparent; display: flex; justify-content: flex-end; gap: 0.5rem;
 }
@@ -83,16 +83,17 @@
 
 /* Buttons — flat, weight 500, tight radius, NO gradient/shadow, no press
    transform. Hierarchy: solid foreground / subtle fill / hairline outline / ghost.
-   Icon buttons keep the kit's two sizes (28px / 36px): a floor would inflate
-   the small one in dense toolbars. */
+   The md height is the kit's --control-h, the height of every single-line
+   field, so a button and a field sit level in a toolbar; xs and sm take the
+   shadcn 32px floor. Icon buttons keep the kit's two sizes (28px / 36px): a
+   floor would inflate the small one in dense toolbars. */
 :root[data-design-variant="minimal"] [data-ui="button"],
 :root[data-design-variant="minimal"] [data-ui="icon-button"] {
   font-weight: 500; background-image: none; box-shadow: none;
 }
-:root[data-design-variant="minimal"] [data-ui="button"] { min-height: 2.25rem; border-radius: var(--radius-btn); }
+:root[data-design-variant="minimal"] [data-ui="button"] { border-radius: var(--radius-btn); }
 :root[data-design-variant="minimal"] [data-ui="button"][data-size="xs"],
 :root[data-design-variant="minimal"] [data-ui="button"][data-size="sm"] { min-height: 2rem; }
-:root[data-design-variant="minimal"] [data-ui="button"][data-size="lg"] { min-height: 2.5rem; }
 :root[data-design-variant="minimal"] [data-ui="button"]:active,
 :root[data-design-variant="minimal"] [data-ui="icon-button"]:active { transform: none; }
 
@@ -158,16 +159,17 @@
 }
 :root[data-design-variant="minimal"] [data-ui="fab"]:active { transform: none; }
 
-/* Inputs / Select — clean 1px bordered fields on the surface, tight radius.
-   Focus, locked and invalid live in the state block at the end of the file. */
+/* Inputs / Select — clean 1px bordered fields on the surface, tight radius,
+   the kit's --control-h height. Focus, locked and invalid live in the state
+   block at the end of the file. */
 :root[data-design-variant="minimal"] [data-ui="input"],
 :root[data-design-variant="minimal"] [data-ui="input-frame"],
 :root[data-design-variant="minimal"] [data-ui="select-trigger"] {
   background: var(--color-surface); border-color: var(--color-border);
-  border-radius: var(--radius-input); box-shadow: none; min-height: 2.25rem;
+  border-radius: var(--radius-input); box-shadow: none;
 }
 :root[data-design-variant="minimal"] [data-ui="input-frame"] [data-ui="input"] {
-  background: transparent; border-color: transparent; box-shadow: none; min-height: 0;
+  background: transparent; border-color: transparent; box-shadow: none;
 }
 /* Open select — the hairline strengthens while the listbox is up. */
 :root[data-design-variant="minimal"] [data-ui="select-trigger"][aria-expanded="true"] {
@@ -203,11 +205,13 @@
   color: var(--color-text-muted);
 }
 
-/* Checkbox — 16px, crisp 4px corner, hairline off / strong foreground on
-   (checked and indeterminate alike). The mark takes the page background,
-   because the kit's white mark would vanish on the light fill of dark mode. */
+/* Checkbox — 16px, crisp 4px corner, a muted edge off (the strong hairline
+   reads 1.5:1 on the surface, under the 3:1 a control's boundary needs) and
+   the strong foreground on (checked and indeterminate alike). The mark takes
+   the page background, because the kit's white mark would vanish on the light
+   fill of dark mode. */
 :root[data-design-variant="minimal"] [data-ui="checkbox"] {
-  height: 16px; width: 16px; border-radius: 4px; border: 1px solid var(--color-border-strong); box-shadow: none;
+  height: 16px; width: 16px; border-radius: 4px; border: 1px solid var(--color-text-muted); box-shadow: none;
 }
 :root[data-design-variant="minimal"] [data-ui="checkbox-box"] { height: 16px; width: 16px; }
 :root[data-design-variant="minimal"] [data-ui="checkbox"]:checked,
@@ -436,7 +440,8 @@
    the iOS idiom), so the collapsed title stands where the heading stood. The
    eyebrow drops the kit's caps, like every caption of this layer. The back
    action is a ghost button: 13px muted, the subtle fill on hover, a 16px
-   chevron; the kit hides the arrow. The title block, the status slot, the
+   chevron; its label is the button's own text and takes that size and tone;
+   the kit hides the arrow. The title block, the status slot, the
    search slot and the actions slot are the kit's layout wrappers; this layer
    adds nothing to them. */
 :root[data-design-variant="minimal"] [data-ui="page-header-bar"] {
@@ -635,7 +640,7 @@
 :root[data-design-variant="minimal"] [data-ui="table"] [role="gridcell"] [data-ui="input"][aria-invalid="true"],
 :root[data-design-variant="minimal"] [data-ui="table"] [role="gridcell"] [data-ui="input-frame"][aria-invalid="true"],
 :root[data-design-variant="minimal"] [data-ui="table"] [role="gridcell"] [data-ui="select-trigger"][aria-invalid="true"] {
-  min-height: 0; background: transparent; border-color: transparent; box-shadow: none;
+  background: transparent; border-color: transparent; box-shadow: none;
 }
 :root[data-design-variant="minimal"].dark [data-ui="table"] [role="gridcell"] [data-ui="input"],
 :root[data-design-variant="minimal"].dark [data-ui="table"] [role="gridcell"] [data-ui="input-frame"],

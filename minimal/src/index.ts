@@ -34,16 +34,21 @@ const minimal: Design = {
       // minimal keeps elevation nearly flat; borders do the separating.
       surfaceContainerLowest: '#FFFFFF', surfaceContainerLow: '#FAFAFA', surfaceContainer: '#F6F6F7',
       surfaceContainerHigh: '#F4F4F5', surfaceContainerHighest: '#EFEFF1',
-      textMain: '#09090B', textMuted: '#71717A',
-      // The status tones are the 700 steps: the 600 steps read under the 4.5:1
-      // that text needs, success and warning at 3.3:1 and 3.2:1 on the surface,
-      // error at 4.4:1 on its light fill (the toast) and on the subtle fill (a
-      // badge in the selected row).
+      // Muted text sits a shade under zinc-500 (#71717A): that step reads
+      // 4.40:1 on the subtle fill (a locked field, the table header, a selected
+      // row), this one 4.80:1 there and 5.28:1 on white.
+      textMain: '#09090B', textMuted: '#6B6B74',
+      // Error, warning and success are the 700 steps: the 600 steps read under
+      // the 4.5:1 that text needs, success and warning at 3.3:1 and 3.2:1 on
+      // the surface, error at 4.4:1 on its light fill (the toast) and on the
+      // subtle fill (a badge in the selected row). Info keeps blue-600, which
+      // reads 4.70:1 on the subtle fill.
       error: '#B91C1C', errorLight: '#FEF2F2', warning: '#B45309', warningLight: '#FFFBEB',
       success: '#15803D', successLight: '#F0FDF4', info: '#2563EB', infoLight: '#EFF6FF',
       onPrimary: '#FFFFFF', onError: '#FFFFFF',
-      // The overlays' veil: a faint 6% of the foreground, no blur; the panels
-      // separate by their hairline and shadow, not by a dark page.
+      // The overlays' veil: a faint 6% of the foreground; the panels separate
+      // by their hairline and shadow, not by a dark page. variant.css takes the
+      // kit's blur off the command palette and the dialog; the Drawer keeps it.
       scrim: 'rgba(9,9,11,0.06)',
       // ADR-V2: primaryContainer/onPrimaryContainer/selection/selectionSoft
       // come from the tint layer (design is primary-less).
@@ -58,7 +63,9 @@ const minimal: Design = {
       textMain: '#FAFAFA', textMuted: '#A1A1AA',
       error: '#F87171', errorLight: 'rgba(220,38,38,0.15)', warning: '#FBBF24', warningLight: 'rgba(217,119,6,0.15)',
       success: '#4ADE80', successLight: 'rgba(22,163,74,0.15)', info: '#60A5FA', infoLight: 'rgba(37,99,235,0.15)',
-      onPrimary: '#FFFFFF', onError: '#FFFFFF',
+      // The danger fill is the light red-400, so its text is the page's
+      // near-black: white reads 2.77:1 on it, this reads 7.19:1.
+      onPrimary: '#FFFFFF', onError: '#09090B',
       // Near-opaque page color: the flat, shadow-light panels need the page
       // gone to separate from it.
       scrim: 'rgba(9,9,11,0.85)',
