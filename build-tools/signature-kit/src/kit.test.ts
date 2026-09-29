@@ -52,7 +52,14 @@ test('the check sees every pair shape it must catch', () => {
     colors: { ...kit.signature.colors, textMuted: { light: '#B0B0B0', dark: '#3A3A3A' } },
   };
   const failures = describe(checkContrast(planted, kit.paints).filter((pair) => pair.status === 'fail'));
-  for (const expected of ['textMuted on bg (light)', 'textMuted on surface (dark)', 'textMuted on card (light)']) {
+  // 'onPrimary on primary-600' and 'primary-700 on primary-100' have no planted red: the theme's
+  // onPrimaryFor and synthesizeRamp make both pass for every brand colour, so only a change of those
+  // functions turns them red.
+  const expectedFailures = [
+    'textMuted on bg (light)', 'textMuted on surface (dark)', 'textMuted on card (light)',
+    'textMuted on surfaceContainerHighest (light)', 'textMuted on bgHover over bg (light)',
+  ];
+  for (const expected of expectedFailures) {
     assert.ok(failures.includes(expected), `${expected} is not caught: ${failures.join(', ')}`);
   }
 });

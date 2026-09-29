@@ -1,4 +1,5 @@
-import { contrastRatio, onPrimaryFor, synthesizeRamp, type Signature } from '@digitaplatform/theme';
+import { contrastRatio, cssVarName, onPrimaryFor, signatureStyle, synthesizeRamp, type Signature } from '@digitaplatform/theme';
+import { overlay } from './color.js';
 import type { SignatureKit } from './make.js';
 
 /** One colour pair the kit draws, measured with the WCAG 2 contrast formula. */
@@ -17,6 +18,11 @@ export interface ContrastPair {
 const TEXT = 4.5;
 const GRAPHIC = 3;
 
+// The theme composes these grounds from surface and subtle and writes them with the signature.
+const SURFACE_CONTAINERS = [
+  'surfaceContainerLowest', 'surfaceContainerLow', 'surfaceContainer', 'surfaceContainerHigh', 'surfaceContainerHighest',
+];
+
 // The kit draws text-primary-600 as text (the active tab, the active nav rail row, today in the date
 // picker) in both modes, and the ramp steps do not change with the mode. A colour reaches 4.5:1 on
 // white only under 0.183 relative luminance, and on the digita dark canvas only over 0.19, so no
@@ -27,7 +33,8 @@ const PRIMARY_TEXT_WAIVER =
 
 /**
  * Every text and control pair the kit draws from a signature: body and muted text on the canvas,
- * the surface and the subtle fill, and on every graphic `paints` names; the primary label on its
+ * the surface, the subtle fill, the surface-container ramp the theme composes, the hovered row
+ * (bgHover over the canvas and the surface), and on every graphic `paints` names; the primary label on its
  * fill (the tint rule of digita-platform#89); the badge text on its container; and step 600 as a
  * graphic (the active tab rule, a menu tick, the focus ring) on the canvas and the surface.
  */
@@ -40,6 +47,12 @@ export function checkContrast(signature: Signature, paints: SignatureKit['paints
     const value = colors[name]?.[mode];
     if (!value) throw new Error(`signature ${signature.id} has no ${name} colour in ${mode} mode`);
     return value;
+  };
+  const written = signatureStyle(signature).properties;
+  const writtenGround = (name: string, mode: 'light' | 'dark') => {
+    const value = /^light-dark\((#[0-9A-Fa-f]{6}), (#[0-9A-Fa-f]{6})\)$/.exec(written[cssVarName(name)] ?? '');
+    if (!value) throw new Error(`signature ${signature.id}: the theme writes no hex ${cssVarName(name)} to check`);
+    return value[mode === 'light' ? 1 : 2]!;
   };
 
   const pairs: ContrastPair[] = [];
@@ -55,6 +68,11 @@ export function checkContrast(signature: Signature, paints: SignatureKit['paints
   for (const mode of ['light', 'dark'] as const) {
     for (const text of ['textMain', 'textMuted']) {
       for (const ground of ['bg', 'surface', 'subtle']) measure(`${text} on ${ground}`, mode, token(text, mode), token(ground, mode), TEXT);
+      for (const ground of SURFACE_CONTAINERS) measure(`${text} on ${ground}`, mode, token(text, mode), writtenGround(ground, mode), TEXT);
+      for (const ground of ['bg', 'surface']) {
+        const hovered = overlay(token(ground, mode), token('bgHover', mode));
+        measure(`${text} on bgHover over ${ground}`, mode, token(text, mode), hovered, TEXT);
+      }
       for (const [graphic, colours] of Object.entries(paints)) {
         // A graphic has several colours under its text; the pair is as strong as its weakest one.
         const weakest = colours[mode].reduce((a, b) =>

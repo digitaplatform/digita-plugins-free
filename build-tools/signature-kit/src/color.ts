@@ -22,6 +22,14 @@ export function rgba(hex: string, alpha: number): string {
   return `rgba(${rgbOf(hex).join(',')},${alpha})`;
 }
 
+/** The opaque colour `paint` (a six-digit hex or an `rgba()`) shows when laid over the opaque `ground`. */
+export function overlay(ground: string, paint: string): string {
+  if (/^#[0-9A-Fa-f]{6}$/.test(paint)) return paint;
+  const m = /^rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*([\d.]+)\s*\)$/.exec(paint);
+  if (!m) throw new Error(`colour ${paint} is neither a six-digit hex nor an rgba()`);
+  return mix(ground, hexOf([Number(m[1]), Number(m[2]), Number(m[3])]), Number(m[4]));
+}
+
 /** An OKLCH colour as hex; a channel outside sRGB is clipped, which low neutral chroma never reaches. */
 export function oklchHex(L: number, C: number, H: number): string {
   const a = C * Math.cos((H * Math.PI) / 180);
