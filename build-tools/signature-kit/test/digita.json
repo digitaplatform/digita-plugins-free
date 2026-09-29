@@ -1,0 +1,10 @@
+{
+  "id": "digita",
+  "name": "Digita",
+  "family": true,
+  "brand": "#00B2F6",
+  "neutral": "cool",
+  "fonts": { "display": "Space Grotesk", "sans": "Manrope", "mono": "JetBrains Mono" },
+  "motif": "grid",
+  "graphics": "soft"
+}

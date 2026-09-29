@@ -1,0 +1,10 @@
+{
+  "id": "planted-fail",
+  "name": "Planted Fail",
+  "family": false,
+  "brand": "#F2C230",
+  "neutral": "neutral",
+  "fonts": { "display": "Space Grotesk", "sans": "Manrope", "mono": "JetBrains Mono" },
+  "motif": "diagonal",
+  "graphics": "soft"
+}

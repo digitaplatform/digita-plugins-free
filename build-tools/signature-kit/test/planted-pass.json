@@ -1,0 +1,10 @@
+{
+  "id": "planted-pass",
+  "name": "Planted Pass",
+  "family": false,
+  "brand": "#2F6FDE",
+  "neutral": "warm",
+  "fonts": { "display": "Manrope", "sans": "Inter", "mono": "JetBrains Mono" },
+  "motif": "dots",
+  "graphics": "sharp"
+}
