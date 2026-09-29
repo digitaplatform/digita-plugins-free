@@ -35,9 +35,11 @@ const minimal: Design = {
       surfaceContainerLowest: '#FFFFFF', surfaceContainerLow: '#FAFAFA', surfaceContainer: '#F6F6F7',
       surfaceContainerHigh: '#F4F4F5', surfaceContainerHighest: '#EFEFF1',
       textMain: '#09090B', textMuted: '#71717A',
-      // success and warning are the 700 steps: the 600 steps read at 3.3:1 and
-      // 3.2:1 as text on the surface, under the 4.5:1 the badge's text-only tone needs.
-      error: '#DC2626', errorLight: '#FEF2F2', warning: '#B45309', warningLight: '#FFFBEB',
+      // The status tones are the 700 steps: the 600 steps read under the 4.5:1
+      // that text needs, success and warning at 3.3:1 and 3.2:1 on the surface,
+      // error at 4.4:1 on its light fill (the toast) and on the subtle fill (a
+      // badge in the selected row).
+      error: '#B91C1C', errorLight: '#FEF2F2', warning: '#B45309', warningLight: '#FFFBEB',
       success: '#15803D', successLight: '#F0FDF4', info: '#2563EB', infoLight: '#EFF6FF',
       onPrimary: '#FFFFFF', onError: '#FFFFFF',
       // The overlays' veil: a faint 6% of the foreground, no blur; the panels

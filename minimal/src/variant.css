@@ -320,7 +320,9 @@
 /* The rest of the palette follows its rows: a 12px medium group label with no
    caps, lined up with the inset row text; 13px in the input and the status
    row; a key hint as a bare hairline chip with no fill, 10px, 4px radius. The
-   artboard draws no footer, so the key legend takes only the caption size. */
+   artboard draws no footer, so the key legend takes only the caption size. The
+   row's icon keeps the kit's muted glyph: a second tone would be the only
+   color in the panel. */
 :root[data-design-variant="minimal"] [data-ui="command-group"] {
   font-size: 0.75rem; font-weight: 500; text-transform: none; letter-spacing: normal;
   padding: 0.375rem 1rem 0.25rem;
@@ -344,7 +346,9 @@
   text-transform: none; letter-spacing: normal; font-size: 0.75rem; font-weight: 500; color: var(--color-text-muted);
 }
 /* The sorted column's label steps up to the strong text; the kit's chevron
-   says the direction. The artboard draws no sorted column. */
+   says the direction. The artboard draws no sorted column. While the grid is
+   scrolled sideways (data-scroll-l, data-scroll-r) the pinned columns keep the
+   kit's soft shadow and hairline: a flat layer has no other clipped signal. */
 :root[data-design-variant="minimal"] [data-ui="table-header"] [role="columnheader"][aria-sort] { color: var(--color-text-main); }
 
 /* List groups — one flat bordered block: rows collapse into it, hairlines
@@ -389,7 +393,8 @@
    it under the page header and content scrolls beneath it; so the track is
    the surface and the selected tab the fill, the inverse of the artboard's
    subtle track with a surface thumb. A tab whose badge reports an error keeps
-   the kit's error tone, so the rest and hover colors skip it. */
+   the kit's error tone, so the rest and hover colors skip it. The panel is a
+   bare region and keeps the kit's layout. */
 :root[data-design-variant="minimal"] [data-ui="tabs"] { padding: 0.375rem 0; gap: 0.25rem; }
 :root[data-design-variant="minimal"] [data-ui="tab"] {
   padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 500;
@@ -418,7 +423,8 @@
    takes the idiom's plain treatment: the FAB's floating shadow instead of the
    kit's large one, 13px text, the action as the tint's text moment, the
    dismiss a small ghost whose hover fill is 10% of its own tone, so it reads
-   on a toned card too. */
+   on a toned card too. The viewport is the kit's bottom-right stack and keeps
+   its layout. */
 :root[data-design-variant="minimal"] [data-ui="toast"] { box-shadow: var(--shadow-md); font-size: 0.8125rem; }
 :root[data-design-variant="minimal"] [data-ui="toast-action"] { color: var(--color-primary-600); font-size: 0.8125rem; font-weight: 500; }
 :root[data-design-variant="minimal"] [data-ui="toast-dismiss"] { border-radius: calc(var(--radius-input) - 2px); }
@@ -430,7 +436,9 @@
    the iOS idiom), so the collapsed title stands where the heading stood. The
    eyebrow drops the kit's caps, like every caption of this layer. The back
    action is a ghost button: 13px muted, the subtle fill on hover, a 16px
-   chevron; the kit hides the arrow. */
+   chevron; the kit hides the arrow. The title block, the status slot, the
+   search slot and the actions slot are the kit's layout wrappers; this layer
+   adds nothing to them. */
 :root[data-design-variant="minimal"] [data-ui="page-header-bar"] {
   -webkit-backdrop-filter: none; backdrop-filter: none;
   background: var(--color-bg); border-bottom: 1px solid transparent;
