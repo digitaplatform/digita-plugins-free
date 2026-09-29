@@ -2,13 +2,15 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { execFileSync, spawnSync } from 'node:child_process';
-import { mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { signatureStyle, type Signature } from '@digitaplatform/theme';
 import { signature as digita } from '@digitaplatform/digita';
 import { signature as simetrix } from '@digitaplatform/simetrix';
 import { checkContrast, makeSignature, readSignatureInput } from './index.js';
+
+const genSignature = join(dirname(fileURLToPath(import.meta.url)), '..', '..', 'signature-build', 'gen-signature.mjs');
 
 const kitDir = join(dirname(fileURLToPath(import.meta.url)), '..');
 const inputOf = (name: string) =>
@@ -61,6 +63,12 @@ test('the primary label follows the tint rule of digita-platform#89', () => {
   assert.ok(label && label.status === 'pass' && label.foreground !== '#FFFFFF', JSON.stringify(label));
 });
 
+test('a signature.json that is not one object is refused by name', () => {
+  for (const json of [null, 'digita', ['digita'], 3]) {
+    assert.throws(() => readSignatureInput(json), /signature input: signature\.json must hold one object, not /);
+  }
+});
+
 test('a font the theme does not bundle is refused as a platform dependency', () => {
   const input = JSON.parse(readFileSync(join(kitDir, 'test', 'planted-pass.json'), 'utf8'));
   input.fonts.display = 'Playfair Display';
@@ -93,6 +101,21 @@ test('make-signature writes a package that compiles against the installed theme'
       { encoding: 'utf8' },
     );
     assert.equal(tsc.status, 0, tsc.stdout + tsc.stderr);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('the lockup family reaches the delivered manifest gen-signature writes', () => {
+  const dir = mkdtempSync(join(kitDir, 'tmp-'));
+  try {
+    const { signature } = makeSignature(inputOf('digita'));
+    writeFileSync(join(dir, 'package.json'), JSON.stringify({ digita: { id: 'digita', type: 'signature', tier: 'free', sdk: '^0.1.0' } }));
+    mkdirSync(join(dir, 'dist'));
+    writeFileSync(join(dir, 'dist', 'index.js'), `export const signature = ${JSON.stringify(signature)};\n`);
+    execFileSync(process.execPath, [genSignature], { cwd: dir });
+    const manifest = JSON.parse(readFileSync(join(dir, 'dist', 'digita-plugin.json'), 'utf8'));
+    assert.equal(manifest.family, 'digita');
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
