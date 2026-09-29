@@ -244,6 +244,11 @@
   background: var(--color-subtle); border-color: var(--color-border-strong); color: var(--color-text-main);
 }
 :root[data-design-variant="minimal"] [data-ui="chip"][data-selected] [data-ui="chip-check"] { display: inline-flex; }
+/* The chip that adds a filter is an outline waiting to be filled: dashed hairline,
+   muted text; an applied filter is the selected chip above. */
+:root[data-design-variant="minimal"] [data-ui="filter-action"] [data-ui="chip"] {
+  border-style: dashed; color: var(--color-text-muted);
+}
 
 /* Rows in floating panels — the signature row: inset, 4px-rounded, a subtle
    fill for the active row and NO separators. One recipe for the command
@@ -297,6 +302,14 @@
 :root[data-design-variant="minimal"] [data-ui="table-header"] th,
 :root[data-design-variant="minimal"] [data-ui="table-header"] [role="columnheader"] {
   text-transform: none; letter-spacing: normal; font-size: 0.75rem; font-weight: 500; color: var(--color-text-muted);
+}
+
+/* The selected row (the record last opened from the list) takes the subtle fill
+   and strong text, no accent: the fill and the weight do the telling, as they do
+   for the active row of the command palette. */
+:root[data-design-variant="minimal"] [data-ui="table-row"][aria-selected="true"],
+:root[data-design-variant="minimal"] [data-ui="list-row"][aria-current="true"] {
+  background: var(--color-subtle); color: var(--color-text-main); font-weight: 500;
 }
 
 /* List groups — one flat bordered block: rows collapse into it, hairlines
