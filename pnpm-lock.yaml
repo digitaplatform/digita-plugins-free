@@ -11,8 +11,8 @@ importers:
   build-tools/design-css:
     dependencies:
       '@digitaplatform/theme':
-        specifier: ^0.3.9
-        version: 0.3.9
+        specifier: ^0.3.13
+        version: 0.3.13
 
   build-tools/signature: {}
 
@@ -34,8 +34,8 @@ importers:
         specifier: workspace:*
         version: link:../build-tools/design-css
       '@digitaplatform/theme':
-        specifier: ^0.3.9
-        version: 0.3.9
+        specifier: ^0.3.13
+        version: 0.3.13
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
@@ -101,8 +101,8 @@ packages:
   '@digitaplatform/theme@0.3.0':
     resolution: {integrity: sha512-mEcL7TgD95Cavd4UKxqG6zuE7KDXDAxn2AbyHTOo/pp0UiCu6WHg7ZKcB80H1tr47ad+zwbPh40o66fnZ7Ek9A==, tarball: https://npm.pkg.github.com/download/@digitaplatform/theme/0.3.0/17f2c0d29e55cfc93eda63bd73b4c404b65ec3a4}
 
-  '@digitaplatform/theme@0.3.9':
-    resolution: {integrity: sha512-kf1YBgSYkk5G5L4K8QwOwBw7XlKZ5OSi/htOKSdZexpi/hbLjojS7mT+e2FMMw4itefVtj2x5WJ08DSDCpp17Q==, tarball: https://npm.pkg.github.com/download/@digitaplatform/theme/0.3.9/c43e7d73be65b757ab1416cae33e8d86113c2f1a}
+  '@digitaplatform/theme@0.3.13':
+    resolution: {integrity: sha512-HUj5ZuTjoEHpXwf1DfCMqXwWECOE/6Vuth5f41DL6WfHYd8Pk/J5uApirurIfY8/TsJpyd/6ScHxfIjCxlce0w==, tarball: https://npm.pkg.github.com/download/@digitaplatform/theme/0.3.13/f26fd88cf4c1337afdef033f51a805e6e1f5acd3}
 
   '@tanstack/react-virtual@3.14.6':
     resolution: {integrity: sha512-4+Uq8m0/gzO4kMCHUEpTtGX1RnONK0C+g88b2ltwPMWUBiaVarBuWKoPJaz7gj1cKCVRAdyu+U8GcKhwCc2beA==}
@@ -193,7 +193,7 @@ snapshots:
 
   '@digitaplatform/theme@0.3.0': {}
 
-  '@digitaplatform/theme@0.3.9': {}
+  '@digitaplatform/theme@0.3.13': {}
 
   '@tanstack/react-virtual@3.14.6(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
     dependencies:

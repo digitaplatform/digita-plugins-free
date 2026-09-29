@@ -45,7 +45,7 @@ const minimal: Design = {
       // reads 4.70:1 on the subtle fill.
       error: '#B91C1C', errorLight: '#FEF2F2', warning: '#B45309', warningLight: '#FFFBEB',
       success: '#15803D', successLight: '#F0FDF4', info: '#2563EB', infoLight: '#EFF6FF',
-      onPrimary: '#FFFFFF', onError: '#FFFFFF',
+      onError: '#FFFFFF',
       // The overlays' veil: a faint 6% of the foreground; the panels separate
       // by their hairline and shadow, not by a dark page. variant.css takes the
       // kit's blur off the command palette and the dialog; the Drawer keeps it.
@@ -65,7 +65,7 @@ const minimal: Design = {
       success: '#4ADE80', successLight: 'rgba(22,163,74,0.15)', info: '#60A5FA', infoLight: 'rgba(37,99,235,0.15)',
       // The danger fill is the light red-400, so its text is the page's
       // near-black: white reads 2.77:1 on it, this reads 7.19:1.
-      onPrimary: '#FFFFFF', onError: '#09090B',
+      onError: '#09090B',
       // Near-opaque page color: the flat, shadow-light panels need the page
       // gone to separate from it.
       scrim: 'rgba(9,9,11,0.85)',

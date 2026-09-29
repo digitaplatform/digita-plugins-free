@@ -1,9 +1,9 @@
 /* ══════════════════════════════════════════════════════════════════════════
    Minimal variant layer — scoped to :root[data-design-variant="minimal"].
    Geist / shadcn language: flat surfaces, hairline borders, tight radii,
-   quiet neutral controls. The primary action, the checkbox and the focus
-   ring are neutral (the strong foreground on the page background); the tint
-   shows only in text moments and on the switched-on switch track. Every rule
+   quiet neutral controls, one accent moment (the tint) for the primary action,
+   the FAB, the checked checkbox and the switched-on switch, labelled with the
+   tint's own label color; the focus ring stays neutral. Every rule
    keys on a stable [data-ui] hook, except the grid cell, which the kit marks
    with a role; values come from the emitted vars, never a hardcoded hue. The
    state rules (focus, locked, invalid) and the grid editor resets sit at the
@@ -97,17 +97,17 @@
 :root[data-design-variant="minimal"] [data-ui="button"]:active,
 :root[data-design-variant="minimal"] [data-ui="icon-button"]:active { transform: none; }
 
-/* Primary — the strong foreground as a solid, the page background as its
-   text; no tint. Hover dims toward bg (shadcn's primary/90) — token math,
-   works in both modes. The hover rules set no box-shadow: they outrank the
+/* Primary — the tint as a solid, the tint's label as its text. Hover takes
+   the tint's hover fill, which moves away from the label, so the label keeps
+   its contrast in both modes. The hover rules set no box-shadow: they outrank the
    focus ring, and a hovered button must keep its ring while focused. The
    solid fill hides the kit's lighter disabled tint, so the disabled cue is
    shadcn's half opacity, on every variant (state precedence, below). */
 :root[data-design-variant="minimal"] [data-ui="button"][data-variant="primary"] {
-  background: var(--color-text-main); color: var(--color-bg); border-color: transparent; box-shadow: none;
+  background: var(--color-primary-600); color: var(--color-on-primary); border-color: transparent; box-shadow: none;
 }
 :root[data-design-variant="minimal"] [data-ui="button"][data-variant="primary"]:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--color-text-main) 90%, var(--color-bg));
+  background: var(--color-primary-hover);
 }
 
 /* Secondary — quiet subtle fill, neutral text. The hover steps up a container
@@ -147,15 +147,15 @@
   background: color-mix(in srgb, var(--color-error) 90%, var(--color-bg));
 }
 
-/* FAB — the same flat button language as primary: strong foreground fill,
+/* FAB — the same flat button language as primary: the tint as its fill,
    tight radius, a dialog-level shadow because it floats over content, no
    press transform. */
 :root[data-design-variant="minimal"] [data-ui="fab"] {
-  background: var(--color-text-main); color: var(--color-bg);
+  background: var(--color-primary-600); color: var(--color-on-primary);
   border-radius: var(--radius-btn); box-shadow: var(--shadow-md);
 }
 :root[data-design-variant="minimal"] [data-ui="fab"]:hover {
-  background: color-mix(in srgb, var(--color-text-main) 90%, var(--color-bg)); box-shadow: var(--shadow-md);
+  background: var(--color-primary-hover); box-shadow: var(--shadow-md);
 }
 :root[data-design-variant="minimal"] [data-ui="fab"]:active { transform: none; }
 
@@ -216,9 +216,9 @@
 :root[data-design-variant="minimal"] [data-ui="checkbox-box"] { height: 16px; width: 16px; }
 :root[data-design-variant="minimal"] [data-ui="checkbox"]:checked,
 :root[data-design-variant="minimal"] [data-ui="checkbox"]:indeterminate {
-  background: var(--color-text-main); border-color: var(--color-text-main);
+  background: var(--color-primary-600); border-color: var(--color-primary-600);
 }
-:root[data-design-variant="minimal"] [data-ui="checkbox"]:checked ~ svg { color: var(--color-bg); }
+:root[data-design-variant="minimal"] [data-ui="checkbox"]:checked ~ svg { color: var(--color-on-primary); }
 
 /* Switch — small 36×20 track, 16px flat thumb, the tint when on. */
 :root[data-design-variant="minimal"] [data-ui="switch"] {
