@@ -9,7 +9,10 @@ export const GRAPHIC_STYLES = ['soft', 'sharp'] as const;
 export interface SignatureInput {
   id: string;
   name: string;
-  /** The signature is a lockup family: the chrome renders `<id> ● <product>`. */
+  /** The signature is a lockup family: the Signature and its delivered manifest carry `family: <id>`, from
+   *  which the chrome renders `<id> ● <product>`. A platform dependency: the platform's delivered-signature
+   *  path (digita-platform packages/theme runtime/delivered-identity.ts) does not carry `family` yet, so a
+   *  delivered family signature shows its wordmark SVG until it does. */
   family: boolean;
   /** The one brand colour, a six-digit hex; it anchors the primary ramp at step 600. */
   brand: string;
@@ -45,6 +48,9 @@ function text(field: string, value: unknown, pattern: RegExp): string {
 
 /** Validate a parsed `signature.json`; every field is required and no other field is allowed. */
 export function readSignatureInput(json: unknown): SignatureInput {
+  if (typeof json !== 'object' || json === null || Array.isArray(json)) {
+    throw new Error(`signature input: signature.json must hold one object, not ${JSON.stringify(json)}`);
+  }
   const raw = json as Record<string, unknown>;
   const fields = ['id', 'name', 'family', 'brand', 'neutral', 'fonts', 'motif', 'graphics'];
   const unknown = Object.keys(raw).filter((key) => !fields.includes(key));
