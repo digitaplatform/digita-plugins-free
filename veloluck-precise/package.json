@@ -1,6 +1,6 @@
 {
   "name": "@digitaplatform/veloluck-precise",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "type": "module",
   "description": "Veloluck Precise: a FREE signature of Veloluck GmbH, the fictional bike workshop and shop that opens digita show; the workshop as a lab: cobalt #2F5BEA, neutral greys, a fine grid and a sharp diagonal, Inter in every role. One of three looks the company chooses from in the signature menu. Made from signature.json by make-signature, which refuses a text or control pair below WCAG AA except step 600 drawn as text, which no brand colour passes in both modes until digita-platform#240; ships as pure config (no runtime CSS).",
   "main": "./dist/index.js",
