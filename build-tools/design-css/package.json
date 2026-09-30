@@ -11,7 +11,7 @@
     "gen-design-css": "./gen-design-css.mjs"
   },
   "dependencies": {
-    "@digitaplatform/theme": "^0.3.13"
+    "@digitaplatform/theme": "^0.3.24"
   },
   "engines": {
     "node": ">=22.0.0",
