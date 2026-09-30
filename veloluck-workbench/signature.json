@@ -1,0 +1,11 @@
+{
+  "id": "veloluck-workbench",
+  "name": "Veloluck",
+  "title": "Veloluck Workbench",
+  "family": false,
+  "brand": "#B8541E",
+  "neutral": "warm",
+  "fonts": { "display": "Space Grotesk", "sans": "Inter", "mono": "JetBrains Mono" },
+  "motif": "dots",
+  "graphics": "sharp"
+}

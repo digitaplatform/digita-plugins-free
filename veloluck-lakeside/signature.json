@@ -1,0 +1,11 @@
+{
+  "id": "veloluck-lakeside",
+  "name": "Veloluck",
+  "title": "Veloluck Lakeside",
+  "family": false,
+  "brand": "#1F7A5C",
+  "neutral": "cool",
+  "fonts": { "display": "Manrope", "sans": "Manrope", "mono": "JetBrains Mono" },
+  "motif": "diagonal",
+  "graphics": "soft"
+}

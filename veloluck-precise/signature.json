@@ -1,0 +1,11 @@
+{
+  "id": "veloluck-precise",
+  "name": "Veloluck",
+  "title": "Veloluck Precise",
+  "family": false,
+  "brand": "#2F5BEA",
+  "neutral": "neutral",
+  "fonts": { "display": "Inter", "sans": "Inter", "mono": "JetBrains Mono" },
+  "motif": "grid",
+  "graphics": "sharp"
+}

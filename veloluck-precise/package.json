@@ -1,0 +1,46 @@
+{
+  "name": "@digitaplatform/veloluck-precise",
+  "version": "0.3.5",
+  "type": "module",
+  "description": "Veloluck Precise: a FREE signature of Veloluck GmbH, the fictional bike workshop and shop that opens digita show; the workshop as a lab: cobalt #2F5BEA, neutral greys, a fine grid and a sharp diagonal, Inter in every role. One of three looks the company chooses from in the signature menu. Made from signature.json by make-signature, which refuses a text or control pair below WCAG AA; ships as pure config (no runtime CSS).",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./assets/*": "./assets/*",
+    "./digita-plugin.json": "./dist/digita-plugin.json"
+  },
+  "files": [
+    "dist",
+    "assets"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "restricted"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/digitaplatform/digita-plugins-free.git",
+    "directory": "veloluck-precise"
+  },
+  "digita": {
+    "id": "veloluck-precise",
+    "type": "signature",
+    "tier": "free",
+    "sdk": "^0.1.0",
+    "displayName": "Veloluck Precise"
+  },
+  "scripts": {
+    "build": "make-signature && tsc && gen-signature",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "@digitaplatform/signature-build": "workspace:*",
+    "@digitaplatform/signature-kit": "workspace:*",
+    "@digitaplatform/theme": "^0.3.13",
+    "typescript": "^6.0.3"
+  }
+}

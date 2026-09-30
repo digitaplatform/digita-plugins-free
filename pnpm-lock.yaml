@@ -104,6 +104,51 @@ importers:
         specifier: ^6.0.3
         version: 6.0.3
 
+  veloluck-lakeside:
+    devDependencies:
+      '@digitaplatform/signature-build':
+        specifier: workspace:*
+        version: link:../build-tools/signature-build
+      '@digitaplatform/signature-kit':
+        specifier: workspace:*
+        version: link:../build-tools/signature-kit
+      '@digitaplatform/theme':
+        specifier: ^0.3.13
+        version: 0.3.13
+      typescript:
+        specifier: ^6.0.3
+        version: 6.0.3
+
+  veloluck-precise:
+    devDependencies:
+      '@digitaplatform/signature-build':
+        specifier: workspace:*
+        version: link:../build-tools/signature-build
+      '@digitaplatform/signature-kit':
+        specifier: workspace:*
+        version: link:../build-tools/signature-kit
+      '@digitaplatform/theme':
+        specifier: ^0.3.13
+        version: 0.3.13
+      typescript:
+        specifier: ^6.0.3
+        version: 6.0.3
+
+  veloluck-workbench:
+    devDependencies:
+      '@digitaplatform/signature-build':
+        specifier: workspace:*
+        version: link:../build-tools/signature-build
+      '@digitaplatform/signature-kit':
+        specifier: workspace:*
+        version: link:../build-tools/signature-kit
+      '@digitaplatform/theme':
+        specifier: ^0.3.13
+        version: 0.3.13
+      typescript:
+        specifier: ^6.0.3
+        version: 6.0.3
+
 packages:
 
   '@digitaplatform/components@0.3.0':
