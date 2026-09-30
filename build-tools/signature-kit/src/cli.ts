@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 // make-signature [package dir] — reads <dir>/signature.json, checks every pair the kit draws, and only
 // when none fails writes <dir>/src/index.ts (the Signature, typed against the installed theme) and
 // <dir>/assets/*.svg. Run before tsc in a signature package: `make-signature && tsc && gen-signature`.

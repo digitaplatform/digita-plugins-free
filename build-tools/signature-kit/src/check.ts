@@ -83,10 +83,9 @@ export function checkContrast(signature: Signature, paints: SignatureKit['paints
     }
     for (const ground of ['bg', 'surface']) {
       measure(`primary-600 graphic on ${ground}`, mode, ramp['600'], token(ground, mode), GRAPHIC);
-      Object.assign(measure(`primary-600 text on ${ground}`, mode, ramp['600'], token(ground, mode), TEXT), {
-        status: 'waived',
-        reason: PRIMARY_TEXT_WAIVER,
-      });
+      // Only a pair that misses AA is waived, so the count of passing pairs stays true.
+      const primaryText = measure(`primary-600 text on ${ground}`, mode, ramp['600'], token(ground, mode), TEXT);
+      if (primaryText.status === 'fail') Object.assign(primaryText, { status: 'waived', reason: PRIMARY_TEXT_WAIVER });
     }
   }
   return pairs;

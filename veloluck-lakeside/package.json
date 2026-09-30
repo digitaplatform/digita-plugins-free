@@ -2,7 +2,7 @@
   "name": "@digitaplatform/veloluck-lakeside",
   "version": "0.3.5",
   "type": "module",
-  "description": "Veloluck Lakeside: a FREE signature of Veloluck GmbH, the fictional bike workshop and shop that opens digita show; the ride out of the door: lake and forest green #1F7A5C, cool neutrals, a diagonal contour motif and a soft glow, Manrope in every role. One of three looks the company chooses from in the signature menu. Made from signature.json by make-signature, which refuses a text or control pair below WCAG AA; ships as pure config (no runtime CSS).",
+  "description": "Veloluck Lakeside: a FREE signature of Veloluck GmbH, the fictional bike workshop and shop that opens digita show; the ride out of the door: lake and forest green #1F7A5C, cool neutrals, a diagonal contour motif and a soft glow, Manrope in every role. One of three looks the company chooses from in the signature menu. Made from signature.json by make-signature, which refuses a text or control pair below WCAG AA except step 600 drawn as text, which no brand colour passes in both modes until digita-platform#240; ships as pure config (no runtime CSS).",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -30,8 +30,7 @@
     "id": "veloluck-lakeside",
     "type": "signature",
     "tier": "free",
-    "sdk": "^0.1.0",
-    "displayName": "Veloluck Lakeside"
+    "sdk": "^0.1.0"
   },
   "scripts": {
     "build": "make-signature && tsc && gen-signature",

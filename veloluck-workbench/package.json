@@ -2,7 +2,7 @@
   "name": "@digitaplatform/veloluck-workbench",
   "version": "0.3.5",
   "type": "module",
-  "description": "Veloluck Workbench: a FREE signature of Veloluck GmbH, the fictional bike workshop and shop that opens digita show; the look of the bench: copper #B8541E, warm neutrals, a dot motif and a sharp diagonal, Space Grotesk headlines over Inter. One of three looks the company chooses from in the signature menu. Made from signature.json by make-signature, which refuses a text or control pair below WCAG AA; ships as pure config (no runtime CSS).",
+  "description": "Veloluck Workbench: a FREE signature of Veloluck GmbH, the fictional bike workshop and shop that opens digita show; the look of the bench: copper #B8541E, warm neutrals, a dot motif and a sharp diagonal, Space Grotesk headlines over Inter. One of three looks the company chooses from in the signature menu. Made from signature.json by make-signature, which refuses a text or control pair below WCAG AA except step 600 drawn as text, which no brand colour passes in both modes until digita-platform#240; ships as pure config (no runtime CSS).",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -30,8 +30,7 @@
     "id": "veloluck-workbench",
     "type": "signature",
     "tier": "free",
-    "sdk": "^0.1.0",
-    "displayName": "Veloluck Workbench"
+    "sdk": "^0.1.0"
   },
   "scripts": {
     "build": "make-signature && tsc && gen-signature",
