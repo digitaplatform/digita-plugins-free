@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Internal, never-published build tool that makes a SIGNATURE-type plugin from one input file (signature.json): the Signature object, its light and dark colour world, its background graphics as SVG, its mark and wordmark, and a WCAG AA check of every text and control pair the kit draws. `make-signature` writes src/index.ts and assets/*.svg of a signature package and refuses an input that fails the check.",
   "bin": {
-    "make-signature": "./dist/cli.js"
+    "make-signature": "./bin/make-signature.mjs"
   },
   "scripts": {
     "build": "tsc",

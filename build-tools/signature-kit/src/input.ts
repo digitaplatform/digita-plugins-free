@@ -11,7 +11,9 @@ export interface SignatureInput {
   /** The company or brand name: the wordmark writes it and the mark takes its first letter. */
   name: string;
   /** The name the signature menu shows. It equals `name` for a brand with one look, and names the look
-   *  where one company offers several, such as "Veloluck Workbench". */
+   *  where one company offers several, such as "Veloluck Workbench". A platform dependency: a signature the
+   *  host registers from its package import shows it; one the platform delivers through the plugin
+   *  inventory shows its id until the platform's staging tool carries the manifest's name as the record's title. */
   title: string;
   /** The signature is a lockup family: the Signature and its delivered manifest carry `family: <id>`, from
    *  which the chrome renders `<id> ● <product>`. A platform dependency: the platform's delivered-signature
