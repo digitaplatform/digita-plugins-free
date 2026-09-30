@@ -60,7 +60,7 @@ export function makeSignature(input: SignatureInput): SignatureKit {
 
   const signature: Signature = {
     id: input.id,
-    name: input.name,
+    name: input.title,
     accent: input.brand,
     fonts: {
       display: stack(input.fonts.display, 'sans-serif'),

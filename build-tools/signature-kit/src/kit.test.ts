@@ -82,6 +82,16 @@ test('a font the theme does not bundle is refused as a platform dependency', () 
   assert.throws(() => readSignatureInput(input), /Playfair Display.*not bundled by @digitaplatform\/theme/);
 });
 
+test('the menu shows the title, and the mark and wordmark write the name', () => {
+  const input = JSON.parse(readFileSync(join(kitDir, 'test', 'planted-pass.json'), 'utf8'));
+  const kit = makeSignature(readSignatureInput({ ...input, name: 'Veloluck', title: 'Veloluck Workbench' }));
+  assert.equal(kit.signature.name, 'Veloluck Workbench');
+  assert.match(kit.assets['wordmark.svg']!, />Veloluck<\/text>/);
+  assert.doesNotMatch(kit.assets['wordmark.svg']!, /Workbench/);
+  const { title: _title, ...withoutTitle } = input;
+  assert.throws(() => readSignatureInput(withoutTitle), /signature input: title is undefined/);
+});
+
 test('the kit output is a Signature the installed theme applies', () => {
   const { signature } = makeSignature(inputOf('planted-pass'));
   const style = signatureStyle(signature);

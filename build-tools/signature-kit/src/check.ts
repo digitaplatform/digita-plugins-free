@@ -29,7 +29,7 @@ const SURFACE_CONTAINERS = [
 // brand colour passes both. The fix belongs to the platform, not to a signature.
 const PRIMARY_TEXT_WAIVER =
   'the kit draws step 600 as text in both modes, and no colour reaches 4.5:1 on both a light and a dark canvas; ' +
-  'only the platform can fix it';
+  'only the platform can fix it (digita-platform#240)';
 
 /**
  * Every text and control pair the kit draws from a signature: body and muted text on the canvas,

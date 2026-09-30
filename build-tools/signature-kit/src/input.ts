@@ -8,7 +8,11 @@ export const GRAPHIC_STYLES = ['soft', 'sharp'] as const;
 /** One signature, as its `signature.json` states it. */
 export interface SignatureInput {
   id: string;
+  /** The company or brand name: the wordmark writes it and the mark takes its first letter. */
   name: string;
+  /** The name the signature menu shows. It equals `name` for a brand with one look, and names the look
+   *  where one company offers several, such as "Veloluck Workbench". */
+  title: string;
   /** The signature is a lockup family: the Signature and its delivered manifest carry `family: <id>`, from
    *  which the chrome renders `<id> ● <product>`. A platform dependency: the platform's delivered-signature
    *  path (digita-platform packages/theme runtime/delivered-identity.ts) does not carry `family` yet, so a
@@ -52,7 +56,7 @@ export function readSignatureInput(json: unknown): SignatureInput {
     throw new Error(`signature input: signature.json must hold one object, not ${JSON.stringify(json)}`);
   }
   const raw = json as Record<string, unknown>;
-  const fields = ['id', 'name', 'family', 'brand', 'neutral', 'fonts', 'motif', 'graphics'];
+  const fields = ['id', 'name', 'title', 'family', 'brand', 'neutral', 'fonts', 'motif', 'graphics'];
   const unknown = Object.keys(raw).filter((key) => !fields.includes(key));
   if (unknown.length) throw new Error(`signature input: unknown field ${unknown.join(', ')}`);
   if (typeof raw['family'] !== 'boolean') throw new Error('signature input: family must be true or false');
@@ -71,6 +75,7 @@ export function readSignatureInput(json: unknown): SignatureInput {
   return {
     id: text('id', raw['id'], /^[a-z][a-z0-9-]*$/),
     name: text('name', raw['name'], /\S/),
+    title: text('title', raw['title'], /\S/),
     family: raw['family'],
     brand: text('brand', raw['brand'], /^#[0-9A-Fa-f]{6}$/),
     neutral: oneOf('neutral', raw['neutral'], NEUTRALS),
