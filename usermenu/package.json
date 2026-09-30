@@ -1,6 +1,6 @@
 {
   "name": "@digitaplatform/usermenu",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "type": "module",
   "description": "usermenu — the platform's FREE navigation component plugin: a role-scoped nav rail the host places into a layout region. Composes into the host's single React graph (compiled built-in), so react/router/components/plugins are peers the host provides.",
   "main": "./dist/index.js",
