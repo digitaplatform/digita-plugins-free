@@ -32,7 +32,7 @@ function styleSnapshot(signature: Signature): Record<string, string> {
   return out;
 }
 
-test('a planted input whose every pair reaches AA passes', () => {
+test('a planted input fails no pair', () => {
   assert.deepEqual(failuresOf('planted-pass'), []);
 });
 
@@ -90,6 +90,15 @@ test('the menu shows the title, and the mark and wordmark write the name', () =>
   assert.doesNotMatch(kit.assets['wordmark.svg']!, /Workbench/);
   const { title: _title, ...withoutTitle } = input;
   assert.throws(() => readSignatureInput(withoutTitle), /signature input: title is undefined/);
+});
+
+test('only a step-600 text pair that misses AA is waived, and it names the platform issue', () => {
+  const kit = makeSignature(inputOf('planted-fail'));
+  const pairs = checkContrast(kit.signature, kit.paints);
+  const find = (mode: string) => pairs.find((p) => p.pair === 'primary-600 text on bg' && p.mode === mode)!;
+  assert.equal(find('dark').status, 'pass');
+  assert.equal(find('light').status, 'waived');
+  assert.match(find('light').reason ?? '', /digita-platform#240/);
 });
 
 test('the kit output is a Signature the installed theme applies', () => {

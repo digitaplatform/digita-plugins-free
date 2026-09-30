@@ -30,7 +30,8 @@
     "id": "veloluck-lakeside",
     "type": "signature",
     "tier": "free",
-    "sdk": "^0.1.0"
+    "sdk": "^0.1.0",
+    "displayName": "Veloluck Lakeside"
   },
   "scripts": {
     "build": "make-signature && tsc && gen-signature",

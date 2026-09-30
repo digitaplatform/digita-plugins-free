@@ -30,7 +30,8 @@
     "id": "veloluck-precise",
     "type": "signature",
     "tier": "free",
-    "sdk": "^0.1.0"
+    "sdk": "^0.1.0",
+    "displayName": "Veloluck Precise"
   },
   "scripts": {
     "build": "make-signature && tsc && gen-signature",
