@@ -79,7 +79,7 @@ const cloudWordmark = read('assets/digita-cloud-wordmark.svg');
 // The REAL background layers (assets/backgrounds/*, verbatim copies of the
 // design-template files — the simetrix-* prefix is the asset library's naming;
 // per "Design Assets.dc.html" these are the background layers of ALL the digita
-// sites, e.g. the band is the „Why digita" section surface).
+// sites).
 const GRAPHICS = {
   grid: {
     light: toCssUrl('assets/backgrounds/simetrix-grid-overlay-light.svg'),
