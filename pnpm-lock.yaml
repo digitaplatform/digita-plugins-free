@@ -53,8 +53,8 @@ importers:
         specifier: workspace:*
         version: link:../build-tools/design-css
       '@digitaplatform/theme':
-        specifier: ^0.3.13
-        version: 0.3.13
+        specifier: ^0.3.24
+        version: 0.3.24
       typescript:
         specifier: ^6.0.3
         version: 6.0.3

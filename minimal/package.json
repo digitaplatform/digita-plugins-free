@@ -26,12 +26,13 @@
   },
   "scripts": {
     "build": "tsc && gen-design-css",
+    "test": "node --test \"test/*.test.mjs\"",
     "clean": "rm -rf dist"
   },
   "devDependencies": {
     "@digitaplatform/design-css": "workspace:*",
     "typescript": "^6.0.3",
-    "@digitaplatform/theme": "^0.3.13"
+    "@digitaplatform/theme": "^0.3.24"
   },
   "engines": {
     "node": ">=22.0.0",
