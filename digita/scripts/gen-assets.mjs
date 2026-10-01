@@ -25,7 +25,7 @@
 //       grid/glow — verbatim (intrinsic 1920×1080 kept: the grid's baked 40px
 //         pattern tiles seamlessly at natural size; the glow is one top-anchored
 //         panel the backdrop sizes via CSS);
-//       band/card/panel — adapted for stretch (root width/height stripped +
+//       card/panel — adapted for stretch (root width/height stripped +
 //         preserveAspectRatio="none"), because the sites paint these surfaces
 //         at arbitrary element sizes (consumers use background-size:100% 100%).
 // Run before tsc: `node ./scripts/gen-assets.mjs && tsc && gen-signature`.
@@ -89,10 +89,6 @@ const GRAPHICS = {
     light: toCssUrl('assets/backgrounds/simetrix-glow-light.svg'),
     dark: toCssUrl('assets/backgrounds/simetrix-glow-dark.svg'),
   },
-  band: {
-    light: toCssUrl('assets/backgrounds/simetrix-band-light.svg', { stretch: true }),
-    dark: toCssUrl('assets/backgrounds/simetrix-band-dark.svg', { stretch: true }),
-  },
   card: {
     light: toCssUrl('assets/backgrounds/simetrix-card-light.svg', { stretch: true }),
     dark: toCssUrl('assets/backgrounds/simetrix-card-dark.svg', { stretch: true }),
@@ -139,10 +135,10 @@ export const CLOUD_WORDMARK_SVG = ${lit(oneLine(cloudWordmark))};
  *  (assets/backgrounds/*.svg, 1:1 from the design templates) inlined as
  *  self-contained CSS url("data:image/svg+xml,...") values.
  *  grid/glow keep their intrinsic 1920×1080 (the grid's 40px pattern tiles at
- *  natural size; the backdrop sizes the glow); band/card/panel stretch
+ *  natural size; the backdrop sizes the glow); card/panel stretch
  *  (preserveAspectRatio="none" — paint with background-size:100% 100%). */
-export const GRAPHICS: Record<'grid' | 'glow' | 'band' | 'card' | 'panel', { light: string; dark: string }> =
+export const GRAPHICS: Record<'grid' | 'glow' | 'card' | 'panel', { light: string; dark: string }> =
   ${JSON.stringify(GRAPHICS, null, 2).replace(/\n/g, '\n  ')};
 `,
 );
-console.log('[gen-assets] assets/* → src/assets.ts (real files: 2 icons, 2 wordmarks, 10 background vectors)');
+console.log('[gen-assets] assets/* → src/assets.ts (real files: 2 icons, 2 wordmarks, 8 background vectors)');

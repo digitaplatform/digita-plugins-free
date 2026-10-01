@@ -19,8 +19,8 @@ importers:
   build-tools/signature-kit:
     dependencies:
       '@digitaplatform/theme':
-        specifier: ^0.3.13
-        version: 0.3.13
+        specifier: ^0.3.30
+        version: 0.3.30
     devDependencies:
       '@digitaplatform/digita':
         specifier: workspace:*
@@ -249,6 +249,9 @@ packages:
 
   '@digitaplatform/theme@0.3.24':
     resolution: {integrity: sha512-+cYQrwr+60dY45Q0cYBPHt6hMw4MPTGzSR3p371EFHXqxjV3smjIAqvcxw6SV95gRT6jcuVYpHnZL62wHYdjAA==, tarball: https://npm.pkg.github.com/download/@digitaplatform/theme/0.3.24/3356e0a7d94d91074d0358c2d29b169a31b17d1f}
+
+  '@digitaplatform/theme@0.3.30':
+    resolution: {integrity: sha512-yrKCih7RZEp8lBmFRMcejZ5XL4qYh1vI/hrL5IDj2IqYfNl3WkkzesQgPqrFSMR95deSbDXLYBUwsGld0t8tKg==, tarball: https://npm.pkg.github.com/download/@digitaplatform/theme/0.3.30/530a102552c8c6d176d18380cbed2fca37813c9e}
 
   '@exodus/bytes@1.16.0':
     resolution: {integrity: sha512-IcpW84uEn3N7ETtNZMlxKhfl6Pec8rUNGOTBtWbK1FKhJxIFAptZyVrvVRVBimAJxJCgc3PxepxkdWWG4DVzfA==}
@@ -977,6 +980,8 @@ snapshots:
   '@digitaplatform/theme@0.3.13': {}
 
   '@digitaplatform/theme@0.3.24': {}
+
+  '@digitaplatform/theme@0.3.30': {}
 
   '@exodus/bytes@1.16.0': {}
 

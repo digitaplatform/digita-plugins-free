@@ -67,7 +67,7 @@ function stretched(style: SignatureInput['graphics'], base: string, brand: strin
   return { svg, paints: [base, tinted] };
 }
 
-/** Every graphic of one mode: the five layers the theme writes as `--sig-<key>`, and `background`,
+/** Every graphic of one mode: the four layers the theme writes as `--sig-<key>`, and `background`,
  *  the canvas with its glow and grid composed, for surfaces that paint one image. */
 export function graphicsFor(input: SignatureInput, c: GraphicColors, mode: Mode): Record<string, Graphic> {
   const t = tile(input.motif, c.ink, mode);
@@ -83,7 +83,6 @@ export function graphicsFor(input: SignatureInput, c: GraphicColors, mode: Mode)
       svg: `<svg ${SVG} width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" fill="none"><defs>${g.defs}</defs>${g.body}</svg>`,
       paints: [c.bg, glowPaint],
     },
-    band: stretched(input.graphics, c.subtle, c.brand, mode),
     card: stretched(input.graphics, c.surface, c.brand, mode),
     // The panel is a page backdrop (the sign-in page paints it behind its card), so it starts on bg.
     panel: stretched(input.graphics, c.bg, c.brand, mode),

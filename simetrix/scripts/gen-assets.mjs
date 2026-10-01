@@ -16,7 +16,7 @@
 //     final x only and no dot (the brand handoff rejected the dot for simetrix);
 //     colours per mode via light-dark().
 //   - backgrounds/*.svg → GRAPHICS, exactly as the digita signature inlines
-//     them (grid/glow verbatim, band/card/panel stretch-adapted), because the
+//     them (grid/glow verbatim, card/panel stretch-adapted), because the
 //     two brands share one background world.
 // Run before tsc: `node ./scripts/gen-assets.mjs && tsc && gen-signature`.
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -76,10 +76,6 @@ const GRAPHICS = {
     light: toCssUrl('assets/backgrounds/simetrix-glow-light.svg'),
     dark: toCssUrl('assets/backgrounds/simetrix-glow-dark.svg'),
   },
-  band: {
-    light: toCssUrl('assets/backgrounds/simetrix-band-light.svg', { stretch: true }),
-    dark: toCssUrl('assets/backgrounds/simetrix-band-dark.svg', { stretch: true }),
-  },
   card: {
     light: toCssUrl('assets/backgrounds/simetrix-card-light.svg', { stretch: true }),
     dark: toCssUrl('assets/backgrounds/simetrix-card-dark.svg', { stretch: true }),
@@ -114,8 +110,8 @@ export const WORDMARK_SVG = ${lit(wordmark)};
 
 /** The decorative background layers, the same real vectors the digita
  *  signature paints (assets/backgrounds/*.svg), as CSS url("data:…") values. */
-export const GRAPHICS: Record<'grid' | 'glow' | 'band' | 'card' | 'panel', { light: string; dark: string }> =
+export const GRAPHICS: Record<'grid' | 'glow' | 'card' | 'panel', { light: string; dark: string }> =
   ${JSON.stringify(GRAPHICS, null, 2).replace(/\n/g, '\n  ')};
 `,
 );
-console.log('[gen-assets] assets/* → src/assets.ts (app icon, X monogram, wordmark, 10 background vectors)');
+console.log('[gen-assets] assets/* → src/assets.ts (app icon, X monogram, wordmark, 8 background vectors)');

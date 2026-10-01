@@ -133,7 +133,7 @@ test('make-signature writes a package that compiles against the installed theme'
     writeFileSync(join(dir, 'signature.json'), readFileSync(join(kitDir, 'test', 'planted-pass.json')));
     execFileSync(process.execPath, [join(kitDir, 'dist', 'cli.js'), dir]);
     assert.deepEqual(readdirSync(join(dir, 'assets')).sort(), [
-      'background-dark.svg', 'background-light.svg', 'band-dark.svg', 'band-light.svg', 'card-dark.svg',
+      'background-dark.svg', 'background-light.svg', 'card-dark.svg',
       'card-light.svg', 'glow-dark.svg', 'glow-light.svg', 'grid-dark.svg', 'grid-light.svg', 'mark.svg',
       'panel-dark.svg', 'panel-light.svg', 'wordmark.svg',
     ]);
@@ -152,6 +152,21 @@ test('make-signature writes a package that compiles against the installed theme'
 test('the lockup family reaches the delivered manifest gen-signature writes', () => {
   const { signature } = makeSignature(inputOf('digita'));
   assert.equal(runGenSignature(signature).manifest?.family, 'digita');
+});
+
+test('PLANTED DEFECT: a graphics key the host does not paint is refused by name, and no manifest is written', () => {
+  const { signature } = makeSignature(inputOf('digita'));
+  const run = runGenSignature({ ...signature, graphics: { ...signature.graphics, band: signature.graphics?.['grid'] } });
+  assert.equal(run.status, 1);
+  assert.match(run.stderr, /graphics holds "band"; the host paints only grid, glow, card, panel/);
+  assert.equal(run.manifest, undefined);
+});
+
+test('PLANTED INNOCENT: the four graphics the host paints reach the delivered manifest', () => {
+  const { signature } = makeSignature(inputOf('digita'));
+  const run = runGenSignature(signature);
+  assert.equal(run.status, 0, run.stderr);
+  assert.deepEqual(Object.keys((run.manifest?.['graphics'] ?? {}) as object).sort(), ['card', 'glow', 'grid', 'panel']);
 });
 
 test('the delivered manifest carries no logoUrl, which the platform no longer reads', () => {
@@ -192,7 +207,7 @@ for (const [name, handMade] of [['digita', digita], ['simetrix', simetrix]] as c
       '--color-surface', '--color-surface-container', '--color-surface-container-high',
       '--color-surface-container-highest', '--color-surface-container-low', '--color-surface-container-lowest',
       '--color-surface-glass', '--color-text-main', '--color-text-muted',
-      '--sig-band-d', '--sig-band-l', '--sig-card-d', '--sig-card-l', '--sig-glow-d', '--sig-glow-l',
+      '--sig-card-d', '--sig-card-l', '--sig-glow-d', '--sig-glow-l',
       '--sig-grid-d', '--sig-grid-l', '--sig-panel-d', '--sig-panel-l',
     ]);
     assert.deepEqual(Object.keys(made).sort(), Object.keys(handMadeStyle).sort());
