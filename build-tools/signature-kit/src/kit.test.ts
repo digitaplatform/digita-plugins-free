@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { execFileSync, spawnSync } from 'node:child_process';
-import { mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { signatureStyle, type Signature } from '@digitaplatform/theme';
@@ -20,6 +20,23 @@ const failuresOf = (name: string) => {
   return checkContrast(kit.signature, kit.paints).filter((pair) => pair.status === 'fail');
 };
 const describe = (pairs: { pair: string; mode: string }[]) => pairs.map((p) => `${p.pair} (${p.mode})`).sort();
+
+// gen-signature as the build runs it, on a scratch package whose dist/index.js exports `signature`:
+// its exit status, its error text and the manifest it wrote, if any.
+function runGenSignature(signature: object) {
+  const dir = mkdtempSync(join(kitDir, 'tmp-'));
+  try {
+    writeFileSync(join(dir, 'package.json'), JSON.stringify({ type: 'module', digita: { id: 'digita', type: 'signature', tier: 'free', sdk: '^0.1.0' } }));
+    mkdirSync(join(dir, 'dist'));
+    writeFileSync(join(dir, 'dist', 'index.js'), `export const signature = ${JSON.stringify(signature)};\n`);
+    const run = spawnSync(process.execPath, [genSignature], { cwd: dir, encoding: 'utf8' });
+    const file = join(dir, 'dist', 'digita-plugin.json');
+    const manifest: Record<string, unknown> | undefined = existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : undefined;
+    return { status: run.status, stderr: run.stderr, manifest };
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+}
 
 // The CSS variables a signature writes, as the snapshot keeps them: a long value (a data: URI of a
 // background vector) is kept as its hash, so a changed vector still shows as a changed variable.
@@ -133,18 +150,16 @@ test('make-signature writes a package that compiles against the installed theme'
 });
 
 test('the lockup family reaches the delivered manifest gen-signature writes', () => {
-  const dir = mkdtempSync(join(kitDir, 'tmp-'));
-  try {
-    const { signature } = makeSignature(inputOf('digita'));
-    writeFileSync(join(dir, 'package.json'), JSON.stringify({ type: 'module', digita: { id: 'digita', type: 'signature', tier: 'free', sdk: '^0.1.0' } }));
-    mkdirSync(join(dir, 'dist'));
-    writeFileSync(join(dir, 'dist', 'index.js'), `export const signature = ${JSON.stringify(signature)};\n`);
-    execFileSync(process.execPath, [genSignature], { cwd: dir });
-    const manifest = JSON.parse(readFileSync(join(dir, 'dist', 'digita-plugin.json'), 'utf8'));
-    assert.equal(manifest.family, 'digita');
-  } finally {
-    rmSync(dir, { recursive: true, force: true });
-  }
+  const { signature } = makeSignature(inputOf('digita'));
+  assert.equal(runGenSignature(signature).manifest?.family, 'digita');
+});
+
+test('the delivered manifest carries no logoUrl, which the platform no longer reads', () => {
+  const { signature } = makeSignature(inputOf('digita'));
+  const { manifest } = runGenSignature({ ...signature, logoUrl: 'https://example.test/logo.svg' });
+  assert.ok(manifest, 'gen-signature wrote no manifest');
+  assert.equal('logoUrl' in manifest, false);
+  assert.equal(manifest['accent'], signature.accent);
 });
 
 test('make-signature refuses an input with a failing pair and writes nothing', () => {
