@@ -264,9 +264,8 @@ export function UserMenuNav() {
   const [tree, setTree] = useState<MenuNode[] | null>(null);
   // Load failures never surface the raw backend error (e.g. a permission
   // string) to the user — D3 requires the nav to always render a clean,
-  // non-alarming state. A failed load degrades to the same empty-tree
-  // fallback as a role with zero visible nodes; this flag only exists to
-  // short-circuit straight to that fallback without waiting on `tree`.
+  // non-alarming state. A failed load still gets its own text, so a user can
+  // tell a broken request from a role that has no menu.
   const [failed, setFailed] = useState(false);
 
   // Roles are snapshotted at mount. That's correct here: the host gates the shell
@@ -292,12 +291,15 @@ export function UserMenuNav() {
     };
   }, [api, getUser]);
 
-  if (failed || (tree && tree.length === 0)) {
-    return <p className="p-4 text-sm text-textMuted">No navigation assigned.</p>;
+  if (failed) {
+    return <p className="p-4 text-sm text-textMuted">{t('ui.usermenu.loadFailed')}</p>;
+  }
+  if (tree && tree.length === 0) {
+    return <p className="p-4 text-sm text-textMuted">{t('ui.usermenu.empty')}</p>;
   }
   if (!tree) {
     return (
-      <div className="flex flex-col gap-2 p-3" role="status" aria-label="Loading navigation">
+      <div className="flex flex-col gap-2 p-3" role="status" aria-label={t('ui.usermenu.loading')}>
         {Array.from({ length: 6 }, (_, i) => (
           <Skeleton key={i} className="h-9 w-full rounded-md" />
         ))}
@@ -307,7 +309,7 @@ export function UserMenuNav() {
 
   const ctx: ItemContext = { t, onNavigate: closeMobileNav };
   return (
-    <nav data-ui="nav" className="p-3" aria-label="Main navigation">
+    <nav data-ui="nav" className="p-3" aria-label={t('ui.usermenu.label')}>
       <MenuList nodes={tree} depth={0} ctx={ctx} />
     </nav>
   );

@@ -5,11 +5,21 @@ import { provideHostServices, type HostApi } from '@digitaplatform/plugins';
 import { UserMenuNav } from '../src/UserMenuNav';
 import { ROWS } from './rows';
 
-function hostFor(roles: string[], get: HostApi['get'] = (() => Promise.resolve({ success: true, data: ROWS })) as HostApi['get']) {
+// The host's t returns the key itself when it has no text for it.
+const TEXTS: Record<string, string> = {
+  'ui.usermenu.empty': 'Keine Navigation zugewiesen.',
+  'ui.usermenu.loadFailed': 'Die Navigation konnte nicht geladen werden.',
+  'ui.usermenu.loading': 'Navigation wird geladen',
+  'ui.usermenu.label': 'Hauptnavigation',
+};
+
+const loadRows = (() => Promise.resolve({ success: true, data: ROWS })) as HostApi['get'];
+
+function hostFor(roles: string[], get: HostApi['get'] = loadRows) {
   provideHostServices({
     api: { get, post: vi.fn(), put: vi.fn(), del: vi.fn() } as HostApi,
     getUser: () => ({ _id: 'u1', email: 'u1@example.com', roles }),
-    t: (key) => key,
+    t: (key) => TEXTS[key] ?? key,
     closeMobileNav: () => {},
   });
 }
@@ -29,7 +39,7 @@ describe('UserMenuNav', () => {
     hostFor(['Sales']);
     renderNav();
 
-    const nav = await screen.findByRole('navigation');
+    const nav = await screen.findByRole('navigation', { name: 'Hauptnavigation' });
     const group = screen.getByRole('button', { name: 'Selling' });
     expect(group.getAttribute('aria-expanded')).toBe('false');
     expect(screen.getByRole('link', { name: 'Reports' }).getAttribute('href')).toBe('/reports');
@@ -46,13 +56,27 @@ describe('UserMenuNav', () => {
   it('shows the empty state for a role without a menu, and a menu for one with it', async () => {
     hostFor(['Warehouse']);
     renderNav();
-    await screen.findByText('No navigation assigned.');
+    await screen.findByText('Keine Navigation zugewiesen.');
     expect(screen.queryByRole('navigation')).toBeNull();
     cleanup();
 
     hostFor(['Warehouse', 'Sales']);
     renderNav();
     await screen.findByRole('navigation');
-    expect(screen.queryByText('No navigation assigned.')).toBeNull();
+    expect(screen.queryByText('Keine Navigation zugewiesen.')).toBeNull();
+  });
+
+  it('says the menu failed to load, not that the role has none', async () => {
+    hostFor(['Sales'], (() => Promise.reject(new Error('403 Forbidden: UserMenu'))) as HostApi['get']);
+    renderNav();
+    await screen.findByText('Die Navigation konnte nicht geladen werden.');
+    expect(screen.queryByText('Keine Navigation zugewiesen.')).toBeNull();
+    expect(document.body.textContent).not.toContain('403');
+  });
+
+  it('labels the loading state through the host', () => {
+    hostFor(['Sales'], (() => new Promise(() => {})) as HostApi['get']);
+    renderNav();
+    expect(screen.getByRole('status', { name: 'Navigation wird geladen' })).toBeTruthy();
   });
 });
