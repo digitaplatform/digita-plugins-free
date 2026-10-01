@@ -452,6 +452,9 @@
 :root[data-design-variant="minimal"] [data-ui="page-header"][data-collapsed="true"] [data-ui="page-header-bar"] {
   border-bottom-color: var(--color-border);
 }
+/* A bar with no back link and no actions holds nothing until the header sticks; filled, it would
+   stand as a blank band above the title over the page's backdrop. */
+:root[data-design-variant="minimal"] [data-ui="page-header-bar"][data-empty="true"] { background: transparent; }
 :root[data-design-variant="minimal"] [data-ui="page-header-heading"] {
   font-size: 1.125rem; line-height: 1.75rem; font-weight: 600; letter-spacing: -0.01em;
 }
