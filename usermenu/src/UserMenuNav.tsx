@@ -12,7 +12,7 @@ import { ICONS, FALLBACK_ICON } from './icons';
  * access is enforced by the engine's per-entity permissions when a target opens.
  */
 
-interface UserMenuRow {
+export interface UserMenuRow {
   _id: string;
   kind: string;
   label: string;
@@ -30,7 +30,7 @@ interface UserMenuRow {
   requires_role?: string | null;
 }
 
-type MenuNode = UserMenuRow & { children: MenuNode[] };
+export type MenuNode = UserMenuRow & { children: MenuNode[] };
 
 interface ListResponse {
   success: boolean;
@@ -57,7 +57,7 @@ function pickTreeForRoles(roots: UserMenuRow[], roleSet: Set<string>): UserMenuR
 
 /** Build the nested, role-pruned tree from flat rows. Drops requires_role nodes
  *  the user lacks (+ their subtree) and empty groups; sorts by position, label. */
-function resolveTree(rows: UserMenuRow[], roles: string[]): MenuNode[] {
+export function resolveTree(rows: UserMenuRow[], roles: string[]): MenuNode[] {
   const roleSet = new Set(roles);
   const active = rows.filter((r) => r.is_active !== false);
   const picked = pickTreeForRoles(
