@@ -82,7 +82,7 @@ export const signature: Signature = {
   },
   // The decorative background layers — the REAL background vectors
   // (assets/backgrounds/*.svg, verbatim from the asset library's
-  // "Website-Flächen (einzelne Ebenen)": grid-overlay, glow, band, card,
+  // "Website-Flächen (einzelne Ebenen)": grid-overlay, glow, card,
   // panel-contact, each in dark+light) inlined as data-URI url() values, so
   // the --sig-* vars paint the actual files instead of CSS reproductions.
   graphics: GRAPHICS,

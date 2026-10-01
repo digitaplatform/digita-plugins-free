@@ -30,6 +30,16 @@ if (!signature || typeof signature !== 'object' || signature.id !== digita.id) {
   );
 }
 
+// The graphics the host paints (digita-platform packages/theme/src/signatures/index.ts,
+// SIGNATURE_GRAPHIC_KEYS). Any other key ships a graphic that nothing paints, in silence.
+const GRAPHIC_KEYS = ['grid', 'glow', 'card', 'panel'];
+const unpainted = Object.keys(signature.graphics ?? {}).filter((key) => !GRAPHIC_KEYS.includes(key));
+if (unpainted.length > 0) {
+  throw new Error(
+    `[gen-signature] ${pkgDir}: graphics holds ${unpainted.map((key) => `"${key}"`).join(', ')}; the host paints only ${GRAPHIC_KEYS.join(', ')}, so no other key does anything.`,
+  );
+}
+
 // The delivery manifest = the commercial/type metadata (from the digita block)
 // merged with the full identity config (from the Signature object). Keeps a
 // stable field order so diffs are readable.
