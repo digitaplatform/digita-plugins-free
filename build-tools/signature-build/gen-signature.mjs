@@ -43,7 +43,6 @@ const manifest = {
   accent: signature.accent,
   ...(signature.fonts ? { fonts: signature.fonts } : {}),
   ...(signature.family ? { family: signature.family } : {}),
-  ...(signature.logoUrl ? { logoUrl: signature.logoUrl } : {}),
   ...(signature.monogram ? { monogram: signature.monogram } : {}),
   ...(signature.wordmark ? { wordmark: signature.wordmark } : {}),
   ...(signature.colors ? { colors: signature.colors } : {}),
