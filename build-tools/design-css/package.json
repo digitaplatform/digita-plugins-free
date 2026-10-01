@@ -1,6 +1,6 @@
 {
   "name": "@digitaplatform/design-css",
-  "version": "0.3.9",
+  "version": "0.3.10",
   "private": true,
   "type": "module",
   "description": "Internal, never-published build tool for DESIGN-type plugin packages: composes dist/<id>.css (scoped token blocks + component-variant layer) and dist/digita-plugin.json from a design package's compiled Design object and its package.json digita block. Design-specific on purpose — component-type plugin packages bring their own vite build.",
