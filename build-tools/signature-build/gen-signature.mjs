@@ -30,8 +30,7 @@ if (!signature || typeof signature !== 'object' || signature.id !== digita.id) {
   );
 }
 
-// The graphics the host paints (digita-platform packages/theme/src/signatures/index.ts,
-// SIGNATURE_GRAPHIC_KEYS). Any other key ships a graphic that nothing paints, in silence.
+// The graphics the host paints. Any other key ships a graphic that nothing paints, in silence.
 const GRAPHIC_KEYS = ['grid', 'glow', 'card', 'panel'];
 const unpainted = Object.keys(signature.graphics ?? {}).filter((key) => !GRAPHIC_KEYS.includes(key));
 if (unpainted.length > 0) {
