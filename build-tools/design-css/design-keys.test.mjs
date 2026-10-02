@@ -4,6 +4,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
+import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { DESIGN_KEYS, unreadDesignKeys } from './design-keys.mjs';
@@ -34,7 +35,8 @@ test('PLANTED DEFECT: a key the host does not read is named', () => {
 function runGenDesignCss(extra) {
   const here = dirname(fileURLToPath(import.meta.url));
   const source = join(here, '..', '..', 'minimal');
-  const dir = mkdtempSync(join(here, 'tmp-'));
+  // Outside the repository, so a run killed before `finally` leaves nothing a commit could take.
+  const dir = mkdtempSync(join(tmpdir(), 'digita-plugins-free-'));
   try {
     writeFileSync(join(dir, 'package.json'), readFileSync(join(source, 'package.json')));
     mkdirSync(join(dir, 'src'));
@@ -43,7 +45,7 @@ function runGenDesignCss(extra) {
     const original = pathToFileURL(join(source, 'dist', 'index.js')).href;
     writeFileSync(join(dir, 'dist', 'index.js'), `import d from ${JSON.stringify(original)};\nexport default { ...d, ...${JSON.stringify(extra)} };\n`);
     const run = spawnSync(process.execPath, [join(here, 'gen-design-css.mjs'), dir], { encoding: 'utf8' });
-    return { status: run.status, stderr: run.stderr, wroteCss: existsSync(join(dir, 'dist', 'minimal.css')) };
+    return { status: run.status, stderr: run.stderr, wroteCss: existsSync(join(dir, 'dist', 'minimal.css')), dir };
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
@@ -60,4 +62,12 @@ test('PLANTED INNOCENT: gen-design-css writes the CSS of a design that holds onl
   const run = runGenDesignCss({});
   assert.equal(run.status, 0, run.stderr);
   assert.equal(run.wroteCss, true);
+});
+
+test('builds its scratch design outside the repository, so a killed run leaves nothing a commit takes', () => {
+  const repository = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+  const { dir, status } = runGenDesignCss({});
+  // PLANTED INNOCENT: the generator ran on the scratch design, so its place was looked at.
+  assert.equal(status, 0);
+  assert.ok(!dir.startsWith(repository), `${dir} lies inside ${repository}`);
 });

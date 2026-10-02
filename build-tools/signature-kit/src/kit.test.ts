@@ -2,7 +2,8 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { execFileSync, spawnSync } from 'node:child_process';
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { signatureStyle, type Signature } from '@digitaplatform/theme';
@@ -19,12 +20,15 @@ const failuresOf = (name: string) => {
   const kit = makeSignature(inputOf(name));
   return checkContrast(kit.signature, kit.paints).filter((pair) => pair.status === 'fail');
 };
+/** A scratch folder outside the repository, so a run killed before its `finally` leaves nothing a
+ *  commit could take. */
+const scratchDir = () => mkdtempSync(join(tmpdir(), 'digita-plugins-free-'));
 const describe = (pairs: { pair: string; mode: string }[]) => pairs.map((p) => `${p.pair} (${p.mode})`).sort();
 
 // gen-signature as the build runs it, on a scratch package whose dist/index.js exports `signature`:
 // its exit status, its error text and the manifest it wrote, if any.
 function runGenSignature(signature: object) {
-  const dir = mkdtempSync(join(kitDir, 'tmp-'));
+  const dir = scratchDir();
   try {
     writeFileSync(join(dir, 'package.json'), JSON.stringify({ type: 'module', digita: { id: 'digita', type: 'signature', tier: 'free', sdk: '^0.1.0' } }));
     mkdirSync(join(dir, 'dist'));
@@ -32,7 +36,7 @@ function runGenSignature(signature: object) {
     const run = spawnSync(process.execPath, [genSignature], { cwd: dir, encoding: 'utf8' });
     const file = join(dir, 'dist', 'digita-plugin.json');
     const manifest: Record<string, unknown> | undefined = existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : undefined;
-    return { status: run.status, stderr: run.stderr, manifest };
+    return { status: run.status, stderr: run.stderr, manifest, dir };
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
@@ -127,8 +131,16 @@ test('the kit output is a Signature the installed theme applies', () => {
   }
 });
 
+test('builds its scratch packages outside the repository, so a killed run leaves nothing a commit takes', () => {
+  const repository = join(kitDir, '..', '..');
+  const { dir, manifest } = runGenSignature(digita);
+  // PLANTED INNOCENT: the generator wrote its manifest, so the scratch package was looked at.
+  assert.ok(manifest);
+  assert.ok(!dir.startsWith(repository), `${dir} lies inside ${repository}`);
+});
+
 test('make-signature writes a package that compiles against the installed theme', () => {
-  const dir = mkdtempSync(join(kitDir, 'tmp-'));
+  const dir = scratchDir();
   try {
     writeFileSync(join(dir, 'signature.json'), readFileSync(join(kitDir, 'test', 'planted-pass.json')));
     execFileSync(process.execPath, [join(kitDir, 'dist', 'cli.js'), dir]);
@@ -137,6 +149,8 @@ test('make-signature writes a package that compiles against the installed theme'
       'card-light.svg', 'glow-dark.svg', 'glow-light.svg', 'grid-dark.svg', 'grid-light.svg', 'mark.svg',
       'panel-dark.svg', 'panel-light.svg', 'wordmark.svg',
     ]);
+    // The package imports @digitaplatform/theme, which tsc finds through the kit's own dependencies.
+    symlinkSync(join(kitDir, 'node_modules'), join(dir, 'node_modules'), 'dir');
     const tsc = spawnSync(
       process.execPath,
       [join(kitDir, 'node_modules', 'typescript', 'bin', 'tsc'), '--ignoreConfig', '--noEmit', '--strict', '--module', 'nodenext',
@@ -178,7 +192,7 @@ test('PLANTED DEFECT: gen-signature refuses a logoUrl, which the platform no lon
 });
 
 test('make-signature refuses an input with a failing pair and writes nothing', () => {
-  const dir = mkdtempSync(join(kitDir, 'tmp-'));
+  const dir = scratchDir();
   try {
     writeFileSync(join(dir, 'signature.json'), readFileSync(join(kitDir, 'test', 'planted-fail.json')));
     const run = spawnSync(process.execPath, [join(kitDir, 'dist', 'cli.js'), dir], { encoding: 'utf8' });
