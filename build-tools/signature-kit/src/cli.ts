@@ -11,7 +11,6 @@ const kit = makeSignature(input);
 const pairs = checkContrast(kit.signature, kit.paints);
 
 const line = (p: (typeof pairs)[number]) => `${p.pair} (${p.mode}): ${p.ratio}:1, needs ${p.minimum}:1`;
-for (const p of pairs.filter((p) => p.status === 'waived')) console.log(`[make-signature] waived ${line(p)}: ${p.reason}`);
 const failures = pairs.filter((p) => p.status === 'fail');
 if (failures.length) {
   for (const p of failures) console.error(`[make-signature] ${input.id}: FAILS ${line(p)}`);
@@ -31,5 +30,4 @@ export default signature;
 `,
 );
 for (const [name, svg] of Object.entries(kit.assets)) writeFileSync(join(dir, 'assets', name), `${svg}\n`);
-const passed = pairs.filter((p) => p.status === 'pass').length;
-console.log(`[make-signature] ${input.id}: ${passed} of ${pairs.length} pairs pass AA, ${pairs.length - passed} waived → src/index.ts + ${Object.keys(kit.assets).length} assets`);
+console.log(`[make-signature] ${input.id}: all ${pairs.length} pairs pass AA → src/index.ts + ${Object.keys(kit.assets).length} assets`);

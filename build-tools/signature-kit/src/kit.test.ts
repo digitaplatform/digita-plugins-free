@@ -54,12 +54,9 @@ test('a planted input fails no pair', () => {
 });
 
 test('a planted input with a failing pair turns the check red', () => {
-  // #F2C230 is a light yellow: the kit draws it as the active tab rule, the menu tick and the focus
-  // ring on the light canvas, where it reaches only about 1.6:1 of the 3:1 a graphic needs.
-  assert.deepEqual(describe(failuresOf('planted-fail')), [
-    'primary-600 graphic on bg (light)',
-    'primary-600 graphic on surface (light)',
-  ]);
+  // #FFFFCC is a pale yellow: the kit paints the dots of its background in it, which lifts the dark
+  // background to where the muted text on it reaches only 4.2:1 of the 4.5:1 text needs.
+  assert.deepEqual(describe(failuresOf('planted-fail')), ['textMuted on background (dark)']);
 });
 
 test('the check sees every pair shape it must catch', () => {
@@ -87,6 +84,56 @@ test('the primary label follows the tint rule of digita-platform#89', () => {
   assert.ok(label && label.status === 'pass' && label.foreground !== '#FFFFFF', JSON.stringify(label));
 });
 
+// The platform draws the primary colour as text and as a graphic in two mode-aware roles, which the
+// theme writes as light-dark() pairs measured on the signature's own canvas and surface.
+const roleOf = (signature: Signature, name: string, mode: 'light' | 'dark') => {
+  const value = /^light-dark\((#[0-9A-Fa-f]{6}), (#[0-9A-Fa-f]{6})\)$/.exec(signatureStyle(signature).properties[name] ?? '');
+  assert.ok(value, `${name} is not a light-dark() pair of hex colours`);
+  return value[mode === 'light' ? 1 : 2]!;
+};
+
+test('the kit measures the primary text and graphic roles the theme writes, per mode, on the canvas and the surface', () => {
+  const pairs = checkContrast(digita);
+  for (const mode of ['light', 'dark'] as const) {
+    for (const ground of ['bg', 'surface']) {
+      const text = pairs.find((p) => p.pair === `primaryText on ${ground}` && p.mode === mode);
+      const graphic = pairs.find((p) => p.pair === `primaryGraphic on ${ground}` && p.mode === mode);
+      assert.ok(text && graphic, `${mode} ${ground}: a role pair is not measured`);
+      assert.deepEqual([text.foreground, text.minimum, text.status], [roleOf(digita, '--color-primary-text', mode), 4.5, 'pass']);
+      assert.deepEqual([graphic.foreground, graphic.minimum, graphic.status], [roleOf(digita, '--color-primary-graphic', mode), 3, 'pass']);
+    }
+  }
+  // Step 600 of its ramp is not what the platform draws in light mode any more: #00B2F6 on white is 2.3:1.
+  assert.notEqual(roleOf(digita, '--color-primary-text', 'light'), '#00b2f6');
+});
+
+test('no signature has a waived pair: every pair passes or fails', () => {
+  for (const pairs of [checkContrast(digita), checkContrast(simetrix), ...['planted-pass', 'planted-fail'].map((name) => {
+    const kit = makeSignature(inputOf(name));
+    return checkContrast(kit.signature, kit.paints);
+  })]) {
+    for (const pair of pairs) assert.ok(pair.status === 'pass' || pair.status === 'fail', `${pair.pair} (${pair.mode}) is ${pair.status}`);
+  }
+});
+
+test('PLANTED DEFECT: grounds no ramp step reaches 4.5:1 on fail the primary text pair, on the canvas and the surface, in both modes', () => {
+  // The best step of the brand's ramp reaches only 3.9:1 on #7A7A7A, so the theme has no colour to
+  // write for the primary text that passes; the kit must say so instead of waiving it.
+  const kit = makeSignature(inputOf('planted-pass'));
+  const grey = { light: '#7A7A7A', dark: '#7A7A7A' };
+  const planted: Signature = { ...kit.signature, colors: { ...kit.signature.colors, bg: grey, surface: grey } };
+  const failures = describe(checkContrast(planted, kit.paints).filter((p) => p.status === 'fail' && p.pair.startsWith('primary')));
+  assert.deepEqual(failures, [
+    'primaryText on bg (dark)', 'primaryText on bg (light)', 'primaryText on surface (dark)', 'primaryText on surface (light)',
+  ]);
+});
+
+test('PLANTED INNOCENT: the same signature on its own grounds fails no primary pair', () => {
+  const kit = makeSignature(inputOf('planted-pass'));
+  const failures = checkContrast(kit.signature, kit.paints).filter((p) => p.status === 'fail' && p.pair.startsWith('primary'));
+  assert.deepEqual(describe(failures), []);
+});
+
 test('a signature.json that is not one object is refused by name', () => {
   for (const json of [null, 'digita', ['digita'], 3]) {
     assert.throws(() => readSignatureInput(json), /signature input: signature\.json must hold one object, not /);
@@ -107,15 +154,6 @@ test('the menu shows the title, and the mark and wordmark write the name', () =>
   assert.doesNotMatch(kit.assets['wordmark.svg']!, /Workbench/);
   const { title: _title, ...withoutTitle } = input;
   assert.throws(() => readSignatureInput(withoutTitle), /signature input: title is undefined/);
-});
-
-test('only a step-600 text pair that misses AA is waived, and it names the platform issue', () => {
-  const kit = makeSignature(inputOf('planted-fail'));
-  const pairs = checkContrast(kit.signature, kit.paints);
-  const find = (mode: string) => pairs.find((p) => p.pair === 'primary-600 text on bg' && p.mode === mode)!;
-  assert.equal(find('dark').status, 'pass');
-  assert.equal(find('light').status, 'waived');
-  assert.match(find('light').reason ?? '', /digita-platform#240/);
 });
 
 test('the kit output is a Signature the installed theme applies', () => {
@@ -183,7 +221,7 @@ test('make-signature refuses an input with a failing pair and writes nothing', (
     writeFileSync(join(dir, 'signature.json'), readFileSync(join(kitDir, 'test', 'planted-fail.json')));
     const run = spawnSync(process.execPath, [join(kitDir, 'dist', 'cli.js'), dir], { encoding: 'utf8' });
     assert.equal(run.status, 1);
-    assert.match(run.stderr, /primary-600 graphic on bg \(light\)/);
+    assert.match(run.stderr, /textMuted on background \(dark\)/);
     assert.deepEqual(readdirSync(dir), ['signature.json']);
   } finally {
     rmSync(dir, { recursive: true, force: true });
@@ -213,11 +251,9 @@ for (const [name, handMade] of [['digita', digita], ['simetrix', simetrix]] as c
     assert.deepEqual(Object.keys(made).sort(), Object.keys(handMadeStyle).sort());
   });
 
-  test(`${name}'s hand-made colours fail only the pairs named for the owner`, () => {
-    // The accent #00B2F6 reaches 2.3:1 on the light canvas, under the 3:1 a graphic needs.
-    assert.deepEqual(describe(checkContrast(handMade).filter((pair) => pair.status === 'fail')), [
-      'primary-600 graphic on bg (light)',
-      'primary-600 graphic on surface (light)',
-    ]);
+  test(`${name}'s hand-made colours fail no pair`, () => {
+    // Its accent #00B2F6 reaches 2.3:1 on the light canvas, but the theme draws the primary text and
+    // graphic there in a darker step of the ramp, which the kit measures.
+    assert.deepEqual(describe(checkContrast(handMade).filter((pair) => pair.status === 'fail')), []);
   });
 }

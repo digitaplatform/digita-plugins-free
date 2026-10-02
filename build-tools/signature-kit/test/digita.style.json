@@ -13,6 +13,8 @@
   "--color-primary-950": "#002234",
   "--color-on-primary": "#002234",
   "--color-primary-hover": "#1fbbf7",
+  "--color-primary-text": "light-dark(#005476, #00b2f6)",
+  "--color-primary-graphic": "light-dark(#005476, #00b2f6)",
   "--color-primary-container": "light-dark(#c9e9f8, #004563)",
   "--color-on-primary-container": "light-dark(#003954, #c9e9f8)",
   "--font-display": "'Space Grotesk', sans-serif",

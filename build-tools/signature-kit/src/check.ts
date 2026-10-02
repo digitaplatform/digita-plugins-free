@@ -11,8 +11,7 @@ export interface ContrastPair {
   background: string;
   ratio: number;
   minimum: number;
-  status: 'pass' | 'fail' | 'waived';
-  reason?: string;
+  status: 'pass' | 'fail';
 }
 
 const TEXT = 4.5;
@@ -23,20 +22,13 @@ const SURFACE_CONTAINERS = [
   'surfaceContainerLowest', 'surfaceContainerLow', 'surfaceContainer', 'surfaceContainerHigh', 'surfaceContainerHighest',
 ];
 
-// The kit draws text-primary-600 as text (the active tab, the active nav rail row, today in the date
-// picker) in both modes, and the ramp steps do not change with the mode. A colour reaches 4.5:1 on
-// white only under 0.183 relative luminance, and on the digita dark canvas only over 0.19, so no
-// brand colour passes both. The fix belongs to the platform, not to a signature.
-const PRIMARY_TEXT_WAIVER =
-  'the kit draws step 600 as text in both modes, and no colour reaches 4.5:1 on both a light and a dark canvas; ' +
-  'only the platform can fix it (digita-platform#240)';
-
 /**
  * Every text and control pair the kit draws from a signature: body and muted text on the canvas,
  * the surface, the subtle fill, the surface-container ramp the theme composes, the hovered row
  * (bgHover over the canvas and the surface), and on every graphic `paints` names; the primary label on its
- * fill (the tint rule of digita-platform#89); the badge text on its container; and step 600 as a
- * graphic (the active tab rule, a menu tick, the focus ring) on the canvas and the surface.
+ * fill (the tint rule); the badge text on its container; and the primary colour as the platform
+ * draws it, in the two roles the theme writes for each mode on the signature's own canvas and surface:
+ * as text (4.5:1) and as a graphic (3:1).
  */
 export function checkContrast(signature: Signature, paints: SignatureKit['paints'] = {}): ContrastPair[] {
   const ramp = synthesizeRamp(signature.accent);
@@ -49,7 +41,7 @@ export function checkContrast(signature: Signature, paints: SignatureKit['paints
     return value;
   };
   const written = signatureStyle(signature).properties;
-  const writtenGround = (name: string, mode: 'light' | 'dark') => {
+  const writtenColour = (name: string, mode: 'light' | 'dark') => {
     const value = /^light-dark\((#[0-9A-Fa-f]{6}), (#[0-9A-Fa-f]{6})\)$/.exec(written[cssVarName(name)] ?? '');
     if (!value) throw new Error(`signature ${signature.id}: the theme writes no hex ${cssVarName(name)} to check`);
     return value[mode === 'light' ? 1 : 2]!;
@@ -68,7 +60,7 @@ export function checkContrast(signature: Signature, paints: SignatureKit['paints
   for (const mode of ['light', 'dark'] as const) {
     for (const text of ['textMain', 'textMuted']) {
       for (const ground of ['bg', 'surface', 'subtle']) measure(`${text} on ${ground}`, mode, token(text, mode), token(ground, mode), TEXT);
-      for (const ground of SURFACE_CONTAINERS) measure(`${text} on ${ground}`, mode, token(text, mode), writtenGround(ground, mode), TEXT);
+      for (const ground of SURFACE_CONTAINERS) measure(`${text} on ${ground}`, mode, token(text, mode), writtenColour(ground, mode), TEXT);
       for (const ground of ['bg', 'surface']) {
         const hovered = overlay(token(ground, mode), token('bgHover', mode));
         measure(`${text} on bgHover over ${ground}`, mode, token(text, mode), hovered, TEXT);
@@ -82,10 +74,8 @@ export function checkContrast(signature: Signature, paints: SignatureKit['paints
       }
     }
     for (const ground of ['bg', 'surface']) {
-      measure(`primary-600 graphic on ${ground}`, mode, ramp['600'], token(ground, mode), GRAPHIC);
-      // Only a pair that misses AA is waived, so the count of passing pairs stays true.
-      const primaryText = measure(`primary-600 text on ${ground}`, mode, ramp['600'], token(ground, mode), TEXT);
-      if (primaryText.status === 'fail') Object.assign(primaryText, { status: 'waived', reason: PRIMARY_TEXT_WAIVER });
+      measure(`primaryGraphic on ${ground}`, mode, writtenColour('primaryGraphic', mode), token(ground, mode), GRAPHIC);
+      measure(`primaryText on ${ground}`, mode, writtenColour('primaryText', mode), token(ground, mode), TEXT);
     }
   }
   return pairs;

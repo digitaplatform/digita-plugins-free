@@ -3,9 +3,9 @@
   "name": "Planted Fail",
   "title": "Planted Fail",
   "family": false,
-  "brand": "#F2C230",
-  "neutral": "neutral",
+  "brand": "#FFFFCC",
+  "neutral": "warm",
   "fonts": { "display": "Space Grotesk", "sans": "Manrope", "mono": "JetBrains Mono" },
-  "motif": "diagonal",
-  "graphics": "soft"
+  "motif": "dots",
+  "graphics": "sharp"
 }
