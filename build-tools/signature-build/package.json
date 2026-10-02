@@ -6,5 +6,11 @@
   "description": "Shared build tool for SIGNATURE-type free plugins. Reads a package's digita manifest block + compiled Signature and emits dist/digita-plugin.json (manifest + full brand world) for the staging tool to inline into the inventory.",
   "bin": {
     "gen-signature": "./gen-signature.mjs"
+  },
+  "scripts": {
+    "test": "node --test signature-keys.test.mjs"
+  },
+  "devDependencies": {
+    "theme-published": "npm:@digitaplatform/theme@0.3.51"
   }
 }

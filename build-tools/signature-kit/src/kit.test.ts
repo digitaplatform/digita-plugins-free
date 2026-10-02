@@ -169,12 +169,12 @@ test('PLANTED INNOCENT: the four graphics the host paints reach the delivered ma
   assert.deepEqual(Object.keys((run.manifest?.['graphics'] ?? {}) as object).sort(), ['card', 'glow', 'grid', 'panel']);
 });
 
-test('the delivered manifest carries no logoUrl, which the platform no longer reads', () => {
+test('PLANTED DEFECT: gen-signature refuses a logoUrl, which the platform no longer reads, and writes nothing', () => {
   const { signature } = makeSignature(inputOf('digita'));
-  const { manifest } = runGenSignature({ ...signature, logoUrl: 'https://example.test/logo.svg' });
-  assert.ok(manifest, 'gen-signature wrote no manifest');
-  assert.equal('logoUrl' in manifest, false);
-  assert.equal(manifest['accent'], signature.accent);
+  const run = runGenSignature({ ...signature, logoUrl: 'https://example.test/logo.svg' });
+  assert.equal(run.status, 1);
+  assert.match(run.stderr, /the signature holds "logoUrl"; the host reads only id, name, accent/);
+  assert.equal(run.manifest, undefined);
 });
 
 test('make-signature refuses an input with a failing pair and writes nothing', () => {

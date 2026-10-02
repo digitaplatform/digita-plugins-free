@@ -34,6 +34,7 @@ import {
   fontFamily,
   addDarkBandSelectors,
 } from '@digitaplatform/theme';
+import { DESIGN_KEYS, unreadDesignKeys } from './design-keys.mjs';
 
 // ── VENDORED verbatim from @digitaplatform/theme build/gen-css.mjs ────────────
 function shadowFor(d, mode) {
@@ -131,6 +132,14 @@ if (!id || digita.entry !== `${id}.css`) {
 const design = (await import(pathToFileURL(join(pkgDir, 'dist', 'index.js')).href)).default;
 if (design?.meta?.id !== id) {
   throw new Error(`[design-css] ${pkgDir}: compiled design meta.id "${design?.meta?.id}" !== digita.id "${id}".`);
+}
+
+// A key the host does not read composes into nothing, without a word.
+const unread = unreadDesignKeys(design);
+if (unread.length > 0) {
+  throw new Error(
+    `[design-css] ${join(pkgDir, 'dist', 'index.js')}: the design holds ${unread.map((key) => `"${key}"`).join(', ')}; the host reads only ${DESIGN_KEYS.join(', ')}, so no other key does anything.`,
+  );
 }
 
 const light = designLight(design);

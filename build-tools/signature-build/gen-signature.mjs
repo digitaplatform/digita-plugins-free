@@ -12,6 +12,7 @@
 import { writeFileSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { SIGNATURE_KEYS, unreadSignatureKeys } from './signature-keys.mjs';
 
 const pkgDir = process.cwd();
 const pkg = JSON.parse(readFileSync(join(pkgDir, 'package.json'), 'utf8'));
@@ -27,6 +28,14 @@ const signature = mod.signature ?? mod.default;
 if (!signature || typeof signature !== 'object' || signature.id !== digita.id) {
   throw new Error(
     `[gen-signature] ${pkgDir}: dist/index.js must export a Signature (\`export const signature\`) whose id matches digita.id ("${digita.id}").`,
+  );
+}
+
+// A key the host does not read would be dropped from the manifest without a word.
+const unread = unreadSignatureKeys(signature);
+if (unread.length > 0) {
+  throw new Error(
+    `[gen-signature] ${distIndex}: the signature holds ${unread.map((key) => `"${key}"`).join(', ')}; the host reads only ${SIGNATURE_KEYS.join(', ')}, so no other key does anything.`,
   );
 }
 

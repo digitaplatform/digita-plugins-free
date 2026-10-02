@@ -13,8 +13,16 @@ importers:
       '@digitaplatform/theme':
         specifier: ^0.3.24
         version: 0.3.24
+    devDependencies:
+      theme-published:
+        specifier: npm:@digitaplatform/theme@0.3.51
+        version: '@digitaplatform/theme@0.3.51'
 
-  build-tools/signature-build: {}
+  build-tools/signature-build:
+    devDependencies:
+      theme-published:
+        specifier: npm:@digitaplatform/theme@0.3.51
+        version: '@digitaplatform/theme@0.3.51'
 
   build-tools/signature-kit:
     dependencies:
@@ -236,6 +244,10 @@ packages:
       react: ^19.0.0
       react-dom: ^19.0.0
 
+  '@digitaplatform/minimal@0.3.10':
+    resolution: {integrity: sha512-Pc2B8VpWYRfka9iCHtZ1RJUi6ZTsIUufNF4Cu+BcnSY0j34X/NGENmz5FnJMyNVLRJHF2wC/DeuhUUm0TbF0PA==, tarball: https://npm.pkg.github.com/download/@digitaplatform/minimal/0.3.10/b7f318d2a1526a73fef5f50fadb5f2c31681da53}
+    engines: {node: '>=22.0.0', pnpm: '>=11.0.0'}
+
   '@digitaplatform/plugins@0.3.0':
     resolution: {integrity: sha512-AZFimZoQ6UsCK00ScaFKnNj5oioCzDQQOflKciscFVVMi2DThNEEhZvS1mIlEIaYOdYJiOZiRVWvWOfG0IVj8w==, tarball: https://npm.pkg.github.com/download/@digitaplatform/plugins/0.3.0/49d1ffe78ee74683688a8b3450b050828c04c851}
     peerDependencies:
@@ -252,6 +264,9 @@ packages:
 
   '@digitaplatform/theme@0.3.30':
     resolution: {integrity: sha512-yrKCih7RZEp8lBmFRMcejZ5XL4qYh1vI/hrL5IDj2IqYfNl3WkkzesQgPqrFSMR95deSbDXLYBUwsGld0t8tKg==, tarball: https://npm.pkg.github.com/download/@digitaplatform/theme/0.3.30/530a102552c8c6d176d18380cbed2fca37813c9e}
+
+  '@digitaplatform/theme@0.3.51':
+    resolution: {integrity: sha512-1AFlQV9W/Iy9dyinZeYhTGAerZgA2Lda6ITf3r2SDK602qWnY89hbeNA0RNxfUVrgFDH4IyMr8abOvb2i7xVBQ==, tarball: https://npm.pkg.github.com/download/@digitaplatform/theme/0.3.51/286af8d51747ee884d40e6ce08de59ac4f1ef3c8}
 
   '@exodus/bytes@1.16.0':
     resolution: {integrity: sha512-IcpW84uEn3N7ETtNZMlxKhfl6Pec8rUNGOTBtWbK1FKhJxIFAptZyVrvVRVBimAJxJCgc3PxepxkdWWG4DVzfA==}
@@ -971,6 +986,8 @@ snapshots:
       react-dom: 19.2.7(react@19.2.7)
       tailwind-merge: 3.6.0
 
+  '@digitaplatform/minimal@0.3.10': {}
+
   '@digitaplatform/plugins@0.3.0(react@19.2.7)':
     dependencies:
       react: 19.2.7
@@ -982,6 +999,10 @@ snapshots:
   '@digitaplatform/theme@0.3.24': {}
 
   '@digitaplatform/theme@0.3.30': {}
+
+  '@digitaplatform/theme@0.3.51':
+    dependencies:
+      '@digitaplatform/minimal': 0.3.10
 
   '@exodus/bytes@1.16.0': {}
 
