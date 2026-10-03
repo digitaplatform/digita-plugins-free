@@ -1,0 +1,71 @@
+{
+  "apiVersion": "hostyour.cloud/v1",
+  "kind": "TestRecipe",
+  "packageManager": "pnpm@11.7.0",
+  "runtime": "node",
+  "fixtures": [],
+  "prepare": [
+    {
+      "command": [
+        "pnpm",
+        "build"
+      ]
+    }
+  ],
+  "suites": [
+    {
+      "name": "design-css",
+      "kind": "test",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@digitaplatform/design-css",
+        "test"
+      ],
+      "covers": [
+        "build-tools/design-css/package.json"
+      ]
+    },
+    {
+      "name": "signature-build",
+      "kind": "test",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@digitaplatform/signature-build",
+        "test"
+      ],
+      "covers": [
+        "build-tools/signature-build/package.json"
+      ]
+    },
+    {
+      "name": "signature-kit",
+      "kind": "test",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@digitaplatform/signature-kit",
+        "test"
+      ],
+      "covers": [
+        "build-tools/signature-kit/package.json"
+      ]
+    },
+    {
+      "name": "usermenu",
+      "kind": "test",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@digitaplatform/usermenu",
+        "test",
+        "--maxWorkers=1",
+        "--no-file-parallelism"
+      ],
+      "covers": [
+        "usermenu/package.json"
+      ]
+    }
+  ]
+}
