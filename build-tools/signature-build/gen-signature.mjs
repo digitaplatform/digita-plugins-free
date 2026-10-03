@@ -63,6 +63,7 @@ const manifest = {
   ...(signature.family ? { family: signature.family } : {}),
   ...(signature.monogram ? { monogram: signature.monogram } : {}),
   ...(signature.wordmark ? { wordmark: signature.wordmark } : {}),
+  ...(signature.icon ? { icon: signature.icon } : {}),
   ...(signature.colors ? { colors: signature.colors } : {}),
   ...(signature.graphics ? { graphics: signature.graphics } : {}),
 };

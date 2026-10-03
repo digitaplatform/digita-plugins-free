@@ -11,6 +11,6 @@
     "test": "node --test signature-keys.test.mjs"
   },
   "devDependencies": {
-    "theme-published": "npm:@digitaplatform/theme@0.3.51"
+    "theme-published": "npm:@digitaplatform/theme@0.3.58"
   }
 }

@@ -1,5 +1,5 @@
 import type { Signature } from '@digitaplatform/theme';
-import { GRAPHICS, MONOGRAM_SVG, WORDMARK_SVG } from './assets.js';
+import { APPICON_SVG, GRAPHICS, MONOGRAM_SVG, WORDMARK_SVG } from './assets.js';
 
 export {
   APPICON_SVG,
@@ -57,6 +57,8 @@ export const signature: Signature = {
   // per the navbar digitaplatform.com.dc.html:35, per-mode via light-dark().
   // The "digita●cloud" lockup stays available as CLOUD_WORDMARK_SVG.
   wordmark: WORDMARK_SVG,
+  // The browser tab's icon: the platform app icon (assets/digita-platform-appicon.svg), own colours.
+  icon: APPICON_SVG,
   colors: {
     // Canvas: html/body background (light :15 / dark :15).
     bg: { light: '#F5F8FB', dark: '#050B14' },

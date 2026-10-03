@@ -21,8 +21,8 @@ importers:
   build-tools/signature-build:
     devDependencies:
       theme-published:
-        specifier: npm:@digitaplatform/theme@0.3.51
-        version: '@digitaplatform/theme@0.3.51'
+        specifier: npm:@digitaplatform/theme@0.3.58
+        version: '@digitaplatform/theme@0.3.58'
 
   build-tools/signature-kit:
     dependencies:
@@ -49,8 +49,8 @@ importers:
         specifier: workspace:*
         version: link:../build-tools/signature-build
       '@digitaplatform/theme':
-        specifier: ^0.3.0
-        version: 0.3.0
+        specifier: ^0.3.58
+        version: 0.3.58
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
@@ -73,8 +73,8 @@ importers:
         specifier: workspace:*
         version: link:../build-tools/signature-build
       '@digitaplatform/theme':
-        specifier: ^0.3.0
-        version: 0.3.0
+        specifier: ^0.3.58
+        version: 0.3.58
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
@@ -253,9 +253,6 @@ packages:
     peerDependencies:
       react: ^19.0.0
 
-  '@digitaplatform/theme@0.3.0':
-    resolution: {integrity: sha512-mEcL7TgD95Cavd4UKxqG6zuE7KDXDAxn2AbyHTOo/pp0UiCu6WHg7ZKcB80H1tr47ad+zwbPh40o66fnZ7Ek9A==, tarball: https://npm.pkg.github.com/download/@digitaplatform/theme/0.3.0/17f2c0d29e55cfc93eda63bd73b4c404b65ec3a4}
-
   '@digitaplatform/theme@0.3.13':
     resolution: {integrity: sha512-HUj5ZuTjoEHpXwf1DfCMqXwWECOE/6Vuth5f41DL6WfHYd8Pk/J5uApirurIfY8/TsJpyd/6ScHxfIjCxlce0w==, tarball: https://npm.pkg.github.com/download/@digitaplatform/theme/0.3.13/f26fd88cf4c1337afdef033f51a805e6e1f5acd3}
 
@@ -267,6 +264,9 @@ packages:
 
   '@digitaplatform/theme@0.3.51':
     resolution: {integrity: sha512-1AFlQV9W/Iy9dyinZeYhTGAerZgA2Lda6ITf3r2SDK602qWnY89hbeNA0RNxfUVrgFDH4IyMr8abOvb2i7xVBQ==, tarball: https://npm.pkg.github.com/download/@digitaplatform/theme/0.3.51/286af8d51747ee884d40e6ce08de59ac4f1ef3c8}
+
+  '@digitaplatform/theme@0.3.58':
+    resolution: {integrity: sha512-woH2t5fskTH5Q8t7zTYhdp5v4qMFV6/t7mrir6B//pCICydW7xHDZtek9j6/CaCytdmuYxNO1mwdDrdsjKteBA==, tarball: https://npm.pkg.github.com/download/@digitaplatform/theme/0.3.58/b729207adc478c90bf3c772e8c64bea718e2fa5e}
 
   '@exodus/bytes@1.16.0':
     resolution: {integrity: sha512-IcpW84uEn3N7ETtNZMlxKhfl6Pec8rUNGOTBtWbK1FKhJxIFAptZyVrvVRVBimAJxJCgc3PxepxkdWWG4DVzfA==}
@@ -992,8 +992,6 @@ snapshots:
     dependencies:
       react: 19.2.7
 
-  '@digitaplatform/theme@0.3.0': {}
-
   '@digitaplatform/theme@0.3.13': {}
 
   '@digitaplatform/theme@0.3.24': {}
@@ -1001,6 +999,10 @@ snapshots:
   '@digitaplatform/theme@0.3.30': {}
 
   '@digitaplatform/theme@0.3.51':
+    dependencies:
+      '@digitaplatform/minimal': 0.3.10
+
+  '@digitaplatform/theme@0.3.58':
     dependencies:
       '@digitaplatform/minimal': 0.3.10
 
