@@ -1,5 +1,5 @@
 import type { Signature } from '@digitaplatform/theme';
-import { GRAPHICS, MONOGRAM_SVG, WORDMARK_SVG } from './assets.js';
+import { APPICON_SVG, GRAPHICS, MONOGRAM_SVG, WORDMARK_SVG } from './assets.js';
 
 export { APPICON_SVG, MONOGRAM_SVG, WORDMARK_SVG, GRAPHICS } from './assets.js';
 
@@ -30,6 +30,8 @@ export const signature: Signature = {
   monogram: MONOGRAM_SVG,
   // The X beside "simetrix", accent on the final x, per mode via light-dark().
   wordmark: WORDMARK_SVG,
+  // The browser tab's icon: the X on its tile (assets/simetrix-appicon.svg), own colours.
+  icon: APPICON_SVG,
   colors: {
     bg: { light: '#F5F8FB', dark: '#050B14' },
     surface: { light: '#FFFFFF', dark: '#070E19' },
