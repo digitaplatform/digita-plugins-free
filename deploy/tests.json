@@ -67,5 +67,8 @@
         "usermenu/package.json"
       ]
     }
+  ],
+  "dependencyRoots": [
+    "."
   ]
 }
