@@ -3,7 +3,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { SIGNATURE_KEYS, unreadSignatureKeys } from './signature-keys.mjs';
+import { SIGNATURE_KEYS, signatureManifest, unreadSignatureKeys } from './signature-keys.mjs';
 
 /** The property names of `interface <name>` in a declaration file. */
 function interfaceKeys(dts, name) {
@@ -24,4 +24,24 @@ test('the accepted keys are the Signature type of the published theme', () => {
 
 test('PLANTED DEFECT: a key the host does not read is named', () => {
   assert.deepEqual(unreadSignatureKeys({ id: 'x', name: 'X', accent: '#000000', logoUrl: '/logo.svg' }), ['logoUrl']);
+});
+
+const DIGITA_BLOCK = { id: 'x', type: 'signature', tier: 'free', sdk: '^0.3.0' };
+
+test('PLANTED DEFECT: the manifest carries every key the host reads, unchanged', () => {
+  const signature = Object.fromEntries(SIGNATURE_KEYS.map((key) => [key, key === 'id' ? 'x' : { of: key }]));
+  const manifest = signatureManifest(DIGITA_BLOCK, signature);
+  for (const key of SIGNATURE_KEYS) assert.deepEqual(manifest[key], signature[key], key);
+});
+
+test('PLANTED INNOCENT: a signature without the optional keys ships only what it holds', () => {
+  assert.deepEqual(signatureManifest(DIGITA_BLOCK, { id: 'x', name: 'X', accent: '#000000' }), {
+    id: 'x',
+    type: 'signature',
+    tier: 'free',
+    sdk: '^0.3.0',
+    displayName: 'X',
+    name: 'X',
+    accent: '#000000',
+  });
 });

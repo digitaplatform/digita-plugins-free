@@ -12,7 +12,7 @@
 import { writeFileSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { SIGNATURE_KEYS, unreadSignatureKeys } from './signature-keys.mjs';
+import { SIGNATURE_KEYS, signatureManifest, unreadSignatureKeys } from './signature-keys.mjs';
 
 const pkgDir = process.cwd();
 const pkg = JSON.parse(readFileSync(join(pkgDir, 'package.json'), 'utf8'));
@@ -48,27 +48,7 @@ if (unpainted.length > 0) {
   );
 }
 
-// The delivery manifest = the commercial/type metadata (from the digita block)
-// merged with the full identity config (from the Signature object). Keeps a
-// stable field order so diffs are readable.
-const manifest = {
-  id: digita.id,
-  type: 'signature',
-  tier: digita.tier,
-  sdk: digita.sdk,
-  displayName: digita.displayName ?? signature.name,
-  name: signature.name,
-  accent: signature.accent,
-  ...(signature.fonts ? { fonts: signature.fonts } : {}),
-  ...(signature.family ? { family: signature.family } : {}),
-  ...(signature.monogram ? { monogram: signature.monogram } : {}),
-  ...(signature.wordmark ? { wordmark: signature.wordmark } : {}),
-  ...(signature.icon ? { icon: signature.icon } : {}),
-  ...(signature.colors ? { colors: signature.colors } : {}),
-  ...(signature.graphics ? { graphics: signature.graphics } : {}),
-};
-
-writeFileSync(join(pkgDir, 'dist', 'digita-plugin.json'), JSON.stringify(manifest, null, 2) + '\n');
+writeFileSync(join(pkgDir, 'dist', 'digita-plugin.json'), JSON.stringify(signatureManifest(digita, signature), null, 2) + '\n');
 console.log(
   `[gen-signature] ${digita.id}(${Object.keys(signature.colors ?? {}).length} colors, ${Object.keys(signature.graphics ?? {}).length} graphics) → dist/digita-plugin.json`,
 );
