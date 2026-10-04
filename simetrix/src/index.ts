@@ -3,21 +3,11 @@ import { APPICON_SVG, GRAPHICS, MONOGRAM_SVG, WORDMARK_SVG } from './assets.js';
 
 export { APPICON_SVG, MONOGRAM_SVG, WORDMARK_SVG, GRAPHICS } from './assets.js';
 
-/**
- * simetrix — the parent brand's FREE signature. simetrix GmbH is the company
- * behind the digita family (digita platform, digita cloud, digita plugins); its
- * surfaces, simetrix.ch first, wear the same colour world, fonts and background
- * vectors as the digita signature and differ only in the mark: the X (the
- * approved vector in assets/simetrix-x-cyan.svg) and the wordmark "simetrix"
- * with the accent on the final x. No dot: the dot is the digita family's
- * separator and the brand handoff rejected it for simetrix.
- * Colour values are the digita signature's (digita/src/index.ts), traced there
- * to the design templates; media live as FILES in assets/ and are inlined at
- * build via src/assets.ts (gen-assets).
- */
+/** The company lockup uses the existing design and its operational signature id. */
 export const signature: Signature = {
   id: 'simetrix',
-  name: 'simetrix',
+  name: 'simplidigita ai',
+  family: 'simplidigita',
   // The family accent, oklch(0.72 0.16 235) in sRGB, anchoring the primary ramp
   // at step 600 as in the digita signature.
   accent: '#00B2F6',
@@ -26,11 +16,11 @@ export const signature: Signature = {
     sans: "'Manrope', sans-serif",
     mono: "'JetBrains Mono', monospace",
   },
-  // The X, painted with the accent by the chrome (currentColor).
+  // The compact company mark, painted by the chrome.
   monogram: MONOGRAM_SVG,
-  // The X beside "simetrix", accent on the final x, per mode via light-dark().
+  // Word, accent dot, word — the same construction as ProductLockup.
   wordmark: WORDMARK_SVG,
-  // The browser tab's icon: the X on its tile (assets/simetrix-appicon.svg), own colours.
+  // The company app icon on its existing navy/cyan tile.
   icon: APPICON_SVG,
   colors: {
     bg: { light: '#F5F8FB', dark: '#050B14' },
